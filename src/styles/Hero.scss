@@ -63,7 +63,8 @@
 	}
 
 	.about {
-		background-color: rgba($color: #fff, $alpha: 0.6);
+		// background-color: rgba($color: #fff, $alpha: 0.6);
+		background-color: #f7d7b9;
 		height: 80vh;
 
 		h1 {
@@ -154,7 +155,8 @@
 
 		.welcomeTextContainer {
 			height: 100%;
-			background-color: rgba($color: #ffefd0, $alpha: 1);
+			background-color: #f7d7b9;
+
 
 			.subText {
 				display: none;
@@ -166,6 +168,7 @@
 		margin-top: 2.5rem;
 		justify-content: center;
 		align-items: center;
+
 
 		.aboutText {
 			width: 94% !important;

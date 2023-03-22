@@ -50,7 +50,7 @@ export default function Hero() {
 							best possible healthcare suggestions and mental health.
 						</div>
 						<div className="aboutOpener mobile">
-							I aim to assist <b>you</b> in providing the best healthcare suggestions.
+							I aim to assist <b>you</b> and provide the best healthcare suggestions.
 						</div>
 
 						<div>I'm built using React, SCSS, Vite, Firebase and various other technologies.</div>
@@ -59,7 +59,7 @@ export default function Hero() {
 							Functions.
 						</div>
 						<div>
-							I'm created by <b className="popup dottedUnderline" aria-label="Sabari, Naveen Samraj, Yaswanth">Team Zeta</b> for the <strong>Solving For India</strong> Hackathon by GeeksForGeeks.
+							I'm created by <b className="popup dottedUnderline" aria-label="Sabari, Naveen, Yaswanth">Team Zeta</b> for the <strong>Solving For India</strong> Hackathon by GeeksForGeeks.
 						</div>
 					</div>
 
