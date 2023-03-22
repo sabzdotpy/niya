@@ -9,7 +9,11 @@
 	height: auto;
 
 	section {
-		height: 80vh;
+		height: 90vh;
+	}
+
+	section.hi {
+		min-height: 80vh;
 	}
 
 	.hi {
@@ -58,23 +62,45 @@
 	}
 
 	.about {
-		background-color: rgba($color: #fff, $alpha: .6);
+		background-color: rgba($color: #fff, $alpha: 0.6);
 		height: 80vh;
+
+		h1 {
+			margin-bottom: 1rem;
+		}
+
+		.aboutTextWrapper {
+			font-size: 18px;
+			display: flex;
+			flex-direction: column;
+			gap: 0.5rem;
+			width: 80%;
+			margin: 0 auto;
+
+			div {
+				text-align: left;
+			}
+
+			.otherFeatures {
+				ul {
+					display: flex;
+					gap: .3rem;
+					// list-style: circle;
+				}
+			}
+		}
 	}
 }
 
-
 @media screen and (max-width: 720px) {
-
 	.navbar {
 		width: 90%;
 		margin: 0 auto;
 	}
 
-
 	.features {
 		// margin-top: 40px;
-		background-color: rgba($color: #fff, $alpha: .6);
+		background-color: rgba($color: #fff, $alpha: 0.6);
 	}
 
 	.hi {
@@ -97,8 +123,7 @@
 
 		.welcomeTextContainer {
 			height: 100%;
-			background-color: rgba($color: #fff, $alpha: .6);
+			background-color: rgba($color: #fff, $alpha: 0.6);
 		}
 	}
 }
-

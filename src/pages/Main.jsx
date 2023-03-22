@@ -16,15 +16,33 @@ export default function Main() {
 	//! ---------------- EFFECTS ----------------
 
 	useEffect(() => {
+		console.log("Main.jsx useEffect..");
+		
+		navBlurCheck();
+
 		window.addEventListener("resize", () => {
 			setWindowWidth(window.innerWidth);
 		});
+
 		window.addEventListener("scroll", () => {
-			console.log(navBar.current.scrollTop)
-		}, false)
+			navBlurCheck()
+		});
+
+		return () => {
+			// return a cleanup function to unregister our function since it's going to run multiple times
+			window.removeEventListener("scroll", (e) => console.log("unregistering main scroll listener"));
+		};
 	}, []);
 
 	//! -----------------------------------------
+
+	const navBlurCheck = () => {
+		if (window.scrollY) {
+			navBar.current.classList.remove("noeff");
+		} else {
+			navBar.current.classList.add("noeff");
+		}
+	}
 
 	const mobileNavToggle = () => {
 		navUl.current.classList.toggle("mobile-nav");
@@ -32,11 +50,11 @@ export default function Main() {
 	};
 
 	return (
-		<div className="Main" >
+		<div className="Main" ref={mainPage}>
 			<header>
 				<div class="nav-wrapper">
 					{/* <div class="grad-bar"></div> */}
-					<nav class={"navbar" + " noeff"} ref={navBar} >
+					<nav class={"navbar" + " noeff"} ref={navBar}>
 						<img
 							src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c8/Bluestar_%28bus_company%29_logo.svg/1280px-Bluestar_%28bus_company%29_logo.svg.png"
 							alt="Company Logo"
@@ -56,7 +74,6 @@ export default function Main() {
 							<li class="nav-item">
 								{/* <a href="#">Sign In</a> */}
 								<button className="mainBtn">Sign In</button>
-								
 							</li>
 						</ul>
 					</nav>
@@ -64,7 +81,7 @@ export default function Main() {
 			</header>
 
 			<section>
-				<Outlet/>
+				<Outlet />
 			</section>
 		</div>
 	);
