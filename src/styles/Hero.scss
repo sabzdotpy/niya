@@ -1,0 +1,104 @@
+.Hero {
+	color: #111;
+	// font-size: 90px;
+	// font-weight: 900;
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	width: 100%;
+	height: auto;
+
+	section {
+		height: 80vh;
+	}
+
+	.hi {
+		display: flex;
+		flex-direction: row;
+		width: 100%;
+		justify-content: center;
+		margin-top: 40px;
+
+		.avatarWrapper {
+			width: auto;
+			display: flex;
+			align-items: flex-end;
+			justify-content: center;
+
+			img {
+				// height: 500px;
+				width: 350px;
+				object-fit: contain;
+			}
+		}
+
+		.welcomeTextContainer {
+			position: relative;
+			margin-top: auto;
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 1rem;
+
+			.welcomeText {
+				font-size: 80px;
+				margin: 0;
+			}
+
+			.niyaLabel {
+				cursor: crosshair;
+			}
+
+			.subText {
+				font-size: 20px;
+			}
+		}
+	}
+
+	.about {
+		background-color: rgba($color: #fff, $alpha: .6);
+		height: 80vh;
+	}
+}
+
+
+@media screen and (max-width: 720px) {
+
+	.navbar {
+		width: 90%;
+		margin: 0 auto;
+	}
+
+
+	.features {
+		// margin-top: 40px;
+		background-color: rgba($color: #fff, $alpha: .6);
+	}
+
+	.hi {
+		flex-direction: column-reverse !important;
+		margin-top: 140px !important;
+		height: 90vh !important;
+
+		.avatarWrapper {
+			max-width: max-content;
+			height: 420px;
+			margin: 0 auto;
+
+			img {
+				// height: 500px;
+				width: 450px;
+				height: 400px;
+				object-fit: contain;
+			}
+		}
+
+		.welcomeTextContainer {
+			height: 100%;
+			background-color: rgba($color: #fff, $alpha: .6);
+		}
+	}
+}
+
