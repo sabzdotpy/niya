@@ -70,21 +70,24 @@ button:focus-visible {
 /* CODE FOR HOVER POPUP ARIA LABEL */
 
 
-[aria-label] {
+.popup[aria-label] {
 	position: relative;
 }
 
-[aria-label]:after {
+.popup[aria-label]:after {
 	content: attr(aria-label);
 	/* display: none; */
 	opacity: 0;
 	position: absolute;
 	top: 0;
 	left: -50px;
-  width: 250px;
+  max-width: 250px;
+  min-width: 200px; 
+  /* ! DYNAMIC WIDTH FIX */
   height: auto;
   overflow-wrap: break-word;
-	z-index: 101;
+  text-align: center;
+	/* z-index: 101; */
 	pointer-events: none;
 	padding: 1rem;
   /* padding-bottom: 1.5rem; */
@@ -105,8 +108,8 @@ button:focus-visible {
 	transition: all 0.15s ease;
 }
 
-[aria-label]:hover:after,
-[aria-label]:focus:after {
+.popup[aria-label]:hover:after,
+.popup[aria-label]:focus:after {
 	/* display: block; */
 	opacity: 1;
 	top: -60px;

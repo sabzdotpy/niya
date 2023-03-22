@@ -9,7 +9,8 @@
 	height: auto;
 
 	section {
-		height: 90vh;
+		min-height: 90vh;
+		max-height: max-content;
 	}
 
 	section.hi {
@@ -66,16 +67,46 @@
 		height: 80vh;
 
 		h1 {
-			margin-bottom: 1rem;
+			margin-bottom: 2rem;
+		}
+
+		.aboutText {
+			position: relative;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 1rem;
+			width: 90%;
+			// height: 100%;
+			margin: auto;
+		}
+
+		.aboutImageWrapper {
+			// display: flex;
+			// justify-content: center;
+			// align-items: center;
+
+			img {
+				width: 350px;
+			}
 		}
 
 		.aboutTextWrapper {
 			font-size: 18px;
 			display: flex;
 			flex-direction: column;
-			gap: 0.5rem;
+			gap: 1rem;
 			width: 80%;
-			margin: 0 auto;
+			
+
+			.aboutOpener {
+				display: block;
+				// background-color: red;
+			}
+
+			.aboutOpener.mobile {
+				display: none;
+			}
 
 			div {
 				text-align: left;
@@ -123,7 +154,40 @@
 
 		.welcomeTextContainer {
 			height: 100%;
-			background-color: rgba($color: #fff, $alpha: 0.6);
+			background-color: rgba($color: #ffefd0, $alpha: 1);
+
+			.subText {
+				display: none;
+			}
+		}
+	}
+
+	.about {
+		margin-top: 2.5rem;
+		justify-content: center;
+		align-items: center;
+
+		.aboutText {
+			width: 94% !important;
+			// margin: 0 auto !important;
+
+			.aboutImageWrapper {
+				display: none;
+			}
+
+			.aboutTextWrapper {
+				width: 100%;
+				gap: 1rem;
+
+				
+			.aboutOpener {
+				display: none;
+			}
+
+			.aboutOpener.mobile {
+				display: block;
+			}
+			}
 		}
 	}
 }

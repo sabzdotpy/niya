@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import "../styles/Hero.scss";
 import avatarHi from "../assets/hi_pure.png";
+import avatarAbout from "../assets/smiling_eye_closed.png";
 import ImageRenderer from "../components/ImageRenderer";
 
 export default function Hero() {
@@ -25,7 +26,7 @@ export default function Hero() {
 					<h1 className="welcomeText">
 						{"Hi! I'm \n "}
 						<span
-							className="niyaLabel dottedUnderline"
+							className="niyaLabel dottedUnderline popup"
 							aria-label="An Irish variant of the name Nia, meaning 'aim', 'purpose', and 'beauty'."
 						>
 							Niya.
@@ -42,7 +43,32 @@ export default function Hero() {
 			<section className="about">
 				<h1>About Niya</h1>
 
-				<div className="aboutTextWrapper">
+				<div className="aboutText">
+					<div className="aboutTextWrapper">
+						<div className="aboutOpener">
+							As a peronal healthcare assistant my goal is to assist <b>you</b> in providing the
+							best possible healthcare suggestions and mental health.
+						</div>
+						<div className="aboutOpener mobile">
+							I aim to assist <b>you</b> in providing the best healthcare suggestions.
+						</div>
+
+						<div>I'm built using React, SCSS, Vite, Firebase and various other technologies.</div>
+						<div>
+							To predict diseases, I also use Python's Scikit Learning, Scipy, Matplotlib and Google Cloud
+							Functions.
+						</div>
+						<div>
+							I'm created by <b className="popup dottedUnderline" aria-label="Sabari, Naveen Samraj, Yaswanth">Team Zeta</b> for the <strong>Solving For India</strong> Hackathon by GeeksForGeeks.
+						</div>
+					</div>
+
+					<div className="aboutImageWrapper">
+						<ImageRenderer url={avatarAbout} width={450} height={500} />
+					</div>
+				</div>
+
+				{/* <div className="aboutTextWrapper">
 					<div className="aboutOpener">
 						As a personal healthcare assistant, my primary goal is to assist <b>you</b> in providing the
 						best possible healthcare, suggestions and mental support.
@@ -75,7 +101,7 @@ export default function Hero() {
 						I am constantly learning and improving, adapting to the changing needs of the healthcare
 						industry and the people it serves.
 					</div>
-				</div>
+				</div> */}
 			</section>
 			<section className="try">Try</section>
 			<section className="login">Let's get started.</section>
