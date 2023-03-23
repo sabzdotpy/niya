@@ -52,26 +52,26 @@ export default function Main() {
 	return (
 		<div className="Main" ref={mainPage}>
 			<header>
-				<div class="nav-wrapper">
-					{/* <div class="grad-bar"></div> */}
-					<nav class={"navbar" + " noeff"} ref={navBar}>
+				<div className="nav-wrapper">
+					{/* <div className="grad-bar"></div> */}
+					<nav className={"navbar" + " noeff"} ref={navBar}>
 						<img
 							src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c8/Bluestar_%28bus_company%29_logo.svg/1280px-Bluestar_%28bus_company%29_logo.svg.png"
 							alt="Company Logo"
 						></img>
-						<div class="menu-toggle" id="mobile-menu" ref={mobileNavToggler} onClick={mobileNavToggle}>
-							<span class="bar"></span>
-							<span class="bar"></span>
-							<span class="bar"></span>
+						<div className="menu-toggle" id="mobile-menu" ref={mobileNavToggler} onClick={mobileNavToggle}>
+							<span className="bar"></span>
+							<span className="bar"></span>
+							<span className="bar"></span>
 						</div>
-						<ul class="nav no-search" ref={navUl}>
-							<li class="nav-item">
+						<ul className="nav no-search" ref={navUl}>
+							<li className="nav-item">
 								<a href="#">About</a>
 							</li>
-							<li class="nav-item">
+							<li className="nav-item">
 								<a href="#">Features</a>
 							</li>
-							<li class="nav-item">
+							<li className="nav-item">
 								{/* <a href="#">Sign In</a> */}
 								<button className="mainBtn">Sign In</button>
 							</li>

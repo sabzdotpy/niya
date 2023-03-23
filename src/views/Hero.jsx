@@ -3,10 +3,13 @@ import "../styles/Hero.scss";
 import avatarHi from "../assets/hi_pure.png";
 import avatarAbout from "../assets/smiling_eye_closed.png";
 import ImageRenderer from "../components/ImageRenderer";
+import SectionDivider from "../components/SectionDivider";
+import SignInPrompt from "../components/SignInPrompt";
 
 export default function Hero() {
 	//! ----------------  STATE  ----------------
 	const [windowWidth, setWindowWidth] = useState();
+	const [showLogin, setShowLogin] = useState();
 	//! ----------------  REF  ----------------
 
 	//! ---------------- EFFECTS ----------------
@@ -41,17 +44,18 @@ export default function Hero() {
 				</div>
 			</section>
 			<section className="about">
+				<SectionDivider />
 				<h1>About Niya</h1>
 
 				<div className="aboutText">
 					<div className="aboutTextWrapper">
 						<div className="aboutOpener">
-							As a peronal healthcare assistant my goal is to assist <b>you</b> in providing the
-							best possible healthcare suggestions and mental health.
+							As a peronal healthcare assistant my goal is to assist <b>you</b> in providing the best
+							possible healthcare suggestions and mental health.
 						</div>
-						<div className="aboutOpener mobile">
+						{/* <div className="aboutOpener mobile">
 							I aim to assist <b>you</b> and provide the best healthcare suggestions.
-						</div>
+						</div> */}
 
 						<div>I'm built using React, SCSS, Vite, Firebase and various other technologies.</div>
 						<div>
@@ -59,7 +63,11 @@ export default function Hero() {
 							Functions.
 						</div>
 						<div>
-							I'm created by <b className="popup dottedUnderline" aria-label="Sabari, Naveen, Yaswanth">Team Zeta</b> for the <strong>Solving For India</strong> Hackathon by GeeksForGeeks.
+							I'm created by{" "}
+							<b className="popup dottedUnderline" aria-label="Sabari, Naveen, Sanjay">
+								Team Zeta
+							</b>{" "}
+							for the <strong>Solving For India</strong> Hackathon by GeeksForGeeks.
 						</div>
 					</div>
 
@@ -67,13 +75,12 @@ export default function Hero() {
 						<ImageRenderer url={avatarAbout} width={450} height={500} />
 					</div>
 				</div>
+			</section>
+			<section className="try">
+				<SectionDivider />
+				<h1>Features</h1>
 
-				{/* <div className="aboutTextWrapper">
-					<div className="aboutOpener">
-						As a personal healthcare assistant, my primary goal is to assist <b>you</b> in providing the
-						best possible healthcare, suggestions and mental support.
-					</div>
-
+				<div className="tryTextWrapper">
 					<div>
 						One of my key features is <b>disease identification</b>. I predict diseases based on the
 						symptoms and provide cures, medications and information about the disease, thanks to machine
@@ -101,10 +108,14 @@ export default function Hero() {
 						I am constantly learning and improving, adapting to the changing needs of the healthcare
 						industry and the people it serves.
 					</div>
-				</div> */}
+				</div>
 			</section>
-			<section className="try">Try</section>
-			<section className="login">Let's get started.</section>
+			<section className="login">
+				Let's get started.
+				<button className="doubleBtn" onClick={() => setShowLogin(true)}>Register</button>
+
+				<SignInPrompt in={showLogin} />
+			</section>
 		</div>
 	);
 }

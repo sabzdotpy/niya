@@ -122,3 +122,189 @@ button:focus-visible {
   text-decoration: underline dotted;
   cursor: crosshair;
 }
+
+/* CODE FOR SNAP BUTTON */
+
+
+.mainBtnWrapper {
+	height: 100%;
+	width: 100%;
+	max-height: 100%;
+	max-width: 100%;
+}
+
+/* button */
+.mainBtn {
+	color: #111 !important;
+	font-weight: 600;
+	font-size: 18px;
+	display: block;
+	padding: 0.8rem 0.1rem;
+	padding: 0.3rem;
+	border: none;
+	border-radius: 1px;
+	width: 100px;
+	background: none;
+	color: inherit;
+	vertical-align: middle;
+	position: relative;
+	z-index: 1;
+	border: 3px solid black;
+	font-family: "Jost", sans-serif;
+	-webkit-backface-visibility: hidden;
+	-moz-osx-font-smoothing: grayscale;
+	overflow: hidden;
+	-webkit-transition: border-color 0.3s, color 0.3s;
+	transition: border-color 0.3s, color 0.3s;
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+.mainBtn:focus {
+	outline: none;
+}
+.mainBtn > span {
+	vertical-align: top;
+}
+
+.mainBtn span svg {
+	vertical-align: top;
+}
+
+.mainBtn::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 150%;
+	height: 100%;
+	background: #0d3bba;
+	z-index: -1;
+	-webkit-transform: rotate3d(0, 0, 1, -45deg) translate3d(0, -3em, 0);
+	transform: rotate3d(0, 0, 1, -45deg) translate3d(0, -3em, 0);
+	-webkit-transform-origin: 0% 100%;
+	transform-origin: 0% 100%;
+	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s, background-color 0.3s;
+	transition: transform 0.3s, opacity 0.3s, background-color 0.3s;
+}
+.mainBtn:hover {
+	color: rgb(221, 221, 221) !important;
+	border-color: rgb(29, 29, 29);
+	cursor: pointer;
+}
+.mainBtn:hover::before {
+	opacity: 1;
+	background-color: rgb(36, 36, 36);
+	-webkit-transform: rotate3d(0, 0, 1, 0deg);
+	transform: rotate3d(0, 0, 1, 0deg);
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+
+/* CODE FOR SNAP BUTTON END */
+
+/* CODE FOR DOUBLE SNAP BUTN */
+
+
+
+.doubleBtnWrapper {
+	height: 100%;
+	width: 100%;
+	max-height: 100%;
+	max-width: 100%;
+}
+
+/* button */
+.doubleBtn {
+	color: #111 !important;
+	font-weight: 600;
+	font-size: 18px;
+	display: block;
+	/* padding: 0.8rem 0.1rem; */
+	padding: 0.6rem;
+	border: none;
+	border-radius: 1px;
+	width: 150px;
+	background: none;
+	color: inherit;
+	vertical-align: middle;
+	position: relative;
+	z-index: 1;
+	border: 3px solid black;
+	font-family: "Jost", sans-serif;
+	-webkit-backface-visibility: hidden;
+	-moz-osx-font-smoothing: grayscale;
+	overflow: hidden;
+	-webkit-transition: border-color 0.3s, color 0.3s;
+	transition: border-color 0.3s, color 0.3s;
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+.doubleBtn:focus {
+	outline: none;
+}
+.doubleBtn > span {
+	vertical-align: top;
+}
+
+.doubleBtn span svg {
+	vertical-align: top;
+}
+
+.doubleBtn::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 150%;
+	height: 100%;
+	background: #0d3bba;
+	z-index: -1;
+	-webkit-transform: rotate3d(0, 0, 1, -45deg) translate3d(0, -3em, 0);
+	transform: rotate3d(0, 0, 1, -45deg) translate3d(0, -3em, 0);
+	-webkit-transform-origin: 0% 100%;
+	transform-origin: 0% 100%;
+	-webkit-transition: -webkit-transform 0.4s, opacity 0.4s, background-color 0.4s;
+	transition: transform 0.4s, opacity 0.4s, background-color 0.4s;
+}
+.doubleBtn:hover {
+	color: rgb(221, 221, 221) !important;
+	border-color: rgb(29, 29, 29);
+	cursor: pointer;
+}
+.doubleBtn:hover::before {
+	opacity: 1;
+	background-color: rgb(36, 36, 36);
+	-webkit-transform: rotate3d(0, 0, 1, 0deg);
+	transform: rotate3d(0, 0, 1, 0deg);
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.doubleBtn::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 150%;
+	height: 80%;
+	background: #b20a85;
+	z-index: -1;
+	-webkit-transform: rotate3d(1, 0, 0, 45deg) translate3d(0, 3em, 0);
+	transform: rotate3d(1, 0, 0, 45deg) translate3d(0, 3em, 0);
+	-webkit-transform-origin: 100% 0%;
+	transform-origin: 100% 0%;
+	-webkit-transition: -webkit-transform .4s, opacity .4s, background-color .4s;
+	transition: transform .4s, opacity .4s, background-color .4s;
+}
+
+.doubleBtn:hover::after {
+	opacity: 1;
+	background-color: rgb(36, 36, 36);
+	-webkit-transform: rotate3d(0, 0, 1, 0deg);
+	transform: rotate3d(0, 0, 1, 0deg);
+	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+/* CODE FOR SNAP BUTTON END */

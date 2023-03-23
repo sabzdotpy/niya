@@ -1,0 +1,61 @@
+@import "./Colors.scss";
+
+.content {
+    overflow-y: auto;
+}
+
+.accounts_list {
+    // margin:  0 auto;
+    width: 100% !important;
+    height: 100%;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    font-size: 17px;
+    overflow-x: auto;
+
+    // align-items: center;
+
+    span {
+        margin: 0 auto;
+    }
+
+    .account {
+        display: flex;
+        padding: 1.5rem 2rem;
+        cursor: pointer;
+        gap: 1rem;
+
+        .profile_pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: lighten($color: $bg, $amount: 30);
+        }
+
+        .name {
+            margin: auto 0;
+            font-size: unquote("clamp(14px, 3.3vw, 19px)");
+        }
+
+        .trash_container {
+            height: 100%;
+            margin-left: auto;
+
+            .trash_icon {
+                padding: 0.3rem;
+                margin-top: 0.45rem;
+                // size: unquote("clamp(12px, 3.3vw, 19px)");
+
+                &:hover {
+                    stroke: rgb(197, 70, 70) !important;
+                }
+            }
+        }
+    }
+
+    .account:hover {
+        background-color: lighten($color: $bg, $amount: 13);
+    }
+}
