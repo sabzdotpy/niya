@@ -8,7 +8,7 @@ import BlankWhite from "../assets/white-1px.jpg";
 import PromptOverlay from "./PromptOverlay";
 import { CSSTransition } from "react-transition-group";
 
-// import "../styles/SignInPrompt.scss";
+import "../styles/SignInPrompt.scss";
 
 function SignInPrompt(props) {
 	useEffect(() => {

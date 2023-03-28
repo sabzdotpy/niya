@@ -54,10 +54,12 @@
 
 			.niyaLabel {
 				cursor: crosshair;
-				text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+				text-shadow: -1px -1px 0 transparent, 1px -1px 0 transparent, -1px 1px 0 transparent,
+					1px 1px 0 transparent;
 				transition: color 0.2s cubic-bezier(0.28, 0.76, 0, 2.91);
 
 				&:hover {
+					text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 					color: #3a93dc;
 				}
 			}
@@ -128,11 +130,27 @@
 		}
 	}
 
+	section.try {
+		width: 100%;
+
+		.tryWrapper {
+			width: 90%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			margin: 0 auto;
+		}
+	}
+
 	section.login {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
+		.loginWrapper {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 }
 

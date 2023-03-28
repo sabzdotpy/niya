@@ -21,7 +21,7 @@ function PromptOverlay(props) {
     }, []);
 
     return (
-        <div className="prompt_overlay" onClick={props.closeOverlay}>
+        <div className="prompt_overlay" onClick={props.closeOverlay} >
             { (!props.required) ? 
             <span>x</span>           
             // <FiX

@@ -78,43 +78,49 @@ export default function Hero() {
 			</section>
 			<section className="try">
 				<SectionDivider />
-				<h1>Features</h1>
+				<div className="tryWrapper">
+					<h1>Features</h1>
 
-				<div className="tryTextWrapper">
-					<div>
-						One of my key features is <b>disease identification</b>. I predict diseases based on the
-						symptoms and provide cures, medications and information about the disease, thanks to machine
-						learning.
-					</div>
+					<div className="tryTextWrapper">
+						<div>
+							One of my key features is <b>disease identification</b>. I predict diseases based on the
+							symptoms and provide cures, medications and information about the disease, thanks to machine
+							learning.
+						</div>
 
-					<div>
-						Another important feature is <b>appointment scheduling</b>. I make it easy for patients to
-						schedule appointments with their healthcare providers, and I also send reminders to patients
-						about upcoming appointments.
-					</div>
+						<div>
+							Another important feature is <b>appointment scheduling</b>. I make it easy for patients to
+							schedule appointments with their healthcare providers, and I also send reminders to patients
+							about upcoming appointments.
+						</div>
 
-					<div className="otherFeatures">
-						Some other features:
-						<ul>
-							<li>Mood tracker</li>
-							<li>Journal</li>
-							<li>Books and Movies recommendations</li>
-							<li>Weight loss/gain goal</li>
-							<li>Calorie Tracker</li>
-						</ul>
-					</div>
+						<div className="otherFeatures">
+							Some other features:
+							<ul>
+								<li>Mood tracker</li>
+								<li>Journal</li>
+								<li>Books and Movies recommendations</li>
+								<li>Weight loss/gain goal</li>
+								<li>Calorie Tracker</li>
+							</ul>
+						</div>
 
-					<div>
-						I am constantly learning and improving, adapting to the changing needs of the healthcare
-						industry and the people it serves.
+						<div>
+							I am constantly learning and improving, adapting to the changing needs of the healthcare
+							industry and the people it serves.
+						</div>
 					</div>
 				</div>
 			</section>
 			<section className="login">
-				Let's get started.
-				<button className="doubleBtn" onClick={() => setShowLogin(true)}>Register</button>
-
-				<SignInPrompt in={showLogin} />
+				<SectionDivider />
+				<div className="loginWrapper">
+					Let's get started.
+					<button className="doubleBtn" onClick={() => setShowLogin(true)}>
+						Register
+					</button>
+					<SignInPrompt in={showLogin} closeOverlay={() => setShowLogin(false)} />
+				</div>
 			</section>
 		</div>
 	);
