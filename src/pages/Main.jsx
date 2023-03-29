@@ -55,7 +55,7 @@ export default function Main() {
 
 	return (
 		<div className="Main" ref={mainPage}>
-			<SignInPrompt in={showLogin} closeOverlay={() => setShowLogin(false)} header={"Login"} />
+			<SignInPrompt noprompt in={showLogin} closeOverlay={() => setShowLogin(false)} header={"Login"} />
 			<header>
 				<div className="nav-wrapper">
 					{/* <div className="grad-bar"></div> */}

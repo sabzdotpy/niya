@@ -1,0 +1,113 @@
+return (
+		<CSSTransition in={props.in} timeout={200} classNames="promptanim" unmountOnExit>
+			<PromptOverlay {...props}>
+				{/* <div className="accounts_list"></div> */}
+				<div className="app">
+					<div className="title_container">
+						<CSSTransition in={currentPage === "signup"} timeout={500} classNames="gotopage1anim" unmountOnExit>
+							<button className="gotopage1-btn" onClick={handleGotoLogin}>
+								{/* <FiChevronLeft /> */}
+							</button>
+						</CSSTransition>
+					</div>
+
+					<div className="page-container">
+						<div className="page_inner">
+							<CSSTransition
+								in={currentPage === "login"}
+								timeout={500}
+								classNames="signup-page1"
+								unmountOnExit
+							>
+								<div className="page page1">
+									<form className="container input_container">
+										<div className="uname_container">
+											<h4 style={{ fontWeight: "normal" }}>Choose a username</h4>
+											<input
+												type="text"
+												autoComplete="new-password"
+												className="uname_entry"
+												ref={usernameInput}
+												key={1}
+												defaultValue={usernameText}
+												onChange={unameChange}
+												tabIndex="0"
+											/>
+										</div>
+										<div className="pwd_container">
+											<h4 style={{ fontWeight: "normal" }}>Enter a strong password</h4>
+
+											<div className="pwdinp_btn">
+												<input
+													type="password"
+													autoComplete="new-password"
+													className="password_entry"
+													ref={pwdInput}
+													key={2}
+													defaultValue={passwordText}
+													tabIndex="0"
+												/>
+												<div
+													className="showhide"
+													ref={pwdToggler}
+													onClick={togglePwdVisibility}
+												>
+													{" "}
+													{/* {!passwordVisible ? <FiEye /> : <FiEyeOff />} */}
+													{!passwordVisible ? "o" : "x"}
+												</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</CSSTransition>
+							{/* : */}
+							<CSSTransition
+								in={currentPage === "signup"}
+								timeout={500}
+								classNames="signup-page2"
+								unmountOnExit
+							>
+								<div className="page page2">
+									<form className="container extra_container">
+										<div className="email_container">
+											<h4 style={{ fontWeight: "normal" }}>Enter your email id</h4>
+											<input
+												type="text"
+												className="email_entry"
+												key={3}
+												ref={emailInput}
+												defaultValue={emailText}
+												tabIndex="0"
+											></input>
+										</div>
+										<div className="date_container">
+											<h4 style={{ fontWeight: "normal" }}>Date of Birth</h4>
+
+											<div className="dateinput">
+												<input
+													type="date"
+													className="date_entry"
+													key={4}
+													ref={dateInput}
+													defaultValue={dateText}
+													tabIndex="0"
+												/>
+											</div>
+										</div>
+									</form>
+								</div>
+							</CSSTransition>
+						</div>
+					</div>
+
+					<div className="btn_link_container">
+						<button className="next_step_btn" onClick={handlePrimaryBtnClick} ref={primaryBtn}>
+							{" "}
+							<span ref={primaryBtnText}>Go to next page</span>
+						</button>
+					</div>
+				</div>
+			</PromptOverlay>
+		</CSSTransition>
+	);
