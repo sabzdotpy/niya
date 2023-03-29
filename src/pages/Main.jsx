@@ -1,11 +1,15 @@
 import { Outlet } from "react-router-dom";
 import "../styles/Navbar.css";
 
+import SignInPrompt from "../components/SignInPrompt";
+
 import { useState, useRef, useEffect } from "react";
 
 export default function Main() {
 	//! ----------------  STATE  ----------------
 	const [windowWidth, setWindowWidth] = useState();
+	const [showLogin, setShowLogin] = useState();
+
 	//! ----------------  REF  ----------------
 
 	const navUl = useRef();
@@ -17,7 +21,7 @@ export default function Main() {
 
 	useEffect(() => {
 		console.log("Main.jsx useEffect..");
-		
+
 		navBlurCheck();
 
 		window.addEventListener("resize", () => {
@@ -25,7 +29,7 @@ export default function Main() {
 		});
 
 		window.addEventListener("scroll", () => {
-			navBlurCheck()
+			navBlurCheck();
 		});
 
 		return () => {
@@ -42,7 +46,7 @@ export default function Main() {
 		} else {
 			navBar.current.classList.add("noeff");
 		}
-	}
+	};
 
 	const mobileNavToggle = () => {
 		navUl.current.classList.toggle("mobile-nav");
@@ -51,6 +55,7 @@ export default function Main() {
 
 	return (
 		<div className="Main" ref={mainPage}>
+			<SignInPrompt in={showLogin} closeOverlay={() => setShowLogin(false)} header={"Login"} />
 			<header>
 				<div className="nav-wrapper">
 					{/* <div className="grad-bar"></div> */}
@@ -73,7 +78,7 @@ export default function Main() {
 							</li>
 							<li className="nav-item">
 								{/* <a href="#">Sign In</a> */}
-								<button className="mainBtn">Sign In</button>
+								<button className="mainBtn" onClick={() => setShowLogin(true)}>Sign In</button>
 							</li>
 						</ul>
 					</nav>
@@ -81,7 +86,7 @@ export default function Main() {
 			</header>
 
 			<section>
-				<Outlet />
+				<Outlet context={[setShowLogin]} />
 			</section>
 		</div>
 	);

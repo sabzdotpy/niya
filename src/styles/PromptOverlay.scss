@@ -53,3 +53,37 @@
         }
     }
 }
+
+
+
+.promptanim-enter {
+    opacity: 0;
+}
+
+.promptanim-enter .prompt {
+    transform: scale(0.8);
+}
+
+.promptanim-enter-active {
+    opacity: 1;
+}
+
+.promptanim-enter-active .prompt {
+    transform: scale(1);
+}
+
+.promptanim-exit {
+    opacity: 1;
+}
+
+.promptanim-exit .prompt {
+    transform: scale(1);
+}
+
+.promptanim-exit-active {
+    opacity: 0;
+}
+
+.promptanim-exit-active .prompt {
+    transform: scale(0.8);
+}
