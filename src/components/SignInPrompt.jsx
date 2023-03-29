@@ -66,7 +66,7 @@ function SignInPrompt(props) {
 	const handlePrimaryBtnClick = () => {
 		if (currentPage === "login") {
 			// * validate email, pwd
-			setCurrentPage("signup")
+			setCurrentPage("signup");
 			// console.log("primary btn click");
 			// const unameResp = validateUsername(usernameInput.current.value);
 			// const pwdResp = validatePassword(pwdInput.current.value);
@@ -90,7 +90,7 @@ function SignInPrompt(props) {
 			// }
 		} else if (currentPage === "signup") {
 			// * validate displayname, bday, location, pic
-			setCurrentPage("login")
+			setCurrentPage("login");
 			// const emResp = validateEmail(emailInput.current.value);
 			// const daResp = validateDate(dateInput.current.value);
 
@@ -114,10 +114,31 @@ function SignInPrompt(props) {
 			<PromptOverlay {...props}>
 				<div className="app" onClick={(e) => e.stopPropagation()}>
 					<div className="title_container">
-						Login
-						<CSSTransition in={true} timeout={500} classNames="gotopage1anim" unmountOnExit>
-							<button className="gotopage1-btn" onClick={handleGotoLogin}>{"<"}</button>
-						</CSSTransition>
+						<div className="welcome-text">
+							{currentPage === "login" ? "Welcome back." : "Create an account"}
+						</div>
+						<div className="page-switcher">
+							<div className="switch-wrapper">
+								<div className="login-switch" onClick={() => setCurrentPage("login")}>
+									<span>Login</span>
+								</div>
+								<div className="signup-switch" onClick={() => setCurrentPage("signup")}>
+									<span>Sign Up</span>
+								</div>
+							</div>
+						</div>
+						<div className="switch-wrapper">
+							<div
+								className="switch-indicator"
+								style={{ marginLeft: currentPage === "login" ? "0" : "calc(50%)" }}
+							></div>
+						</div>
+
+						{/* <CSSTransition in={true} timeout={500} classNames="gotopage1anim" unmountOnExit>
+							<button className="gotopage1-btn" onClick={handleGotoLogin}>
+								{"<"}
+							</button>
+						</CSSTransition> */}
 					</div>
 
 					<div className="page-container">
@@ -131,7 +152,7 @@ function SignInPrompt(props) {
 								<div className="page page1">
 									<form className="container input_container">
 										<div className="uname_container">
-											<h4 style={{ fontWeight: "normal" }}>Choose a username</h4>
+											<h4 style={{ fontWeight: "normal" }}>Enter username or email</h4>
 											<input
 												type="text"
 												autoComplete="new-password"
@@ -144,7 +165,7 @@ function SignInPrompt(props) {
 											/>
 										</div>
 										<div className="pwd_container">
-											<h4 style={{ fontWeight: "normal" }}>Enter a strong password</h4>
+											<h4 style={{ fontWeight: "normal" }}>Enter your password</h4>
 
 											<div className="pwdinp_btn">
 												<input
@@ -191,17 +212,27 @@ function SignInPrompt(props) {
 											></input>
 										</div>
 										<div className="date_container">
-											<h4 style={{ fontWeight: "normal" }}>Date of Birth</h4>
+											<h4 style={{ fontWeight: "normal" }}>Create a strong password</h4>
 
 											<div className="dateinput">
-												<input
+												{/* <input
 													type="date"
 													className="date_entry"
 													key={4}
 													ref={dateInput}
 													defaultValue={dateText}
 													tabIndex="0"
-												/>
+												/> */}
+												<input type="password" />
+												<div
+													className="showhide"
+													ref={pwdToggler}
+													onClick={togglePwdVisibility}
+												>
+													{" "}
+													{/* {!passwordVisible ? <FiEye /> : <FiEyeOff />} */}
+													{!passwordVisible ? "o" : "x"}
+												</div>
 											</div>
 										</div>
 									</form>
@@ -213,7 +244,7 @@ function SignInPrompt(props) {
 					<div className="btn_link_container">
 						<button className="next_step_btn" onClick={handlePrimaryBtnClick} ref={primaryBtn}>
 							{" "}
-							<span ref={primaryBtnText}>Go to next page</span>
+							<span ref={primaryBtnText}> {currentPage === "login" ? "Login" : "Sign Up"} </span>
 						</button>
 					</div>
 				</div>
