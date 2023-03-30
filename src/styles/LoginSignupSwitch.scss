@@ -311,7 +311,7 @@ $fsize: 14px;
 
 		.page {
 			max-height: 300px !important;
-			overflow-y: scroll;
+			overflow-y: auto;
 			.container {
 				overflow: hidden;
 				// background-color: red;

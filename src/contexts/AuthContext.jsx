@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { auth, database } from "../components/firebaseCtx";
 import { green, red, pink } from "../scripts/Misc";
 import { update, ref as dRef } from "firebase/database";
-import { encode } from "firebase-key"
+import { encode } from "firebase-key";
 
 import {
 	signInWithEmailAndPassword,
@@ -249,28 +249,45 @@ export const AuthProvider = ({ children }) => {
 
 	const writeUserToDatabase = (uid, displayname, username, dob, email) => {
 		const updates = {};
-		updates[`root/users/${uid}/name`] = displayname;
+		updates[`root/users/${uid}/displayname`] = displayname;
 		updates[`root/users/${uid}/username`] = username;
 		updates[`root/users/${uid}/dob`] = dob;
 		updates[`root/users/${uid}/email`] = email;
-        updates[`root/username_list/${username}`] = uid
-        updates[`root/email_list/${encode(email)}`] = uid
+		updates[`root/username_list/${username}`] = email;
+		updates[`root/email_list/${encode(email)}`] = uid;
 
 		update(dRef(database), updates)
 			.then(() => {
 				green("Database write success!");
-				console.log("Added user name, dob and email to database.")
+				console.log("Added user name, dob and email to database.");
 			})
 			.catch(() => {
 				red("Database write failure");
 			});
 	};
 
-    const readAllUsernames = () => {
+	const readAllUsernames = () => {
 		const readRef = ref(database, `root/username_list`);
 		onValue(readRef, (snapshot) => {
 			let data = snapshot.val();
-			console.log(data)
+			console.log(data);
+		});
+	};
+
+	const getEmailFromUsername = (username) => {
+		return new Promise((resolve, reject) => {
+			const readRef = ref(database, `root/username_list/${username}`);
+
+			onValue(readRef, (snapshot) => {
+				console.log(snapshot);
+				if (snapshot.val()) {
+					console.log(`Email from username = ${snapshot.val()}`);
+					resolve(snapshot.val());
+				}
+				else {
+					reject("No email found with given username")
+				}
+			});
 		});
 	};
 
@@ -300,8 +317,9 @@ export const AuthProvider = ({ children }) => {
 		getDataSortByDOB,
 
 		testWrite,
-        writeUserToDatabase,
-        readAllUsernames
+		writeUserToDatabase,
+		readAllUsernames,
+		getEmailFromUsername,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

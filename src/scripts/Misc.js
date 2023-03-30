@@ -1,5 +1,5 @@
 let emailRegex = new RegExp(
-    "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?"
+    "[\w\d]*\@[\w]*\.(com|edu|io|net|us|in|uk)"
 )
 let pwdRegex = new RegExp("^(?=.{6,20}$)(?![_.])(?!.*[_.]{4})[a-zA-Z0-9._]+$")
 let usernameRegex = new RegExp("^(?=.{3,21}$)(?![_.])(?!.*[_.]{4})[a-zA-Z0-9._]+$")
@@ -13,7 +13,7 @@ export const validateEmail = (email) => {
         return true
     }
 
-    return "Please enter a valid email ID."
+    return false
 }
 
 export const validateUsername = (username) => {

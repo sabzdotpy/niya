@@ -23,18 +23,23 @@ import PromptOverlay from "./PromptOverlay";
 import { CSSTransition } from "react-transition-group";
 
 import "../styles/SignInPrompt.scss";
+import { browserLocalPersistence } from "firebase/auth";
+import { onValue } from "firebase/database";
 
 function SignInPrompt(props) {
 	const {
 		signup,
+		signin,
 		changedisplayname,
+		setpersistence,
 		writeUserMetaData,
 		writeUserMiscData,
 		appendUsernameToUsernamesList,
 		appendEmailToEmailsList,
 		testWrite,
 		writeUserToDatabase,
-		readAllUsernames
+		readAllUsernames,
+		getEmailFromUsername
 	} = useAuth();
 	//!
 	const [currentPage, setCurrentPage] = useState("login");
@@ -49,7 +54,6 @@ function SignInPrompt(props) {
 	const usernameInput = useRef(null);
 	const emailInput = useRef(null);
 	const pwdInput = useRef(null);
-	const dateInput = useRef(null);
 	const pwdToggler = useRef(null);
 	const primaryBtn = useRef(null);
 	const primaryBtnText = useRef(null);
@@ -60,6 +64,9 @@ function SignInPrompt(props) {
 	const signupPasswordInput = useRef();
 	const signupDobInput = useRef();
 	const signupUsernameInput = useRef();
+
+	const loginUsernameInput = useRef();
+	const loginPasswordInput = useRef();
 	//!
 	useEffect(() => {
 		console.log("init signinprompt");
@@ -76,7 +83,7 @@ function SignInPrompt(props) {
 			.then((userCredential) => {
 				// Signed in
 				const user = userCredential.user;
-				green("Added user to auth")
+				green("Added user to auth");
 				console.log(user);
 
 				changedisplayname(getDisplayNameFromUserName(username))
@@ -122,8 +129,8 @@ function SignInPrompt(props) {
 			})
 
 			.catch((error) => {
-				console.log("we got error in creating user")
-				red(error)
+				console.log("we got error in creating user");
+				red(error);
 			});
 	};
 
@@ -145,31 +152,44 @@ function SignInPrompt(props) {
 		changePasswordVisibility((passwordVisible) => !passwordVisible);
 	};
 
-	const handlePrimaryBtnClick = () => {
+	const handlePrimaryBtnClick = async () => {
 		if (currentPage === "login") {
 			// * validate email, pwd
-			setCurrentPage("signup");
-			// console.log("primary btn click");
-			// const unameResp = validateUsername(usernameInput.current.value);
-			// const pwdResp = validatePassword(pwdInput.current.value);
 
-			// if (unameResp === true) {
-			// 	if (pwdResp === true) {
-			// 		setUsernameText(usernameInput.current.value);
-			// 		setPasswordText(pwdInput.current.value);
-			// 		setCurrentPage("signup");
-			// 		primaryBtnText.current.innerText = "Sign Up";
-			// 		topMessage.current.innerText = "Almost there!";
-			// 	} else {
-			// 		console.log("pwd wrong");
-			// 		// showInfoDiv(pwdResp);
-			// 		pwdInput.current.focus();
-			// 	}
-			// } else {
-			// 	console.log("username invalid");
-			// 	// showInfoDiv(unameResp);
-			// 	usernameInput.current.focus();
-			// }
+			console.log("clicked login button");
+			if (loginUsernameInput.current.value && loginPasswordInput.current.value) {
+				let email;
+				if (validateEmail(loginUsernameInput.current.value)) {
+					console.log("email check passed")
+					email = loginUsernameInput.current.value
+				}
+				else if (validateUsername(loginUsernameInput.current.value)) {
+					console.log("username check passed")
+					try {
+						email = await getEmailFromUsername(loginUsernameInput.current.value)
+						console.log(email)
+					}
+					catch (e) {
+						red(e)
+						return
+					}
+				}
+
+				setpersistence(browserLocalPersistence)
+				console.log(`tryna sign in w email = ${email}`)
+				signin(email, loginPasswordInput.current.value)
+					.then((result) => {
+						// Signed in
+						const user = result.user
+						console.log(`Logged in as: ${user.displayName}`);
+						// navigate("/");
+					})
+					.catch((error) => {
+						red(error);
+					});
+			} else {
+				red("Please enter your username and password.");
+			}
 		} else if (currentPage === "signup") {
 			// * validate displayname, bday, location, pic
 			// setCurrentPage("login");
@@ -244,7 +264,7 @@ function SignInPrompt(props) {
 												type="text"
 												autoComplete="new-password"
 												className="uname_entry"
-												ref={usernameInput}
+												ref={loginUsernameInput}
 												key={1}
 												defaultValue={usernameText}
 												onChange={unameChange}
@@ -259,7 +279,7 @@ function SignInPrompt(props) {
 													type="password"
 													autoComplete="new-password"
 													className="password_entry"
-													ref={pwdInput}
+													ref={loginPasswordInput}
 													key={2}
 													defaultValue={passwordText}
 													tabIndex="0"
