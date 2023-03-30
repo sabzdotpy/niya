@@ -8,7 +8,7 @@ import avatarAbout from "../assets/smiling_eye_closed.png";
 
 import ImageRenderer from "../components/ImageRenderer";
 import SectionDivider from "../components/SectionDivider";
-import { useAuth } from "../components/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Hero(props) {
 	//! ----------------  STATE  ----------------

@@ -10,7 +10,11 @@ import {
 	validateDate,
 	getDisplayNameFromUserName,
 	getErrorFromCode,
+	green,
+	red,
 } from "../scripts/Misc";
+
+import { useAuth } from "../contexts/AuthContext";
 
 import { useEffect } from "react";
 import DefaultPPImage from "../assets/default_pp.png";
@@ -21,6 +25,17 @@ import { CSSTransition } from "react-transition-group";
 import "../styles/SignInPrompt.scss";
 
 function SignInPrompt(props) {
+	const {
+		signup,
+		changedisplayname,
+		writeUserMetaData,
+		writeUserMiscData,
+		appendUsernameToUsernamesList,
+		appendEmailToEmailsList,
+		testWrite,
+		writeUserToDatabase,
+		readAllUsernames
+	} = useAuth();
 	//!
 	const [currentPage, setCurrentPage] = useState("login");
 	const [passwordVisible, changePasswordVisibility] = useState(false);
@@ -40,10 +55,77 @@ function SignInPrompt(props) {
 	const primaryBtnText = useRef(null);
 	const topMessage = useRef(null);
 	const infoDiv = useRef(null);
+
+	const signupEmailInput = useRef();
+	const signupPasswordInput = useRef();
+	const signupDobInput = useRef();
+	const signupUsernameInput = useRef();
 	//!
 	useEffect(() => {
 		console.log("init signinprompt");
 	}, []);
+
+	const testWriting = () => {
+		writeUserToDatabase("sampleUid", "Sabz", "sabzzz", "02-10-2004", "email@gmail.com");
+	};
+
+	const createNewWithEmail = (email, password, username, dateofbirth) => {
+		console.table({ Email: email, Password: password, Username: username, DOB: dateofbirth });
+
+		signup(email, password)
+			.then((userCredential) => {
+				// Signed in
+				const user = userCredential.user;
+				green("Added user to auth")
+				console.log(user);
+
+				changedisplayname(getDisplayNameFromUserName(username))
+					.then(() => {
+						green("Changed displayname in auth!");
+					})
+					.catch((error) => {
+						console.warn(error.message);
+						// return
+					});
+				writeUserToDatabase(user.uid, getDisplayNameFromUserName(username), username, dateofbirth, email);
+				green("Created user, added to database!");
+
+				// writeUserMetaData(user.uid, getDisplayNameFromUserName(username), username, email, dateofbirth)
+				// 	.then(() => {
+				// 		console.log("Successfully added record to databsae");
+				// 		writeUserMiscData(user.uid)
+				// 			.then(() => console.log("added user misc data"))
+				// 			.catch(() => showInfoDiv("Trouble writing misc data."));
+
+				// 		appendUsernameToUsernamesList(user.uid, username)
+				// 			.then(() => console.log("Added username to usename list"))
+				// 			.catch((e) => console.error(e));
+
+				// 		appendEmailToEmailsList(user.uid, email)
+				// 			.then(() => console.log("Added email to emails list"))
+				// 			.catch((e) => console.error(e));
+				// 	})
+				// 	.catch((error) => {
+				// 		console.error(error);
+				// 		showInfoDiv("Errro in adding records to db");
+				// 	});
+
+				// showInfoDiv("Signup successful! Redirecting you back to login page", "success");
+
+				// console.log(`navigating to login with data. ${(email, password, username)}`);
+
+				// setTimeout(() => {
+				//     navigate("/login", {
+				//         state: { email: email, pwd: password },
+				//     })
+				// }, 2000)
+			})
+
+			.catch((error) => {
+				console.log("we got error in creating user")
+				red(error)
+			});
+	};
 
 	const handleGotoLogin = () => {
 		setCurrentPage("login");
@@ -90,7 +172,7 @@ function SignInPrompt(props) {
 			// }
 		} else if (currentPage === "signup") {
 			// * validate displayname, bday, location, pic
-			setCurrentPage("login");
+			// setCurrentPage("login");
 			// const emResp = validateEmail(emailInput.current.value);
 			// const daResp = validateDate(dateInput.current.value);
 
@@ -98,7 +180,12 @@ function SignInPrompt(props) {
 			// 	if (daResp === true) {
 			// 		setEmailText(emailInput.current.value);
 			// 		setDateText(dateInput.current.value);
-			// 		createNewWithEmail(emailInput.current.value, passwordText, usernameText, dateInput.current.value);
+			createNewWithEmail(
+				signupEmailInput.current.value,
+				signupPasswordInput.current.value,
+				signupUsernameInput.current.value,
+				signupDobInput.current.value
+			);
 			// 	} else {
 			// 		// showInfoDiv(daResp);
 			// 	}
@@ -206,8 +293,19 @@ function SignInPrompt(props) {
 												type="text"
 												className="email_entry"
 												key={3}
-												ref={emailInput}
+												ref={signupEmailInput}
 												defaultValue={emailText}
+												tabIndex="0"
+											></input>
+										</div>
+										<div className="email_container">
+											<h4 style={{ fontWeight: "normal" }}>Enter your preferred username</h4>
+											<input
+												type="text"
+												className="email_entry"
+												key={3}
+												ref={signupUsernameInput}
+												// defaultValue={emailText}
 												tabIndex="0"
 											></input>
 										</div>
@@ -215,15 +313,7 @@ function SignInPrompt(props) {
 											<h4 style={{ fontWeight: "normal" }}>Create a strong password</h4>
 
 											<div className="dateinput">
-												{/* <input
-													type="date"
-													className="date_entry"
-													key={4}
-													ref={dateInput}
-													defaultValue={dateText}
-													tabIndex="0"
-												/> */}
-												<input type="password" />
+												<input type="password" key={4} ref={signupPasswordInput} />
 												<div
 													className="showhide"
 													ref={pwdToggler}
@@ -234,6 +324,17 @@ function SignInPrompt(props) {
 													{!passwordVisible ? "o" : "x"}
 												</div>
 											</div>
+										</div>
+										<div className="date_container">
+											<h4 style={{ fontWeight: "normal" }}>Enter your DOB</h4>
+											<input
+												type="date"
+												className="date_entry"
+												key={4}
+												ref={signupDobInput}
+												defaultValue={dateText}
+												tabIndex="0"
+											/>
 										</div>
 									</form>
 								</div>

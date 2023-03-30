@@ -309,11 +309,21 @@ $fsize: 14px;
 		width: 100%;
 		// background-color: red;
 
+		.page {
+			max-height: 300px !important;
+			overflow-y: scroll;
+			.container {
+				overflow: hidden;
+				// background-color: red;
+				height: 120%;
+			}
+		}
+
 		.page1 {
 			width: 100%;
 			margin: 0 auto;
 
-			.container {
+			.container {				
 				div {
 					input {
 						position: relative;
