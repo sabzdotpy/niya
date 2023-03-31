@@ -146,16 +146,29 @@
 
 				.otherFeatures .featuresWrapper {
 					list-style: none;
+					max-width: 90%;
+					margin: 1rem auto;
 					display: grid;
 					grid-template-columns: repeat(3, 1fr);
 					grid-template-rows: repeat(2, 1fr);
-					grid-column-gap: 15px;
-					grid-row-gap: 15px;
+					grid-column-gap: 7px;
+					grid-row-gap: 7px;
+
+					li {
+						min-height: 50px;
+						// max-width: 80%;
+						display: flex;
+						justify-content: center;
+						align-items: center;
+						padding: 0.5rem;
+						border-radius: 8px;
+						background: rgba(#fff, 0.2);
+					}
 				}
 			}
 
 			.tryTextWrapperMobile {
-				display: none !important;
+				display: none;
 			}
 		}
 	}
@@ -204,9 +217,9 @@
 			height: 100%;
 			background-color: #f7d7b9;
 
-			.subText {
-				display: none;
-			}
+			// .subText {
+			// 	display: none;
+			// }
 		}
 	}
 
@@ -220,6 +233,10 @@
 		.aboutText {
 			width: 94% !important;
 			height: 60%;
+			margin-top: 1rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			// padding: auto 0 !important;
 
 			.aboutImageWrapper {
@@ -229,6 +246,10 @@
 			.aboutTextWrapper {
 				width: 100%;
 				gap: 1rem;
+
+				// .machineLearningInfo {
+				// 	display: none;
+				// }
 
 				// .aboutOpener {
 				// 	display: none;
@@ -245,16 +266,41 @@
 		.tryWrapper {
 			width: 100%;
 			height: 100%;
-			
+
 			.tryTextWrapper {
 				background-color: blue;
 				display: none !important;
 			}
+
 			.tryTextWrapperMobile {
-				height: 100px;
-				width: 100px;
-				background-color: red;
 				display: block !important;
+				margin-top: auto;
+
+				.otherFeatures {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+
+					.featuresWrapper {
+						padding: 0.5rem 1rem;
+						display: grid;
+						grid-template-columns: repeat(2, 1fr);
+						grid-template-rows: repeat(3, 1fr);
+						grid-column-gap: 20px;
+						grid-row-gap: 20px;
+						list-style: none;
+
+						li {
+							display: flex;
+							justify-content: center;
+							align-items: center;
+							padding: 0.5rem;
+							border-radius: 8px;
+							background: rgba(#fff, 0.2);
+						}
+					}
+				}
 			}
 		}
 	}

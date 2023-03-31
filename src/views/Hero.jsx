@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useOutletContext } from "react-router-dom"
+import { useState, useEffect, useRef } from "react";
+import { useOutletContext } from "react-router-dom";
 
 import "../styles/Hero.scss";
 
@@ -9,27 +9,33 @@ import avatarAbout from "../assets/smiling_eye_closed.png";
 import ImageRenderer from "../components/ImageRenderer";
 import SectionDivider from "../components/SectionDivider";
 import { useAuth } from "../contexts/AuthContext";
+import InfoDiv from "../../../ReactHW/src/components/InfoDiv";
 
 export default function Hero(props) {
 	//! ----------------  STATE  ----------------
 	const [windowWidth, setWindowWidth] = useState();
-	const { author, currentUser } = useAuth()
-	const [showLogin] = useOutletContext();
+	const { author, currentUser } = useAuth();
+	const [setShowLogin] = useOutletContext();
 	//! ----------------  REF  ----------------
-
+	const infodiv = useRef();
 	//! ---------------- EFFECTS ----------------
 
 	useEffect(() => {
 		window.addEventListener("resize", () => {
 			setWindowWidth(window.innerWidth);
 		});
-		console.log(props)
+		// console.log(props);
 	}, []);
 
 	//! -----------------------------------------
 
+	const showInfoDiv = (text, color, timeout) => {
+		infodiv.current.show();
+	};
+
 	return (
 		<div className="Hero">
+			<InfoDiv ref={infodiv} />
 			<section className="hi">
 				<div className="welcomeTextContainer">
 					<h1 className="welcomeText">
@@ -64,7 +70,7 @@ export default function Hero(props) {
 						</div> */}
 
 						<div>I'm built using React, SCSS, Vite, Firebase and various other technologies.</div>
-						<div>
+						<div className="machineLearningInfo">
 							To predict diseases, I also use Python's Scikit Learning, Scipy, Matplotlib and Google Cloud
 							Functions.
 						</div>
@@ -89,20 +95,22 @@ export default function Hero(props) {
 
 					<div className="tryTextWrapperMobile">
 						<div>
-							I <b>identify diseases</b> based on symptoms using machine learning, and <b>schedule appointments</b> with healthcare
-							providers.
+							I <b>identify diseases</b> based on symptoms using machine learning, and{" "}
+							<b>schedule appointments</b> with healthcare providers.
 						</div>
 						<div className="otherFeatures">
-							I also feature
+							Along with that, I also have many other features such as,
 							<ul className="featuresWrapper">
-								<li>Mood tracker</li>
+								<li className="popup" aria-label="Track your moods everyday and (..)">
+									Mood tracker
+								</li>
 								<li>Journal</li>
 								<li>Books and Movies recommendations</li>
 								<li>Weight loss/gain goal</li>
 								<li>Calorie Tracker</li>
+								<li>And more...</li>
 							</ul>
 						</div>
-						
 					</div>
 
 					<div className="tryTextWrapper">
@@ -119,13 +127,14 @@ export default function Hero(props) {
 						</div>
 
 						<div className="otherFeatures">
-							Some other features:
+							{/* Some other features: */}
 							<ul className="featuresWrapper">
 								<li>Mood tracker</li>
 								<li>Journal</li>
 								<li>Books and Movies recommendations</li>
 								<li>Weight loss/gain goal</li>
 								<li>Calorie Tracker</li>
+								<li>And more...</li>
 							</ul>
 						</div>
 
@@ -153,9 +162,9 @@ export default function Hero(props) {
 			<section className="login">
 				<SectionDivider />
 				<div className="loginWrapper">
-					Let's get started.
-					<button className="doubleBtn" onClick={() => showLogin(true)}>
-						{ (!!currentUser) ? "Sign in" : "Register" }
+					Niya is completely free and easy to use.
+					<button className="doubleBtn" onClick={() => setShowLogin(true)}>
+						{(currentUser === "none") ? "Register" : "Sign In"}
 						{/* //! something */}
 					</button>
 				</div>
