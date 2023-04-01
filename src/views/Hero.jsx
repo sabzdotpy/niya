@@ -9,7 +9,7 @@ import avatarAbout from "../assets/smiling_eye_closed.png";
 import ImageRenderer from "../components/ImageRenderer";
 import SectionDivider from "../components/SectionDivider";
 import { useAuth } from "../contexts/AuthContext";
-import InfoDiv from "../../../ReactHW/src/components/InfoDiv";
+// import InfoDiv from "../components/InfoDiv";
 
 export default function Hero(props) {
 	//! ----------------  STATE  ----------------
@@ -35,7 +35,7 @@ export default function Hero(props) {
 
 	return (
 		<div className="Hero">
-			<InfoDiv ref={infodiv} />
+			{/* <InfoDiv ref={infodiv} /> */}
 			<section className="hi">
 				<div className="welcomeTextContainer">
 					<h1 className="welcomeText">
