@@ -118,6 +118,7 @@ function SignInPrompt(props) {
 			.catch((error) => {
 				console.log("we got error in creating user");
 				red(getErrorFromCode(error.code));
+				alert(getErrorFromCode(error.code));
 			});
 	};
 
@@ -164,6 +165,7 @@ function SignInPrompt(props) {
 						console.log(email);
 					} catch (e) {
 						red(e);
+						alert(e);
 						return;
 					}
 				}
@@ -182,9 +184,11 @@ function SignInPrompt(props) {
 					})
 					.catch((error) => {
 						red(error);
+						alert(getErrorFromCode(error.code))
 					});
 			} else {
 				red("Please enter your username and password.");
+				alert("Please enter your username and password.");
 			}
 		} else if (currentPage === "signup") {
 			// * validate displayname, bday, location, pic
@@ -194,6 +198,7 @@ function SignInPrompt(props) {
 			const emResp = validateEmail(signupEmailInput.current.value);
 			if (emResp !== true) {
 				red("Email invalid");
+				alert("Email invalid");
 				return;
 			}
 
@@ -201,22 +206,25 @@ function SignInPrompt(props) {
 			if (usernameResp !== true) {
 				console.log("username resp not equal to true");
 				red(usernameResp);
+				alert(usernameResp);
 				return;
 			}
 
 			const passwordResp = validatePassword(signupPasswordInput.current.value);
 			if (passwordResp !== true) {
 				red("Password is invalid");
+				alert("Password is invalid");
 				return;
 			}
 
 			const daResp = validateDate(signupDobInput.current.value);
 			if (daResp !== true) {
 				red("DOB invaild");
+				alert("You have entered an invalid DOB.")
 				return;
 			}
 
-			setEmailText(signupEmailInput.current.value);
+			setSignupEmailText(signupEmailInput.current.value);
 			setSignupUsernameText(signupUsernameInput.current.value);
 			setSignupPasswordText(signupPasswordInput.current.value);
 			setSignupDobText(signupDobInput.current.value);
