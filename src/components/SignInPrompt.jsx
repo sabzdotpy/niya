@@ -45,14 +45,21 @@ function SignInPrompt(props) {
 	const [currentPage, setCurrentPage] = useState("login");
 	const [passwordVisible, changePasswordVisibility] = useState(false);
 
-	const [emailText, setEmailText] = useState("");
-	const [passwordText, setPasswordText] = useState("");
-	const [usernameText, setUsernameText] = useState("");
-	const [dateText, setDateText] = useState("");
+	// const [emailText, setEmailText] = useState("");
+	// const [passwordText, setPasswordText] = useState("");
+	// const [usernameText, setUsernameText] = useState("");
+	// const [dateText, setDateText] = useState("");
+
+	const [signupEmailText, setSignupEmailText] = useState("signupemail@gmail.com");
+	const [signupPasswordText, setSignupPasswordText] = useState("password");
+	const [signupDobText, setSignupDobText] = useState("");
+	const [signupUsernameText, setSignupUsernameText] = useState("signup_username");
+
+	const [loginUsernameOrEmailText, setLoginUsernameOrEmailText] = useState("login_username");
+	const [loginPasswordText, setLoginPasswordText] = useState("password");
 
 	//!
-	const usernameInput = useRef(null);
-	const emailInput = useRef(null);
+
 	const pwdInput = useRef(null);
 	const pwdToggler = useRef(null);
 	const primaryBtn = useRef(null);
@@ -110,16 +117,24 @@ function SignInPrompt(props) {
 
 			.catch((error) => {
 				console.log("we got error in creating user");
-				red(error);
+				red(getErrorFromCode(error.code));
 			});
 	};
 
-	const handleGotoLogin = () => {
-		setCurrentPage("login");
-		// setEmailText(emailInput.current.value);
-		// setDateText(dateInput.current.value);
-		// primaryBtnText.current.innerText = "Login";
-		// usernameInput.current.focus()
+	const gotoPage = (page) => {
+		if (page === "login") {
+			setSignupEmailText(signupEmailInput.current?.value);
+			setSignupPasswordText(signupPasswordInput.current?.value);
+			setSignupUsernameText(signupUsernameInput.current?.value);
+			setSignupDobText(signupDobInput.current?.value);
+
+			setCurrentPage("login");
+		} else if (page === "signup") {
+			setLoginUsernameOrEmailText(loginUsernameInput.current?.value);
+			setLoginPasswordText(loginPasswordInput.current?.value);
+
+			setCurrentPage("signup");
+		}
 	};
 
 	const unameChange = () => {
@@ -152,6 +167,9 @@ function SignInPrompt(props) {
 						return;
 					}
 				}
+
+				setLoginUsernameOrEmailText(loginUsernameInput.current.value);
+				setLoginPasswordText(loginPasswordInput.current.value);
 
 				setpersistence(browserLocalPersistence);
 				console.log(`tryna sign in w email = ${email}`);
@@ -198,8 +216,11 @@ function SignInPrompt(props) {
 				return;
 			}
 
-			setEmailText(emailInput.current.value);
-			setDateText(dateInput.current.value);
+			setEmailText(signupEmailInput.current.value);
+			setSignupUsernameText(signupUsernameInput.current.value);
+			setSignupPasswordText(signupPasswordInput.current.value);
+			setSignupDobText(signupDobInput.current.value);
+
 			createNewWithEmail(
 				signupEmailInput.current.value,
 				signupPasswordInput.current.value,
@@ -219,10 +240,10 @@ function SignInPrompt(props) {
 						</div>
 						<div className="page-switcher">
 							<div className="switch-wrapper">
-								<div className="login-switch" onClick={() => setCurrentPage("login")}>
+								<div className="login-switch" onClick={() => gotoPage("login")}>
 									<span>Login</span>
 								</div>
-								<div className="signup-switch" onClick={() => setCurrentPage("signup")}>
+								<div className="signup-switch" onClick={() => gotoPage("signup")}>
 									<span>Sign Up</span>
 								</div>
 							</div>
@@ -243,6 +264,7 @@ function SignInPrompt(props) {
 
 					<div className="page-container">
 						<div className="page_inner">
+							{/* //! ---------------- LOGIN PAGE ---------------------- */}
 							<CSSTransition
 								in={currentPage === "login"}
 								timeout={500}
@@ -259,7 +281,7 @@ function SignInPrompt(props) {
 												className="uname_entry"
 												ref={loginUsernameInput}
 												key={1}
-												defaultValue={usernameText}
+												defaultValue={loginUsernameOrEmailText}
 												onChange={unameChange}
 												tabIndex="0"
 											/>
@@ -274,7 +296,7 @@ function SignInPrompt(props) {
 													className="password_entry"
 													ref={loginPasswordInput}
 													key={2}
-													defaultValue={passwordText}
+													defaultValue={loginPasswordText}
 													tabIndex="0"
 												/>
 												<div
@@ -292,6 +314,7 @@ function SignInPrompt(props) {
 								</div>
 							</CSSTransition>
 							{/* : */}
+							{/* //! ---------------- SIGNUP PAGE ------------------------- */}
 							<CSSTransition
 								in={currentPage === "signup"}
 								timeout={500}
@@ -307,7 +330,7 @@ function SignInPrompt(props) {
 												className="email_entry"
 												key={3}
 												ref={signupEmailInput}
-												defaultValue={emailText}
+												defaultValue={signupEmailText}
 												tabIndex="0"
 											></input>
 										</div>
@@ -316,9 +339,9 @@ function SignInPrompt(props) {
 											<input
 												type="text"
 												className="email_entry"
-												key={3}
+												key={4}
 												ref={signupUsernameInput}
-												// defaultValue={emailText}
+												defaultValue={signupUsernameText}
 												tabIndex="0"
 											></input>
 										</div>
@@ -326,7 +349,12 @@ function SignInPrompt(props) {
 											<h4 style={{ fontWeight: "normal" }}>Create a strong password</h4>
 
 											<div className="dateinput">
-												<input type="password" key={4} ref={signupPasswordInput} />
+												<input
+													type="password"
+													key={5}
+													ref={signupPasswordInput}
+													defaultValue={signupPasswordText}
+												/>
 												<div
 													className="showhide"
 													ref={pwdToggler}
@@ -343,9 +371,9 @@ function SignInPrompt(props) {
 											<input
 												type="date"
 												className="date_entry"
-												key={4}
+												key={6}
 												ref={signupDobInput}
-												defaultValue={dateText}
+												defaultValue={signupDobText}
 												tabIndex="0"
 											/>
 										</div>
