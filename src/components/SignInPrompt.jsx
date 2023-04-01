@@ -39,7 +39,7 @@ function SignInPrompt(props) {
 		testWrite,
 		writeUserToDatabase,
 		readAllUsernames,
-		getEmailFromUsername
+		getEmailFromUsername,
 	} = useAuth();
 	//!
 	const [currentPage, setCurrentPage] = useState("login");
@@ -97,26 +97,6 @@ function SignInPrompt(props) {
 				writeUserToDatabase(user.uid, getDisplayNameFromUserName(username), username, dateofbirth, email);
 				green("Created user, added to database!");
 
-				// writeUserMetaData(user.uid, getDisplayNameFromUserName(username), username, email, dateofbirth)
-				// 	.then(() => {
-				// 		console.log("Successfully added record to databsae");
-				// 		writeUserMiscData(user.uid)
-				// 			.then(() => console.log("added user misc data"))
-				// 			.catch(() => showInfoDiv("Trouble writing misc data."));
-
-				// 		appendUsernameToUsernamesList(user.uid, username)
-				// 			.then(() => console.log("Added username to usename list"))
-				// 			.catch((e) => console.error(e));
-
-				// 		appendEmailToEmailsList(user.uid, email)
-				// 			.then(() => console.log("Added email to emails list"))
-				// 			.catch((e) => console.error(e));
-				// 	})
-				// 	.catch((error) => {
-				// 		console.error(error);
-				// 		showInfoDiv("Errro in adding records to db");
-				// 	});
-
 				// showInfoDiv("Signup successful! Redirecting you back to login page", "success");
 
 				// console.log(`navigating to login with data. ${(email, password, username)}`);
@@ -160,27 +140,25 @@ function SignInPrompt(props) {
 			if (loginUsernameInput.current.value && loginPasswordInput.current.value) {
 				let email;
 				if (validateEmail(loginUsernameInput.current.value)) {
-					console.log("email check passed")
-					email = loginUsernameInput.current.value
-				}
-				else if (validateUsername(loginUsernameInput.current.value)) {
-					console.log("username check passed")
+					console.log("email check passed");
+					email = loginUsernameInput.current.value;
+				} else if (validateUsername(loginUsernameInput.current.value)) {
+					console.log("username check passed");
 					try {
-						email = await getEmailFromUsername(loginUsernameInput.current.value)
-						console.log(email)
-					}
-					catch (e) {
-						red(e)
-						return
+						email = await getEmailFromUsername(loginUsernameInput.current.value);
+						console.log(email);
+					} catch (e) {
+						red(e);
+						return;
 					}
 				}
 
-				setpersistence(browserLocalPersistence)
-				console.log(`tryna sign in w email = ${email}`)
+				setpersistence(browserLocalPersistence);
+				console.log(`tryna sign in w email = ${email}`);
 				signin(email, loginPasswordInput.current.value)
 					.then((result) => {
 						// Signed in
-						const user = result.user
+						const user = result.user;
 						console.log(`Logged in as: ${user.displayName}`);
 						// navigate("/");
 					})
@@ -193,26 +171,41 @@ function SignInPrompt(props) {
 		} else if (currentPage === "signup") {
 			// * validate displayname, bday, location, pic
 			// setCurrentPage("login");
-			// const emResp = validateEmail(emailInput.current.value);
-			// const daResp = validateDate(dateInput.current.value);
+			console.table([signupEmailInput.current.value]);
 
-			// if (emResp === true) {
-			// 	if (daResp === true) {
-			// 		setEmailText(emailInput.current.value);
-			// 		setDateText(dateInput.current.value);
+			const emResp = validateEmail(signupEmailInput.current.value);
+			if (emResp !== true) {
+				red("Email invalid");
+				return;
+			}
+
+			const usernameResp = await validateUsername(signupUsernameInput.current.value, readAllUsernames);
+			if (usernameResp !== true) {
+				console.log("username resp not equal to true");
+				red(usernameResp);
+				return;
+			}
+
+			const passwordResp = validatePassword(signupPasswordInput.current.value);
+			if (passwordResp !== true) {
+				red("Password is invalid");
+				return;
+			}
+
+			const daResp = validateDate(signupDobInput.current.value);
+			if (daResp !== true) {
+				red("DOB invaild");
+				return;
+			}
+
+			setEmailText(emailInput.current.value);
+			setDateText(dateInput.current.value);
 			createNewWithEmail(
 				signupEmailInput.current.value,
 				signupPasswordInput.current.value,
 				signupUsernameInput.current.value,
 				signupDobInput.current.value
 			);
-			// 	} else {
-			// 		// showInfoDiv(daResp);
-			// 	}
-			// } else {
-			// 	// showInfoDiv(emResp);
-			// 	// emailInput.current.focus()
-			// }
 		}
 	};
 
@@ -363,7 +356,11 @@ function SignInPrompt(props) {
 					</div>
 
 					<div className="btn_link_container">
-						<button className="next_step_btn" onClick={handlePrimaryBtnClick} ref={primaryBtn}>
+						<button
+							className="next_step_btn"
+							onClick={() => handlePrimaryBtnClick(readAllUsernames)}
+							ref={primaryBtn}
+						>
 							{" "}
 							<span ref={primaryBtnText}> {currentPage === "login" ? "Login" : "Sign Up"} </span>
 						</button>

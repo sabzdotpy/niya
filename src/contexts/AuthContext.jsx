@@ -267,10 +267,16 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const readAllUsernames = () => {
-		const readRef = ref(database, `root/username_list`);
-		onValue(readRef, (snapshot) => {
-			let data = snapshot.val();
-			console.log(data);
+		return new Promise((resolve, reject) => {
+			const readRef = ref(database, `root/username_list`);
+
+			onValue(readRef, (snapshot) => {
+				if (snapshot.val()) {
+					resolve(Object.keys(snapshot.val()));
+				} else {
+					reject("No value in username list");
+				}
+			});
 		});
 	};
 
@@ -283,9 +289,8 @@ export const AuthProvider = ({ children }) => {
 				if (snapshot.val()) {
 					console.log(`Email from username = ${snapshot.val()}`);
 					resolve(snapshot.val());
-				}
-				else {
-					reject("No email found with given username")
+				} else {
+					reject("No email found with given username");
 				}
 			});
 		});
