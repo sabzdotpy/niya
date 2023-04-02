@@ -4,6 +4,7 @@ import "../styles/Notifications.scss";
 
 import useArray from "../hooks/useArray";
 import SignInPrompt from "../components/SignInPrompt";
+import { pink } from "../scripts/Misc";
 
 import { useState, useRef, useEffect } from "react";
 
@@ -12,8 +13,12 @@ export default function Main() {
 	const [windowWidth, setWindowWidth] = useState();
 	const [showLogin, setShowLogin] = useState();
 	const notifications = useArray([
-		{ title: "Hi", message: "Welcome to the site!" },
-		{ title: "This site is still under construction", message: "If you find any flaws, please inform github.com/sabzdotpy"},
+		{ title: "Hi", message: "Welcome to the site!", type: "info" },
+		{
+			title: "This site is still under construction",
+			message: "If you find any flaws, please inform github.com/sabzdotpy",
+			type: "info",
+		},
 	]);
 
 	//! ----------------  REF  ----------------
@@ -45,6 +50,16 @@ export default function Main() {
 		};
 	}, []);
 
+	useEffect(() => {
+		console.log("Notifications changed.");
+		pink(notifications.value.length);
+		if (notifications.value.length) {
+			setTimeout(() => {
+				notifications.remove(notifications.value.length - 1);
+			}, 5000);
+		}
+	}, [notifications.value]);
+
 	//! -----------------------------------------
 
 	const navBlurCheck = () => {
@@ -60,9 +75,19 @@ export default function Main() {
 		mobileNavToggler.current.classList.toggle("is-active");
 	};
 
+	const pushToNotifications = (title, message, type) => {
+		notifications.push({ title: title, message: message, type: type });
+	};
+
 	return (
 		<div className="Main" ref={mainPage}>
-			<SignInPrompt noprompt in={showLogin} closeOverlay={() => setShowLogin(false)} header={"Login"} />
+			<SignInPrompt
+				noprompt
+				in={showLogin}
+				closeOverlay={() => setShowLogin(false)}
+				header={"Login"}
+				pushToNotifications={pushToNotifications}
+			/>
 			<header>
 				<div className="nav-wrapper">
 					{/* <div className="grad-bar"></div> */}
@@ -104,7 +129,9 @@ export default function Main() {
 									notifications.remove(index);
 								}}
 							>
-								<span className="icon">!!</span>
+								<span className="icon">
+									{notif.type === "info" ? "!!" : notif.type === "error" ? "X" : "!"}
+								</span>
 								<span className="message">
 									<span className="title">{notif.title}</span>
 									{notif.message}

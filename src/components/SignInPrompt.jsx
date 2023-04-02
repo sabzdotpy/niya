@@ -25,6 +25,7 @@ import { CSSTransition } from "react-transition-group";
 import "../styles/SignInPrompt.scss";
 import { browserLocalPersistence } from "firebase/auth";
 import { onValue } from "firebase/database";
+import { useNavigate } from "react-router-dom";
 
 function SignInPrompt(props) {
 	const {
@@ -41,6 +42,7 @@ function SignInPrompt(props) {
 		readAllUsernames,
 		getEmailFromUsername,
 	} = useAuth();
+	const navigate = useNavigate();
 	//!
 	const [currentPage, setCurrentPage] = useState("login");
 	const [loginPwdVisible, changeLoginPwdVisible] = useState(false);
@@ -105,7 +107,17 @@ function SignInPrompt(props) {
 						// return
 					});
 				writeUserToDatabase(user.uid, getDisplayNameFromUserName(username), username, dateofbirth, email);
-				green("Created user, added to database!");
+				green("Created new user!");
+
+				props.pushToNotifications("Success", "Your account has been created successfully", "success");
+
+				setTimeout(() => {
+					props.pushToNotifications("Logging in", "Logging you in with created account credentials", "info");
+					signin(email, password).then(() => {
+						props.closeOverlay();
+						navigate("/");
+					});
+				}, 1500);
 
 				// showInfoDiv("Signup successful! Redirecting you back to login page", "success");
 
@@ -120,8 +132,10 @@ function SignInPrompt(props) {
 
 			.catch((error) => {
 				console.log("we got error in creating user");
+				red(error);
 				red(getErrorFromCode(error.code));
-				alert(getErrorFromCode(error.code));
+				// alert(getErrorFromCode(error.code));
+				props.pushToNotifications("Error", getErrorFromCode(error.code), error);
 			});
 	};
 
@@ -173,7 +187,8 @@ function SignInPrompt(props) {
 						console.log(email);
 					} catch (e) {
 						red(e);
-						alert(e);
+						// alert(e);
+						props.pushToNotifications("Error", e, "error");
 						return;
 					}
 				}
@@ -188,15 +203,17 @@ function SignInPrompt(props) {
 						// Signed in
 						const user = result.user;
 						console.log(`Logged in as: ${user.displayName}`);
-						// navigate("/");
+						props.closeOverlay();
+						navigate("/");
 					})
 					.catch((error) => {
 						red(error);
-						alert(getErrorFromCode(error.code));
+						// alert(getErrorFromCode(error.code));
+						props.pushToNotifications("Error", getErrorFromCode(error.code), "error");
 					});
 			} else {
 				red("Please enter your username and password.");
-				alert("Please enter your username and password.");
+				props.pushToNotifications("Missing fields", "Please enter your username and password.", "error");
 			}
 		} else if (currentPage === "signup") {
 			// * validate displayname, bday, location, pic
@@ -206,7 +223,7 @@ function SignInPrompt(props) {
 			const emResp = validateEmail(signupEmailInput.current.value);
 			if (emResp !== true) {
 				red("Email invalid");
-				alert("Email invalid");
+				props.pushToNotifications("Invalid", "The email you have entered is invalid.", "error");
 				return;
 			}
 
@@ -214,21 +231,22 @@ function SignInPrompt(props) {
 			if (usernameResp !== true) {
 				console.log("username resp not equal to true");
 				red(usernameResp);
-				alert(usernameResp);
+				// alert(usernameResp);
+				props.pushToNotifications("Invalid", usernameResp, "error");
 				return;
 			}
 
 			const passwordResp = validatePassword(signupPasswordInput.current.value);
 			if (passwordResp !== true) {
 				red("Password is invalid");
-				alert("Password is invalid");
+				props.pushToNotifications("Invalid", "The entered password is invalid", "error");
 				return;
 			}
 
 			const daResp = validateDate(signupDobInput.current.value);
 			if (daResp !== true) {
 				red("DOB invaild");
-				alert("You have entered an invalid DOB.");
+				props.pushToNotifications("Invalid", "You have entered an invalid DOB", "error");
 				return;
 			}
 
@@ -318,7 +336,10 @@ function SignInPrompt(props) {
 												<div
 													className="showhide"
 													ref={loginPwdToggler}
-													onClick={() => togglePwdVisibility("login")}
+													// onClick={() => togglePwdVisibility("login")}
+													onClick={() => {
+														props.pushToNotifications("Random", Math.random(), "error");
+													}}
 												>
 													{" "}
 													{/* {!passwordVisible ? <FiEye /> : <FiEyeOff />} */}
@@ -381,7 +402,7 @@ function SignInPrompt(props) {
 												>
 													{!signupPwdVisible ? "o" : "x"}
 												</div> */}
-												
+
 												{/* ! FIND A WAY TO BRING SHOWHIDE INTO THE INPUT */}
 											</div>
 										</div>

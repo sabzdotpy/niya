@@ -14,7 +14,8 @@
       visibility: visible;
     }
     .notifications.list {
-      display: grid;
+      display: flex;
+      flex-direction: column-reverse;
       gap: 1rem;
     }
     .notif {

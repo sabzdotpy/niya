@@ -59,8 +59,8 @@ export const AuthProvider = ({ children }) => {
 		else if (currentUser) return true;
 	};
 
-	const signin = (username, password) => {
-		return signInWithEmailAndPassword(auth, username, password);
+	const signin = (email, password) => {
+		return signInWithEmailAndPassword(auth, email, password);
 	};
 
 	const signinwithpopup = (provider) => {
@@ -274,7 +274,7 @@ export const AuthProvider = ({ children }) => {
 				if (snapshot.val()) {
 					resolve(Object.keys(snapshot.val()));
 				} else {
-					reject("No value in username list");
+					resolve([]);
 				}
 			});
 		});

@@ -20,12 +20,16 @@ export const validateUsername = async (username, readAllUsernamesFunc) => {
 			const all_usernames = await readAllUsernamesFunc();
 			console.log(all_usernames);
 
+			if (all_usernames.length === 0) {
+				return true;
+			}
+
 			if (all_usernames.includes(username)) {
 				return "Username already taken";
 			}
 			return true;
-		} catch {
-			return "error in getting usernames"; //! RETURNING PROMISE FN INSTEAD OF ERROR VALUE OF PROMISE
+		} catch (e) {
+			return e; //! RETURNING PROMISE FN INSTEAD OF ERROR VALUE OF PROMISE
 		}
 	}
 	return "Invalid username.";
