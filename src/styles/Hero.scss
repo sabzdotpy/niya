@@ -50,7 +50,7 @@
 			.welcomeText {
 				font-size: 80px;
 				margin: 0;
-				font-weight: 600 !important;
+				font-weight: 700 !important;
 			}
 
 			.niyaLabel {
@@ -146,7 +146,7 @@
 				display: block;
 
 				div:not(.otherFeatures) {
-					padding-top: 1rem;
+					padding-top: 0;
 				}
 
 				.otherFeatures .featuresWrapper {
@@ -254,6 +254,12 @@
 			.aboutTextWrapper {
 				width: 100%;
 				gap: 1rem;
+				
+				div {
+					// margin: 0 auto;
+					// text-align: center;
+					// text-align-last: center;
+				}
 
 				// .machineLearningInfo {
 				// 	display: none;
@@ -274,6 +280,12 @@
 		.tryWrapper {
 			width: 100%;
 			height: 100%;
+
+			.tryTextWrapper {
+				div:not(.otherFeatures) {
+					padding-top: 1.5rem !important;
+				}
+			}
 		}
 	}
 }

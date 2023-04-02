@@ -43,7 +43,7 @@ export default function Hero(props) {
 						<h1 className="welcomeText">
 							{"Hi! I'm \n "}
 							<span
-								className="niyaLabel dottedUnderline popup"
+								className="niyaLabel dottedUnderline popup noMobileTapHighlight"
 								aria-label="An Irish variant of the name Nia, meaning 'aim', 'purpose', and 'beauty'."
 							>
 								Niya.
@@ -75,7 +75,7 @@ export default function Hero(props) {
 							</div>
 							<div>
 								I'm created by{" "}
-								<b className="popup dottedUnderline" aria-label="Sabari, Naveen, Sanjay">
+								<b className="popup dottedUnderline noMobileTapHighlight" aria-label="Sabari, Naveen, Sanjay">
 									Team Zeta
 								</b>{" "}
 								for the <strong>Solving For India</strong> Hackathon by GeeksForGeeks.
