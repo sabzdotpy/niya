@@ -84,8 +84,13 @@ function SignInPrompt(props) {
 		console.log("init signinprompt");
 	}, []);
 
-	const testWriting = () => {
-		writeUserToDatabase("sampleUid", "Sabz", "sabzzz", "02-10-2004", "email@gmail.com");
+	const clearAllInputTexts = () => {
+		setSignupEmailText("");
+		setSignupPasswordText("");
+		setSignupDobText("");
+		setSignupUsernameText("");
+		setLoginUsernameOrEmailText("");
+		setLoginPasswordText("");
 	};
 
 	const createNewWithEmail = (email, password, username, dateofbirth) => {
@@ -115,6 +120,7 @@ function SignInPrompt(props) {
 					props.pushToNotifications("Logging in", "Logging you in with created account credentials", "info");
 					signin(email, password).then(() => {
 						props.closeOverlay();
+						clearAllInputTexts();
 						navigate("/");
 					});
 				}, 1500);
@@ -203,6 +209,7 @@ function SignInPrompt(props) {
 						// Signed in
 						const user = result.user;
 						console.log(`Logged in as: ${user.displayName}`);
+						clearAllInputTexts();
 						props.closeOverlay();
 						navigate("/");
 					})
