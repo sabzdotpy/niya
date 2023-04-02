@@ -191,10 +191,10 @@ function SignInPrompt(props) {
 					try {
 						email = await getEmailFromUsername(loginUsernameInput.current.value);
 						console.log(email);
-					} catch (e) {
-						red(e);
+					} catch (readableError) {
+						red(readableError);
 						// alert(e);
-						props.pushToNotifications("Error", e, "error");
+						props.pushToNotifications("Error", readableError, "error");
 						return;
 					}
 				}
@@ -230,7 +230,7 @@ function SignInPrompt(props) {
 			const emResp = validateEmail(signupEmailInput.current.value);
 			if (emResp !== true) {
 				red("Email invalid");
-				props.pushToNotifications("Invalid", "The email you have entered is invalid.", "error");
+				props.pushToNotifications("Invalid", emResp, "error");
 				return;
 			}
 
@@ -246,14 +246,14 @@ function SignInPrompt(props) {
 			const passwordResp = validatePassword(signupPasswordInput.current.value);
 			if (passwordResp !== true) {
 				red("Password is invalid");
-				props.pushToNotifications("Invalid", "The entered password is invalid", "error");
+				props.pushToNotifications("Invalid", passwordResp, "error");
 				return;
 			}
 
 			const daResp = validateDate(signupDobInput.current.value);
 			if (daResp !== true) {
 				red("DOB invaild");
-				props.pushToNotifications("Invalid", "You have entered an invalid DOB", "error");
+				props.pushToNotifications("Invalid", daResp, "error");
 				return;
 			}
 
