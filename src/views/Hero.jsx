@@ -65,9 +65,6 @@ export default function Hero(props) {
 							As a peronal healthcare assistant my goal is to assist <b>you</b> in providing the best
 							possible healthcare suggestions and mental health.
 						</div>
-						{/* <div className="aboutOpener mobile">
-							I aim to assist <b>you</b> and provide the best healthcare suggestions.
-						</div> */}
 
 						<div>I'm built using React, SCSS, Vite, Firebase and various other technologies.</div>
 						<div className="machineLearningInfo">
@@ -93,7 +90,7 @@ export default function Hero(props) {
 				<div className="tryWrapper">
 					<h1>Features</h1>
 
-					<div className="tryTextWrapperMobile">
+					{/* <div className="tryTextWrapperMobile">
 						<div>
 							I <b>identify diseases</b> based on symptoms using machine learning, and{" "}
 							<b>schedule appointments</b> with healthcare providers.
@@ -111,7 +108,7 @@ export default function Hero(props) {
 								<li>And more...</li>
 							</ul>
 						</div>
-					</div>
+					</div> */}
 
 					<div className="tryTextWrapper">
 						<div>
@@ -129,7 +126,9 @@ export default function Hero(props) {
 						<div className="otherFeatures">
 							{/* Some other features: */}
 							<ul className="featuresWrapper">
-								<li>Mood tracker</li>
+								<li className="popup" aria-label="Track your moods everyday and (...)">
+									Mood tracker
+								</li>
 								<li>Journal</li>
 								<li>Books and Movies recommendations</li>
 								<li>Weight loss/gain goal</li>
@@ -143,29 +142,14 @@ export default function Hero(props) {
 							industry and the people it serves.
 						</div>
 					</div>
-					{/* <div className="tryTextMobile">
-						<div>
-							One of my key features is <b>disease identification</b>. I can predict diseases based on
-							symptoms and provide cures, thanks to machine learning.
-						</div>
-						<div>
-							A can also do <b>appointment scheduling</b>. I make it easy for patients to schedule
-							appointments with their providers.
-						</div>
-						<div>
-							I also feature a Mood Tracker, Journal, Movies and Books Recommender, Weight Loss/Gain
-							Tracker, Calorie Tracker and much more.
-						</div>
-					</div> */}
 				</div>
 			</section>
 			<section className="login">
 				<SectionDivider />
 				<div className="loginWrapper">
-					Niya is completely free and easy to use.
+					What are you waiting for? An all-in-one healthcare assistant is just a click away!
 					<button className="doubleBtn" onClick={() => setShowLogin(true)}>
-						{(currentUser === "none") ? "Register" : "Sign In"}
-						{/* //! something */}
+						{currentUser === "none" ? "Create an account" : "Sign In"}
 					</button>
 				</div>
 			</section>

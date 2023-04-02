@@ -50,6 +50,7 @@
 			.welcomeText {
 				font-size: 80px;
 				margin: 0;
+				font-weight: 600 !important;
 			}
 
 			.niyaLabel {
@@ -144,19 +145,26 @@
 			.tryTextWrapper {
 				display: block;
 
+				div:not(.otherFeatures) {
+					padding-top: 1rem;
+				}
+
 				.otherFeatures .featuresWrapper {
 					list-style: none;
 					max-width: 90%;
 					margin: 1rem auto;
+					padding: 0;
 					display: grid;
 					grid-template-columns: repeat(3, 1fr);
 					grid-template-rows: repeat(2, 1fr);
+					grid-auto-columns: minmax(0, 1fr);
+					grid-auto-flow: column;
 					grid-column-gap: 7px;
 					grid-row-gap: 7px;
 
 					li {
 						min-height: 50px;
-						// max-width: 80%;
+						// max-width: 150px;
 						display: flex;
 						justify-content: center;
 						align-items: center;
@@ -266,42 +274,6 @@
 		.tryWrapper {
 			width: 100%;
 			height: 100%;
-
-			.tryTextWrapper {
-				background-color: blue;
-				display: none !important;
-			}
-
-			.tryTextWrapperMobile {
-				display: block !important;
-				margin-top: auto;
-
-				.otherFeatures {
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-					align-items: center;
-
-					.featuresWrapper {
-						padding: 0.5rem 1rem;
-						display: grid;
-						grid-template-columns: repeat(2, 1fr);
-						grid-template-rows: repeat(3, 1fr);
-						grid-column-gap: 20px;
-						grid-row-gap: 20px;
-						list-style: none;
-
-						li {
-							display: flex;
-							justify-content: center;
-							align-items: center;
-							padding: 0.5rem;
-							border-radius: 8px;
-							background: rgba(#fff, 0.2);
-						}
-					}
-				}
-			}
 		}
 	}
 }
