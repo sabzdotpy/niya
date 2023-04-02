@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import "../styles/Navbar.css";
 import "../styles/Notifications.scss";
 
-import useArray from "../hooks/useArray"
+import useArray from "../hooks/useArray";
 import SignInPrompt from "../components/SignInPrompt";
 
 import { useState, useRef, useEffect } from "react";
@@ -11,7 +11,10 @@ export default function Main() {
 	//! ----------------  STATE  ----------------
 	const [windowWidth, setWindowWidth] = useState();
 	const [showLogin, setShowLogin] = useState();
-	const notifications = useArray(["hi", "hey"])
+	const notifications = useArray([
+		{ title: "Hi", message: "Welcome to the site!" },
+		{ title: "This site is still under construction", message: "If you find any flaws, please inform github.com/sabzdotpy"},
+	]);
 
 	//! ----------------  REF  ----------------
 
@@ -24,7 +27,7 @@ export default function Main() {
 
 	useEffect(() => {
 		console.log("Main.jsx useEffect..");
-		console.log(notifications.value)
+		console.log(notifications.value);
 
 		navBlurCheck();
 
@@ -82,21 +85,33 @@ export default function Main() {
 							</li>
 							<li className="nav-item">
 								{/* <a href="#">Sign In</a> */}
-								<button className="mainBtn" onClick={() => setShowLogin(true)}>Sign In</button>
+								<button className="mainBtn" onClick={() => setShowLogin(true)}>
+									Sign In
+								</button>
 							</li>
 						</ul>
 					</nav>
 				</div>
 			</header>
-			<div className="notifications">
-				<div className="history">
-					<div className="notice notif important">
-						<span className="icon">x</span>
-						<span className="message">
-							<span className="title">Hi</span>
-							Welcome to the site!
-						</span>
-					</div>
+
+			<div className="notifications container">
+				<div className="notifications list">
+					{notifications.value.map((notif, index) => {
+						return (
+							<div
+								className="notice notif important"
+								onClick={() => {
+									notifications.remove(index);
+								}}
+							>
+								<span className="icon">!!</span>
+								<span className="message">
+									<span className="title">{notif.title}</span>
+									{notif.message}
+								</span>
+							</div>
+						);
+					})}
 				</div>
 			</div>
 			<section>
