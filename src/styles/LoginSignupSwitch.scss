@@ -22,20 +22,20 @@ $fsize: 14px;
 	overflow: hidden;
 	z-index: 10;
 
-	input {
-		background: linear-gradient(to left, rgb(53, 55, 71), rgb(53, 58, 68));
-		border: 2px solid transparent;
-		padding: 0.9rem 1rem;
-		border-radius: 20px;
-		outline: none;
-		text-align: center;
-		font-size: $fsize;
-		color: $text;
+	// input {
+	// 	// background: linear-gradient(to left, rgb(53, 55, 71), rgb(53, 58, 68));
+	// 	border: 2px solid transparent;
+	// 	padding: 0.9rem 1rem;
+	// 	border-radius: 20px;
+	// 	outline: none;
+	// 	text-align: center;
+	// 	font-size: $fsize;
+	// 	color: $text;
 
-		&:hover {
-			border-color: $checkbox-border-hover;
-		}
-	}
+	// 	&:hover {
+	// 		border-color: $checkbox-border-hover;
+	// 	}
+	// }
 }
 
 .app .title_container {
@@ -149,12 +149,9 @@ $fsize: 14px;
 	justify-content: center;
 }
 
-.app .page .extra_container div input,
-.app .page .input_container div input {
+.app .page .container div input {
 	width: 80% !important;
-	// background: linear-gradient(to left, rgb(53, 55, 71), rgb(53, 58, 68));
 	background: lighten(#efa96c, 8);
-	// background: rgba(#efa96c, .1);
 	border: 2px solid transparent;
 	padding: 0.9rem 1rem;
 	border-radius: 20px;
@@ -164,8 +161,7 @@ $fsize: 14px;
 	color: black;
 }
 
-.app .page .extra_container input:hover,
-.app .page .input_container input:focus {
+.app .page .container input:focus {
 	border: 2px solid lighten(#efa96c, 20);
 }
 
@@ -201,7 +197,7 @@ $fsize: 14px;
 }
 
 .pwdinp_btn {
-	display: inline-flex !important;
+	display: inline-flex;
 	flex-direction: row !important;
 }
 
@@ -212,19 +208,29 @@ $fsize: 14px;
 	vertical-align: middle;
 }
 
-.pwdinp_btn .showhide,
-.dateinput .showhide {
+.pwdinp_btn .showhide {
 	position: absolute;
+	// top: 0;
 	right: min(10%, 50px);
 	max-width: 30px;
 	height: 30px;
 	border-radius: 13px;
 	cursor: pointer;
-	background-color: rgba(155, 155, 155, 0.3);
-	color: $text;
+	background-color: #efa96c;
+	// color: black;
 	vertical-align: middle;
 	user-select: none;
 }
+
+// .pwd_container.signup .pwdinp_btn {
+// 	display: flex;
+// 	justify-content: flex-start;
+
+// 	input {
+// 		// width: 70% !important;
+// 		// border-radius: 20px 0 0 20px !important;
+// 	}
+// }
 
 .other_links {
 	display: flex;

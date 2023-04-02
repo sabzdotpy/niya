@@ -43,7 +43,8 @@ function SignInPrompt(props) {
 	} = useAuth();
 	//!
 	const [currentPage, setCurrentPage] = useState("login");
-	const [passwordVisible, changePasswordVisibility] = useState(false);
+	const [loginPwdVisible, changeLoginPwdVisible] = useState(false);
+	const [signupPwdVisible, changeSignupPwdVisible] = useState(false);
 
 	// const [emailText, setEmailText] = useState("");
 	// const [passwordText, setPasswordText] = useState("");
@@ -61,7 +62,6 @@ function SignInPrompt(props) {
 	//!
 
 	const pwdInput = useRef(null);
-	const pwdToggler = useRef(null);
 	const primaryBtn = useRef(null);
 	const primaryBtnText = useRef(null);
 	const topMessage = useRef(null);
@@ -74,6 +74,9 @@ function SignInPrompt(props) {
 
 	const loginUsernameInput = useRef();
 	const loginPasswordInput = useRef();
+
+	const loginPwdToggler = useRef(null);
+	const signupPwdToggler = useRef(null);
 	//!
 	useEffect(() => {
 		console.log("init signinprompt");
@@ -143,9 +146,14 @@ function SignInPrompt(props) {
 		// TODO: show updates based on response from validate fn.
 	};
 
-	const togglePwdVisibility = () => {
-		pwdInput.current.type = passwordVisible ? "password" : "text";
-		changePasswordVisibility((passwordVisible) => !passwordVisible);
+	const togglePwdVisibility = (page) => {
+		if (page === "login") {
+			loginPasswordInput.current.type = loginPwdVisible ? "password" : "text";
+			changeLoginPwdVisible((loginPwdVisible) => !loginPwdVisible);
+		} else if (page === "signup") {
+			signupPasswordInput.current.type = signupPwdVisible ? "password" : "text";
+			changeSignupPwdVisible((signupPwdVisible) => !signupPwdVisible);
+		}
 	};
 
 	const handlePrimaryBtnClick = async () => {
@@ -184,7 +192,7 @@ function SignInPrompt(props) {
 					})
 					.catch((error) => {
 						red(error);
-						alert(getErrorFromCode(error.code))
+						alert(getErrorFromCode(error.code));
 					});
 			} else {
 				red("Please enter your username and password.");
@@ -220,7 +228,7 @@ function SignInPrompt(props) {
 			const daResp = validateDate(signupDobInput.current.value);
 			if (daResp !== true) {
 				red("DOB invaild");
-				alert("You have entered an invalid DOB.")
+				alert("You have entered an invalid DOB.");
 				return;
 			}
 
@@ -309,12 +317,12 @@ function SignInPrompt(props) {
 												/>
 												<div
 													className="showhide"
-													ref={pwdToggler}
-													onClick={togglePwdVisibility}
+													ref={loginPwdToggler}
+													onClick={() => togglePwdVisibility("login")}
 												>
 													{" "}
 													{/* {!passwordVisible ? <FiEye /> : <FiEyeOff />} */}
-													{!passwordVisible ? "o" : "x"}
+													{!loginPwdVisible ? "o" : "x"}
 												</div>
 											</div>
 										</div>
@@ -330,7 +338,7 @@ function SignInPrompt(props) {
 								unmountOnExit
 							>
 								<div className="page page2">
-									<form className="container extra_container">
+									<form className="container input_container">
 										<div className="email_container">
 											<h4 style={{ fontWeight: "normal" }}>Enter your email id</h4>
 											<input
@@ -353,25 +361,28 @@ function SignInPrompt(props) {
 												tabIndex="0"
 											></input>
 										</div>
-										<div className="date_container">
-											<h4 style={{ fontWeight: "normal" }}>Create a strong password</h4>
+										<div className="pwd_container signup">
+											<h4 style={{ fontWeight: "normal" }}>Enter your password</h4>
 
-											<div className="dateinput">
+											<div className="pwdinp_btn">
 												<input
 													type="password"
-													key={5}
+													autoComplete="new-password"
+													className="password_entry"
 													ref={signupPasswordInput}
+													key={5}
 													defaultValue={signupPasswordText}
+													tabIndex="0"
 												/>
-												<div
+												{/* <div
 													className="showhide"
-													ref={pwdToggler}
-													onClick={togglePwdVisibility}
+													ref={signupPwdToggler}
+													onClick={() => togglePwdVisibility("signup")}
 												>
-													{" "}
-													{/* {!passwordVisible ? <FiEye /> : <FiEyeOff />} */}
-													{!passwordVisible ? "o" : "x"}
-												</div>
+													{!signupPwdVisible ? "o" : "x"}
+												</div> */}
+												
+												{/* ! FIND A WAY TO BRING SHOWHIDE INTO THE INPUT */}
 											</div>
 										</div>
 										<div className="date_container">

@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
 import "../styles/Navbar.css";
+import "../styles/Notifications.scss";
 
+import useArray from "../hooks/useArray"
 import SignInPrompt from "../components/SignInPrompt";
 
 import { useState, useRef, useEffect } from "react";
@@ -9,6 +11,7 @@ export default function Main() {
 	//! ----------------  STATE  ----------------
 	const [windowWidth, setWindowWidth] = useState();
 	const [showLogin, setShowLogin] = useState();
+	const notifications = useArray(["hi", "hey"])
 
 	//! ----------------  REF  ----------------
 
@@ -21,6 +24,7 @@ export default function Main() {
 
 	useEffect(() => {
 		console.log("Main.jsx useEffect..");
+		console.log(notifications.value)
 
 		navBlurCheck();
 
@@ -84,7 +88,17 @@ export default function Main() {
 					</nav>
 				</div>
 			</header>
-
+			<div className="notifications">
+				<div className="history">
+					<div className="notice notif important">
+						<span className="icon">x</span>
+						<span className="message">
+							<span className="title">Hi</span>
+							Welcome to the site!
+						</span>
+					</div>
+				</div>
+			</div>
 			<section>
 				<Outlet context={[setShowLogin]} />
 			</section>
