@@ -45,7 +45,17 @@
 	margin-left: 20px;
 }
 
-.navbar ul {
+.nav-items-container {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.nav-items-container.\/ ul.nav {
+	/* margin-right: 0; */
+	grid-template-columns: repeat(2, .5fr);
+}
+
+.navbar .nav-items-container ul {
 	list-style: none;
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -54,7 +64,11 @@
 	height: 100%;
 }
 
-.navbar ul li {
+.nav-items-container ul.signed-in {
+	grid-template-columns: repeat(3, .5fr);
+}
+
+.navbar .nav-items-container ul li {
 	height: 100%;
 	display: flex;
 	justify-content: center;
@@ -78,6 +92,29 @@
 }
 
 .nav-item a:hover {
+	color: #3498db;
+}
+
+.nav-item.apps {
+	max-width: 50px !important;
+	height: 100% !important;
+}
+
+.nav-item .account-icon {
+	cursor: pointer;
+}
+
+.nav-item .account-icon svg {
+	padding: .2rem;
+	background-color: transparent;
+	border-radius: 50%;
+	color: #1f1f1f;
+	transition: all .3s ease;
+
+}
+
+.nav-item .account-icon svg:hover {
+	background-color: #2d2d2d;
 	color: #3498db;
 }
 

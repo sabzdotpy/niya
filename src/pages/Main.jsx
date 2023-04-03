@@ -5,10 +5,17 @@ import "../styles/Notifications.scss";
 import useArray from "../hooks/useArray";
 import SignInPrompt from "../components/SignInPrompt";
 import { pink } from "../scripts/Misc";
+import { useAuth } from "../contexts/AuthContext";
 
 import { useState, useRef, useEffect } from "react";
+import { MdOutlineApps } from "react-icons/md";
+import { VscAccount } from "react-icons/vsc";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Main() {
+	const { currentUser } = useAuth();
+	const navigate = useNavigate();
+	const location = useLocation();
 	//! ----------------  STATE  ----------------
 	const [windowWidth, setWindowWidth] = useState();
 	const [showLogin, setShowLogin] = useState();
@@ -35,11 +42,11 @@ export default function Main() {
 		console.log(notifications.value);
 
 		navBlurCheck();
-
 		window.addEventListener("resize", () => {
 			setWindowWidth(window.innerWidth);
 		});
 
+		console.log("adding scroll listener")
 		window.addEventListener("scroll", () => {
 			navBlurCheck();
 		});
@@ -63,6 +70,7 @@ export default function Main() {
 	//! -----------------------------------------
 
 	const navBlurCheck = () => {
+		console.log("checking scroll")
 		if (window.scrollY) {
 			navBar.current.classList.remove("noeff");
 		} else {
@@ -101,20 +109,43 @@ export default function Main() {
 							<span className="bar"></span>
 							<span className="bar"></span>
 						</div>
-						<ul className="nav no-search" ref={navUl}>
-							<li className="nav-item">
-								<a href="#">About</a>
-							</li>
-							<li className="nav-item">
-								<a href="#">Features</a>
-							</li>
-							<li className="nav-item">
-								{/* <a href="#">Sign In</a> */}
-								<button className="mainBtn" onClick={() => setShowLogin(true)}>
-									Sign In
-								</button>
-							</li>
-						</ul>
+						<div className={"nav-items-container " + (location.pathname)}>
+							<ul
+								className={
+									"nav no-search" + (currentUser === "none" || !currentUser ? "" : " signed-in")
+								}
+								ref={navUl}
+							>
+								{location.pathname === "/" ? (
+									<li className="nav-item">
+										<div className="apps-icon">
+											<MdOutlineApps size={"30px"} />
+										</div>
+									</li>
+								) :
+									<>
+										<li className="nav-item">
+											<a href="#">About</a>
+										</li>
+										<li className="nav-item">
+											<a href="#">Features</a>
+										</li>
+									</>
+								}
+
+								<li className="nav-item">
+									{currentUser === "none" || !currentUser ? (
+										<button className="mainBtn" onClick={() => setShowLogin(true)}>
+											Sign In
+										</button>
+									) : (
+										<div className="account-icon" onClick={() => navigate("/account")}>
+											<VscAccount size={"30px"} />
+										</div>
+									)}
+								</li>
+							</ul>
+						</div>
 					</nav>
 				</div>
 			</header>
@@ -125,12 +156,19 @@ export default function Main() {
 						return (
 							<div
 								className="notice notif important"
+								key={index}
 								onClick={() => {
 									notifications.remove(index);
 								}}
 							>
 								<span className="icon">
-									{notif.type === "info" ? "!!" : notif.type === "error" ? "X" : "!"}
+									{notif.type === "info"
+										? "!"
+										: notif.type === "error"
+										? "X"
+										: notif.type === "success"
+										? ":)"
+										: "!!"}
 								</span>
 								<span className="message">
 									<span className="title">{notif.title}</span>
@@ -141,7 +179,7 @@ export default function Main() {
 					})}
 				</div>
 			</div>
-			<section>
+			<section className="out">
 				<Outlet context={[setShowLogin]} />
 			</section>
 		</div>
