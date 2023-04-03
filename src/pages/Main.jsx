@@ -19,6 +19,7 @@ export default function Main() {
 	//! ----------------  STATE  ----------------
 	const [windowWidth, setWindowWidth] = useState();
 	const [showLogin, setShowLogin] = useState();
+	const [appsDrawerOpen, setAppsDrawerOpen] = useState(false);
 	const notifications = useArray([
 		{ title: "Hi", message: "Welcome to the site!", type: "info" },
 		{
@@ -46,7 +47,7 @@ export default function Main() {
 			setWindowWidth(window.innerWidth);
 		});
 
-		console.log("adding scroll listener")
+		console.log("adding scroll listener");
 		window.addEventListener("scroll", () => {
 			navBlurCheck();
 		});
@@ -70,7 +71,7 @@ export default function Main() {
 	//! -----------------------------------------
 
 	const navBlurCheck = () => {
-		console.log("checking scroll")
+		console.log("checking scroll");
 		if (window.scrollY) {
 			navBar.current.classList.remove("noeff");
 		} else {
@@ -109,7 +110,7 @@ export default function Main() {
 							<span className="bar"></span>
 							<span className="bar"></span>
 						</div>
-						<div className={"nav-items-container " + (location.pathname)}>
+						<div className={"nav-items-container " + location.pathname}>
 							<ul
 								className={
 									"nav no-search" + (currentUser === "none" || !currentUser ? "" : " signed-in")
@@ -118,11 +119,19 @@ export default function Main() {
 							>
 								{location.pathname === "/" ? (
 									<li className="nav-item">
-										<div className="apps-icon">
+										<div className="apps-icon" onClick={() => setAppsDrawerOpen( !appsDrawerOpen )}>
 											<MdOutlineApps size={"30px"} />
+											<ul class={"apps-dropdown" + (appsDrawerOpen ? " open" : "")}>
+												<li className="item">Predict Diseases</li>
+												<li className="item">Appointment Scheduling</li>
+												<li className="item">Journal</li>
+												<li className="item">Calorie Tracker</li>
+												<li className="item">Mood Tracker</li>
+												<li className="item">Recommendations</li>
+											</ul>
 										</div>
 									</li>
-								) :
+								) : (
 									<>
 										<li className="nav-item">
 											<a href="#">About</a>
@@ -131,7 +140,7 @@ export default function Main() {
 											<a href="#">Features</a>
 										</li>
 									</>
-								}
+								)}
 
 								<li className="nav-item">
 									{currentUser === "none" || !currentUser ? (

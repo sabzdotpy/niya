@@ -16,7 +16,8 @@ export default function Home() {
     return (
 
         <div className="Home">
-            Welcome back { currentUser?.displayName }
+            { (currentUser && currentUser !== "none") ? "Welcome back "+currentUser.displayName : "Hey" }
+            <br /><br />
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod nulla fugiat distinctio, enim similique iusto aliquid, ea nobis laborum nisi temporibus, ipsam iure. Expedita accusamus maxime quod exercitationem delectus culpa!
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod nulla fugiat distinctio, enim similique iusto aliquid, ea nobis laborum nisi temporibus, ipsam iure. Expedita accusamus maxime quod exercitationem delectus culpa!
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod nulla fugiat distinctio, enim similique iusto aliquid, ea nobis laborum nisi temporibus, ipsam iure. Expedita accusamus maxime quod exercitationem delectus culpa!
