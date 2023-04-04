@@ -2,15 +2,28 @@ import { Outlet } from "react-router-dom";
 import "../styles/Navbar.css";
 import "../styles/Notifications.scss";
 
+import niya from "../assets/niya.png";
+
 import useArray from "../hooks/useArray";
 import SignInPrompt from "../components/SignInPrompt";
 import { pink } from "../scripts/Misc";
 import { useAuth } from "../contexts/AuthContext";
 
 import { useState, useRef, useEffect } from "react";
+
 import { MdOutlineApps } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
+import { FiSearch, FiSmile, FiX } from "react-icons/fi";
+import { FaInfo, FaCheck } from "react-icons/fa"
+import { GrTableAdd } from "react-icons/gr";
+import { BsJournalRichtext, BsQuestionLg } from "react-icons/bs";
+import { BiBrain } from "react-icons/bi";
+import { AiOutlineFire } from "react-icons/ai"
+import { TiTick } from "react-icons/ti"
+
+
 import { useNavigate, useLocation } from "react-router-dom";
+import { CSSTransition } from "react-transition-group";
 
 export default function Main() {
 	const { currentUser } = useAuth();
@@ -21,12 +34,21 @@ export default function Main() {
 	const [showLogin, setShowLogin] = useState();
 	const [appsDrawerOpen, setAppsDrawerOpen] = useState(false);
 	const notifications = useArray([
-		{ title: "Hi", message: "Welcome to the site!", type: "info" },
-		{
-			title: "This site is still under construction",
-			message: "If you find any flaws, please inform github.com/sabzdotpy",
-			type: "info",
-		},
+		// { title: "Hi", message: "Welcome to the site!", type: "info" },
+		// {
+		// 	title: "This site is still under construction",
+		// 	message: "If you find any flaws, please inform github.com/sabzdotpy",
+		// 	type: "info",
+		// },
+	]);
+
+	const apps = useArray([
+		{ name: "Disease Identification", icon: <FiSearch size={"25px"} />, route: "/app-id" },
+		{ name: "Book Appointments", icon: <GrTableAdd size={"25px"} />, route: "/app-id" },
+		{ name: "Journal", icon: <BsJournalRichtext size={"25px"} />, route: "/app-id" },
+		{ name: "Mood Tracker", icon: <FiSmile size={"25px"} />, route: "/app-id" },
+		{ name: "Recommendations", icon: <BiBrain size={"25px"} />, route: "/app-id" },
+		{ name: "Calorie Tracker", icon: <AiOutlineFire size={"25px"} />, route: "/app-id" },
 	]);
 
 	//! ----------------  REF  ----------------
@@ -102,14 +124,14 @@ export default function Main() {
 					{/* <div className="grad-bar"></div> */}
 					<nav className={"navbar" + " noeff"} ref={navBar}>
 						<img
-							src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c8/Bluestar_%28bus_company%29_logo.svg/1280px-Bluestar_%28bus_company%29_logo.svg.png"
-							alt="Company Logo"
+							src={niya}
+							alt="Niya Logo"
 						></img>
-						<div className="menu-toggle" id="mobile-menu" ref={mobileNavToggler} onClick={mobileNavToggle}>
+						{/* <div className="menu-toggle" id="mobile-menu" ref={mobileNavToggler} onClick={mobileNavToggle}>
 							<span className="bar"></span>
 							<span className="bar"></span>
 							<span className="bar"></span>
-						</div>
+						</div> */}
 						<div className={"nav-items-container " + location.pathname}>
 							<ul
 								className={
@@ -117,27 +139,69 @@ export default function Main() {
 								}
 								ref={navUl}
 							>
-								{location.pathname === "/" ? (
+								{location.pathname !== "/hero" ? (
 									<li className="nav-item">
-										<div className="apps-icon" onClick={() => setAppsDrawerOpen( !appsDrawerOpen )}>
-											<MdOutlineApps size={"30px"} />
-											<ul class={"apps-dropdown" + (appsDrawerOpen ? " open" : "")}>
-												<li className="item">Predict Diseases</li>
-												<li className="item">Appointment Scheduling</li>
-												<li className="item">Journal</li>
-												<li className="item">Calorie Tracker</li>
-												<li className="item">Mood Tracker</li>
-												<li className="item">Recommendations</li>
-											</ul>
+										<div
+											className="apps-icon"
+											tabIndex={"0"}
+											onBlur={() => setAppsDrawerOpen(false)}
+										>
+											<MdOutlineApps
+												size={"30px"}
+												onClick={() => setAppsDrawerOpen(!appsDrawerOpen)}
+											/>
+											<CSSTransition
+												in={appsDrawerOpen}
+												timeout={300}
+												classNames="appsanim"
+												unmountOnExit
+											>
+												<ul className={"apps-dropdown"}>
+													{apps.value.map((app, index) => {
+														return (
+															<li
+																key={index}
+																className="item"
+																onClick={() => navigate(app.route)}
+															>
+																<span className="icon">
+																	{app.icon}
+																</span>
+																<span className="name">
+																	{app.name}
+																</span>
+															</li>
+														);
+													})}
+													{/* <li className="item" onClick={() => navigate("/app-id")}>
+														Predict Diseases
+													</li>
+													<li className="item" onClick={() => navigate("/app")}>
+														Appointment Scheduling
+													</li>
+													<li className="item" onClick={() => navigate("/app")}>
+														Journal
+													</li>
+													<li className="item" onClick={() => navigate("/app")}>
+														Calorie Tracker
+													</li>
+													<li className="item" onClick={() => navigate("/app")}>
+														Mood Tracker
+													</li>
+													<li className="item" onClick={() => navigate("/app")}>
+														Recommendations
+													</li> */}
+												</ul>
+											</CSSTransition>
 										</div>
 									</li>
 								) : (
 									<>
 										<li className="nav-item">
-											<a href="#">About</a>
+											<a href="#about">About</a>
 										</li>
 										<li className="nav-item">
-											<a href="#">Features</a>
+											<a href="#features">Features</a>
 										</li>
 									</>
 								)}
@@ -164,7 +228,7 @@ export default function Main() {
 					{notifications.value.map((notif, index) => {
 						return (
 							<div
-								className="notice notif important"
+								className={"notice notif important " + notif.type}
 								key={index}
 								onClick={() => {
 									notifications.remove(index);
@@ -172,12 +236,12 @@ export default function Main() {
 							>
 								<span className="icon">
 									{notif.type === "info"
-										? "!"
+										? <FaInfo />
 										: notif.type === "error"
-										? "X"
+										? <FiX />
 										: notif.type === "success"
-										? ":)"
-										: "!!"}
+										? <FaCheck />
+										: <BsQuestionLg />}
 								</span>
 								<span className="message">
 									<span className="title">{notif.title}</span>

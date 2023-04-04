@@ -23,6 +23,8 @@ import PromptOverlay from "./PromptOverlay";
 import { CSSTransition } from "react-transition-group";
 
 import "../styles/SignInPrompt.scss";
+
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import { browserLocalPersistence } from "firebase/auth";
 import { onValue } from "firebase/database";
 import { useNavigate } from "react-router-dom";
@@ -345,12 +347,12 @@ function SignInPrompt(props) {
 													ref={loginPwdToggler}
 													// onClick={() => togglePwdVisibility("login")}
 													onClick={() => {
-														props.pushToNotifications("Random", Math.random(), "error");
+														togglePwdVisibility("login");
 													}}
 												>
 													{" "}
 													{/* {!passwordVisible ? <FiEye /> : <FiEyeOff />} */}
-													{!loginPwdVisible ? "o" : "x"}
+													{!loginPwdVisible ? <FiEye /> : <FiEyeOff />}
 												</div>
 											</div>
 										</div>

@@ -58,6 +58,7 @@ export default function Hero(props) {
 					</div>
 				</section>
 				<section className="about">
+					<a name="about"></a>
 					<SectionDivider />
 					<h1>About Niya</h1>
 
@@ -75,7 +76,10 @@ export default function Hero(props) {
 							</div>
 							<div>
 								I'm created by{" "}
-								<b className="popup dottedUnderline noMobileTapHighlight" aria-label="Sabari, Naveen, Sanjay">
+								<b
+									className="popup dottedUnderline noMobileTapHighlight"
+									aria-label="Sabari, Naveen, Sanjay"
+								>
 									Team Zeta
 								</b>{" "}
 								for the <strong>Solving For India</strong> Hackathon by GeeksForGeeks.
@@ -88,6 +92,7 @@ export default function Hero(props) {
 					</div>
 				</section>
 				<section className="try">
+					<a name="features"></a>
 					<SectionDivider />
 					<div className="tryWrapper">
 						<h1>Features</h1>
