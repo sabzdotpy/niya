@@ -68,7 +68,7 @@ li.nav-item div {
 	/* grid-auto-columns: minmax(0, 1fr); */
 	grid-auto-flow: row;
 	grid-column-gap: 15px;
-	grid-row-gap: 15px;
+	/* grid-row-gap: 15px; */
 	/* background-color: rgb(236, 197, 172); */
 	background-color: #efa96c;
 	border: 3px solid #ffe8d5;
