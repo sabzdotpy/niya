@@ -11,6 +11,7 @@
   },
   "scripts": {
     "dev": "vite",
+    "server": "python flask/server.py",
     "devs": "vite --host",
     "build": "vite build",
     "preview": "vite preview"
