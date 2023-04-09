@@ -7,6 +7,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 import { MiscProvider } from "./contexts/MiscContext";
 import { BrowserRouter } from "react-router-dom";
 
+
 ReactDOM.createRoot(document.getElementById("root")).render(
 	// <React.StrictMode>
 	<MiscProvider>

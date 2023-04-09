@@ -4,4 +4,17 @@
     height: 100vh;
     overflow-y: auto;
 
+    .topBanner {
+        margin-top: 7rem;
+    }
+
+    .panel {
+        display: none;
+    }
+
+    .panel.show {
+        display: block;
+    }
+
+
 }

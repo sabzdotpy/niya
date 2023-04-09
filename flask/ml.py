@@ -6,12 +6,10 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier, _tree
 import joblib
 import os
-import sys
 from time import perf_counter as pc
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-sys.setrecursionlimit(200)
 
 severityDictionary = dict()
 description_list = dict()
@@ -32,6 +30,10 @@ color = ''
 
 GLOBALS = {}
 
+def path(path):
+    print(os.path.join(basedir, path))
+    return os.path.join(basedir, path)
+
 def GLOBAL_STORE(dic):
     print('----------------------------------->')
     print(f"Global Storage changing...")
@@ -50,6 +52,62 @@ def list_to_string(mylist):
         mystring += item.replace('_', ' ') + ', '
     mystring = mystring[:-2]
     return mystring
+
+
+def getDicts():
+    global description_list
+    global severityDictionary
+    global precautionDictionary
+
+
+    with open(path("datasets/symptom_Description.csv")) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        line_count = 0
+        for row in csv_reader:
+            _description = {row[0]: row[1]}
+            description_list.update(_description)
+
+
+    with open(path("datasets/symptom_severity.csv")) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        line_count = 0
+        for row in csv_reader:
+            _diction = {row[0]: int(row[1])}
+            severityDictionary.update(_diction)
+
+
+    with open(path("datasets/symptom_precaution.csv")) as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        line_count = 0
+        for row in csv_reader:
+            _prec = {row[0]: [row[1], row[2], row[3], row[4]]}
+            precautionDictionary.update(_prec)
+
+def get_all_symptoms():
+    df = pd.read_csv(path("datasets/symptom_severity.csv"))
+    symptom_list = df['itching'].tolist()
+    symptom_list.append('itching')
+    symptoms_spaced = []
+    for symptom in symptom_list:
+        symptoms_spaced.append(symptom.replace('_',' '))
+    symptoms_dict = dict(zip(symptoms_spaced, symptom_list))
+    # return symptom_list, symptoms_spaced, symptoms_dict
+    return symptoms_spaced
+
+
+def calc_condition(symptoms_experienced, days):
+    print("calc_condition called")
+    sum = 0
+    for item in symptoms_experienced:
+        sum = sum+severityDictionary[item]
+    if((sum*days)/(len(symptoms_experienced)+1) > 13):
+        condition1 = "You should take the consultation from doctor."
+        color1 = '#c0392b'
+    else:
+        condition1 = "It might not be that bad but you should take precautions."
+        color1 = '#c9710e'
+
+    return condition1,color1
 
 def check_pattern(dis_list, inp):
     print(f"First symptom: {inp}")
@@ -143,7 +201,7 @@ def get_related_symptoms(symptom1):
     clf = clf[0]
 
 
-    training = pd.read_csv(f'./datasets/Training.csv')
+    training = pd.read_csv(path("datasets/Training.csv"))
 
     if (symptom1 not in training.iloc[0:1, 0:-1]):
         return "invalid sym"
@@ -162,7 +220,7 @@ def get_related_symptoms(symptom1):
     return symptoms_given
 
 def train_model():
-	df = pd.read_csv(f'./datasets/Training.csv')
+	df = pd.read_csv(path("datasets/Training.csv"))
 	X = df.iloc[:, :-1]
 	y = df['prognosis']
 	X_train, X_test, y_train, y_test = train_test_split(
@@ -184,18 +242,18 @@ def dump_model():
 
 
 def retrieve_model():
-    df = pd.read_csv('D:/code/Python/PredictIt/myproject/datasets/Training.csv')
+    df = pd.read_csv(path("datasets/Training.csv"))
     X = df.iloc[:, :-1]
-    model = joblib.load("model_save.pkl")
+    model = joblib.load(path("model_save.pkl"))
 
     return model, X
 
 def predict(symptoms_exp):
-        print(f"Symptoms experienced: {list_to_string(symptoms_exp)}")
+        # print(f"Symptoms experienced: {list_to_string(symptoms_exp)}")
 
 
         trained_model, X = retrieve_model()
-        print(X)
+        # print(X)
 
         symptoms_dict = {}
 
