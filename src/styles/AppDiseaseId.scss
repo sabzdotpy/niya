@@ -1,20 +1,95 @@
-
-
 .appDiseaseId {
-    height: 100vh;
-    overflow-y: auto;
+	height: 100vh;
+	overflow-y: auto;
 
-    .topBanner {
-        margin-top: 7rem;
-    }
+	.topBanner {
+		margin-top: 7rem;
+	}
 
-    .panel {
-        display: none;
-    }
+	.sectionsWrapper {
+		width: 90%;
+		margin: 0 auto;
+		// display: flex;
+		// max-height: 99vh;
+		// overflow-y: auto;
 
-    .panel.show {
-        display: block;
-    }
+		.panel {
+			// height: 98vh !important;
+			overflow-y: auto;
+			display: none;
 
+			&.show {
+				display: block;
+			}
+		}
 
+		.panel {
+			.inputAndSymptomsWrapper {
+				display: flex;
+				flex-direction: column;
+				gap: 0.5rem;
+				overflow-x: hidden;
+
+				.inputWrapper {
+					width: 100%;
+
+					input {
+                        width: 100vh;
+					}
+				}
+
+				div.allSymptomsContainer {
+					display: grid;
+					grid-template-columns: repeat(4, 1fr);
+					grid-template-rows: auto;
+					gap: 0.7rem;
+					height: 40vh;
+					padding: 0.3rem 0.7rem;
+					overflow: auto;
+
+					span.symptom {
+						padding: 0.3rem 0.4rem;
+						background: rgba(#fff, 0.3);
+						border-radius: 8px;
+						cursor: pointer;
+						transition: all 0.15s ease;
+
+						&:hover,
+						&:focus {
+							background: rgba(#fff, 0.5);
+						}
+
+                        &.selected {
+                            &::after {
+                                opacity: 1;
+                            }
+                        }
+                        &::after {
+                            transition: 0.125s;
+                            // font-family: "Jost";
+                            background: rgba(221, 221, 221, 0.8);
+                            color: #1f1f1f;
+                            opacity: 0;
+                            // font-weight: 700;
+                            // content: "\f00d";
+                            content: "\\/";
+                            position: relative;
+                            top: -23px;
+                            width: 99%;
+                            height: 99%;
+                            // color: inherit;
+                            // font-size: 2.5rem;
+                            display: grid;
+                            padding: 0;
+                            margin: 0;
+                            /* align-self: center; */
+                            align-items: center;
+                            text-align: center;
+                            border-radius: 8px;
+                        }
+					}
+				}
+			}
+		}
+	}
 }

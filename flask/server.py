@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, Response
 from flask_cors import CORS
 
 from ml import predict_disease, get_related_symptoms, train_model, get_all_symptoms
@@ -22,12 +22,16 @@ def predictGET():
 
 @app.route("/predict", methods=["POST"])     # give list of symptoms using post body and get predicted disease
 def predict():
-    # return predict_disease(['burning_micturition', 'bladder_discomfort', 'foul_smell_of urine', 'continuous_feel_of_urine'])
-    print(type(request.data.decode("UTF-8")))
+    try:
+        # return predict_disease(['burning_micturition', 'bladder_discomfort', 'foul_smell_of urine', 'continuous_feel_of_urine'])
+        print("---------------------------------------------")
+        print("Symptoms: ", end="")
+        print(list(request.data.decode("UTF-8").replace("[", "").replace("]", "").replace(" ", "").replace('"', '').split(",")))
+        print("---------------------------------------------")
 
-    print(list(request.data.decode("UTF-8").replace("[", "").replace("]", "").replace(" ", "").split(",")))
-
-    return predict_disease(list(request.data.decode("UTF-8").replace("[", "").replace("]", "").replace(" ", "").replace('"', '').split(",")))
+        return predict_disease(list(request.data.decode("UTF-8").replace("[", "").replace("]", "").replace(" ", "").replace('"', '').split(",")))
+    except KeyError:
+        return Response("[key error]", status=201)
 
 @app.route("/get_related_syms")     # URL/get_related_syms?s=vomiting    - s is the symptom query param
 def get_related_syms():

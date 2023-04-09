@@ -87,12 +87,14 @@ def get_all_symptoms():
     df = pd.read_csv(path("datasets/symptom_severity.csv"))
     symptom_list = df['itching'].tolist()
     symptom_list.append('itching')
+    symptom_list.remove('prognosis')
+    # symptom_list = df.iloc[:,0:1]
     symptoms_spaced = []
     for symptom in symptom_list:
         symptoms_spaced.append(symptom.replace('_',' '))
     symptoms_dict = dict(zip(symptoms_spaced, symptom_list))
     # return symptom_list, symptoms_spaced, symptoms_dict
-    return symptoms_spaced
+    return symptom_list
 
 
 def calc_condition(symptoms_experienced, days):
