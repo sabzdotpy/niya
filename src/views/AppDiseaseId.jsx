@@ -1,7 +1,6 @@
 import "../styles/AppDiseaseId.scss";
 import ImageRenderer from "../components/ImageRenderer";
 import avatarHmm from "../assets/hmmm.png";
-import axi from "../scripts/axiosConfig";
 import useArray from "../hooks/useArray";
 import { useEffect } from "react";
 import { useState } from "react";
