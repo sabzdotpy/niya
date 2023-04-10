@@ -31,10 +31,43 @@
 				overflow-x: hidden;
 
 				.inputWrapper {
-					width: 100%;
+					display: flex;
+					align-items: center;
+					gap: .5rem;
+					width: 80%;
+					margin: 0 auto;
+					padding: 0.5rem;
 
 					input {
-                        width: 100vh;
+						width: 80%;
+						padding: 1rem 1.5rem;
+						border-radius: 8px;
+						background: rgba(#fff, .5);
+						border: 2px solid transparent;
+						padding: 0.9rem 1rem;
+						border-radius: 16px 0 0 16px;
+						outline: none;
+						transition: all .3s ease;
+
+
+						&:hover {
+							border-color: rgba(#fff, .7);
+						}
+					}
+
+					button {
+						height: 100% !important;
+						padding: .7rem 1rem;
+						border-radius: 0 16px 16px 0;
+						border-style: none;
+						background: rgba(#fff, .5);
+						cursor: pointer;
+						transition: all .3s ease;
+
+						&:hover {
+							background: #fff;
+						}
+
 					}
 				}
 
@@ -54,39 +87,43 @@
 						cursor: pointer;
 						transition: all 0.15s ease;
 
+						&.hide {
+							display: none;
+						}
+
 						&:hover,
 						&:focus {
 							background: rgba(#fff, 0.5);
 						}
 
-                        &.selected {
-                            &::after {
-                                opacity: 1;
-                            }
-                        }
-                        &::after {
-                            transition: 0.125s;
-                            // font-family: "Jost";
-                            background: rgba(221, 221, 221, 0.8);
-                            color: #1f1f1f;
-                            opacity: 0;
-                            // font-weight: 700;
-                            // content: "\f00d";
-                            content: "\\/";
-                            position: relative;
-                            top: -23px;
-                            width: 99%;
-                            height: 99%;
-                            // color: inherit;
-                            // font-size: 2.5rem;
-                            display: grid;
-                            padding: 0;
-                            margin: 0;
-                            /* align-self: center; */
-                            align-items: center;
-                            text-align: center;
-                            border-radius: 8px;
-                        }
+						&.selected {
+							&::after {
+								opacity: 1;
+							}
+						}
+						&::after {
+							transition: 0.125s;
+							// font-family: "Jost";
+							background: rgba(221, 221, 221, 0.8);
+							color: #1f1f1f;
+							opacity: 0;
+							// font-weight: 700;
+							// content: "\f00d";
+							content: "\\/";
+							position: relative;
+							top: -23px;
+							width: 99%;
+							height: 99%;
+							// color: inherit;
+							// font-size: 2.5rem;
+							display: grid;
+							padding: 0;
+							margin: 0;
+							/* align-self: center; */
+							align-items: center;
+							text-align: center;
+							border-radius: 8px;
+						}
 					}
 				}
 			}

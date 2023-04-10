@@ -20,46 +20,46 @@ export default function AppDiseaseId() {
 	const [mainSymptom, setMainSymptom] = useState();
 	const [currentPanel, setCurrentPanel] = useState(1);
 	const [predictedDisease, setPredictedDisease] = useState("");
+	const [queryValue, setQueryValue] = useState("");
 
 	const mainSymptomInput = useRef();
 
 	useEffect(() => {
-		fetch(URL("/get_all_syms")).then((res) =>
-			res.json().then((data) => {
-				// console.log(data);
-				allSyms.setValue(data);
-				allSyms.remove("prognosis");
-			})
-		);
+		fetch(URL("/get_all_syms"))
+			.then((res) =>
+				res
+					.json()
+					.then((data) => {
+						allSyms.setValue(data);
+						allSyms.remove("prognosis");
+					})
+					.catch((err) => {
+						console.log("Error in converting all symptoms to json");
+						console.warn(err);
+					})
+			)
+			.catch((err) => {
+				console.log("Error in fetching");
+				console.warn(err);
+			});
 	}, []);
 
-	const fetchAllSymptoms = () => {
-		fetch(URL("/get_all_syms")).then((res) =>
-			res.json().then((data) => {
-				console.log(data);
-				// allSyms.setValue(data);
-			})
-		);
-		// axi.get("/get_all_syms")
-		// .then((res) => {
-		// 	console.log(res.data)
-		// })
-		// .catch((e) => {
-		// 	console.warn(e)
-		// })
-	};
-
 	const fetchRelatedSymptoms = (symptom) => {
-		fetch(URL(`/get_related_syms?s=${symptom}`)).then((res) =>
-			res.json().then((data) => {
-				console.log(`Related Symptoms to ${symptom}`);
-				if (data.indexOf(symptom) >= 0) {
-					delete data[data.indexOf(symptom)];
-				}
-				console.log(data);
-				relatedSyms.setValue(data);
-			})
-		);
+		fetch(URL(`/get_related_syms?s=${symptom}`))
+			.then((res) =>
+				res.json().then((data) => {
+					console.log(`Related Symptoms to ${symptom}`);
+					if (data.indexOf(symptom) >= 0) {
+						delete data[data.indexOf(symptom)];
+					}
+					console.log(data);
+					relatedSyms.setValue(data);
+				})
+			)
+			.catch((err) => {
+				console.log("Error in getting related symptoms");
+				console.warn(err);
+			});
 	};
 
 	const predictDisease = async (listOfSymptoms) => {
@@ -84,7 +84,7 @@ export default function AppDiseaseId() {
 							setPredictedDisease(data[0]);
 						})
 						.catch((e) => {
-							console.log("Error while converting to JSON");
+							console.log("Error while converting predicted disease to JSON");
 							console.warn(e);
 						});
 				} else {
@@ -120,10 +120,18 @@ export default function AppDiseaseId() {
 					Please enter the main symptom you are experiencing
 					<div className="inputAndSymptomsWrapper">
 						<div className="inputWrapper">
-							<input type="text" ref={mainSymptomInput} />
+							<input
+								type="text"
+								placeholder="Search for symptoms..."
+								value={queryValue}
+								ref={mainSymptomInput}
+								onChange={(e) => {
+									setQueryValue(e.target.value);
+								}}
+							/>
 							<button
 								onClick={() => {
-									mainSymptomInput.current.value = "x";
+									setQueryValue("");
 								}}
 							>
 								Clear
@@ -131,29 +139,36 @@ export default function AppDiseaseId() {
 						</div>
 
 						<div className="allSymptomsContainer">
-							{allSyms.value.map((symptom, index) => {
-								return (
-									<span
-										className={
-											"symptom" +
-											(mainSymptomInput.current.value
-												? symptom.replaceAll("_", " ").includes(mainSymptomInput.current.value)
-													? ""
-													: " hide"
-												: "")
-										}
-										key={index}
-										onClick={() => {
-											setMainSymptom(symptom);
-											console.log(`Main Symptom: ${symptom}`);
-											fetchRelatedSymptoms(symptom);
-											setCurrentPanel(2);
-										}}
-									>
-										{index + 1} - {symptom.replaceAll("_", " ")}{" "}
-									</span>
-								);
-							})}
+							{allSyms.value ? (
+								allSyms.value.map((symptom, index) => {
+									return (
+										<span
+											className={
+												"symptom" + 
+													(queryValue
+													? symptom
+															.toLowerCase()
+															.replaceAll("_", " ")
+															.includes(queryValue)
+														? ""
+														: " hide"
+													: "")
+											}
+											key={index}
+											onClick={() => {
+												setMainSymptom(symptom);
+												console.log(`Main Symptom: ${symptom}`);
+												fetchRelatedSymptoms(symptom);
+												setCurrentPanel(2);
+											}}
+										>
+											{index + 1} - {symptom.replaceAll("_", " ")}{" "}
+										</span>
+									);
+								})
+							) : (
+								<div>Loading..</div>
+							)}
 						</div>
 					</div>
 					{/* <button onClick={() => {}}>Proceed</button> */}
