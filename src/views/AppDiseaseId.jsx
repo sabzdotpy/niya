@@ -2,9 +2,10 @@ import "../styles/AppDiseaseId.scss";
 import ImageRenderer from "../components/ImageRenderer";
 import avatarHmm from "../assets/hmmm.png";
 import useArray from "../hooks/useArray";
-import { useEffect } from "react";
-import { useState } from "react";
-import { useRef } from "react";
+import { useEffect, useState, useRef } from "react";
+import { useOutletContext } from "react-router-dom";
+
+import { toTitleCase } from "../scripts/Misc";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -13,11 +14,13 @@ const URL = (relative_url) => {
 };
 
 export default function AppDiseaseId() {
+	const [setShowLogin, pushToNotifications] = useOutletContext();
+
 	const allSyms = useArray();
 	const relatedSyms = useArray();
 	const selectedRelatedSyms = useArray();
 
-	const [mainSymptom, setMainSymptom] = useState();
+	const [mainSymptom, setMainSymptom] = useState("");
 	const [currentPanel, setCurrentPanel] = useState(1);
 	const [predictedDisease, setPredictedDisease] = useState("");
 	const [queryValue, setQueryValue] = useState("");
@@ -25,22 +28,35 @@ export default function AppDiseaseId() {
 	const mainSymptomInput = useRef();
 
 	useEffect(() => {
+		// console.log(process.env.REACT_APP_BACKEND)
 		fetch(URL("/get_all_syms"))
-			.then((res) =>
-				res
-					.json()
-					.then((data) => {
-						allSyms.setValue(data);
-						allSyms.remove("prognosis");
-					})
-					.catch((err) => {
-						console.log("Error in converting all symptoms to json");
-						console.warn(err);
-					})
-			)
+			.then((res) => {
+				if (!res.ok) {
+					pushToNotifications(
+						"Server down",
+						`Server responded with ${res.status}. Please inform the creator.`,
+						"error"
+					);
+				} else {
+					res.json()
+						.then((data) => {
+							allSyms.setValue(data);
+							allSyms.remove("prognosis");
+						})
+						.catch((err) => {
+							console.log("Error in converting all symptoms to json");
+							console.warn(err);
+						});
+				}
+			})
 			.catch((err) => {
-				console.log("Error in fetching");
+				console.log("No response");
 				console.warn(err);
+				pushToNotifications(
+					"Server down",
+					"The server is not responding to your request. Please inform the creator.",
+					"error"
+				);
 			});
 	}, []);
 
@@ -53,12 +69,21 @@ export default function AppDiseaseId() {
 						delete data[data.indexOf(symptom)];
 					}
 					console.log(data);
-					relatedSyms.setValue(data);
+					if (data.join("") !== "invalid sym") {
+						relatedSyms.setValue(data);
+					} else {
+						setCurrentPanel(1);
+					}
 				})
 			)
 			.catch((err) => {
 				console.log("Error in getting related symptoms");
 				console.warn(err);
+				pushToNotifications(
+					"Server down",
+					"The server is not responding to your request. Please inform the creator.",
+					"error"
+				);
 			});
 	};
 
@@ -81,7 +106,12 @@ export default function AppDiseaseId() {
 					res.json()
 						.then((data) => {
 							console.log(data);
-							setPredictedDisease(data[0]);
+							if (data[0] === data[1]) {
+								setPredictedDisease(data[0]);
+							}
+							else {
+								setPredictedDisease(`${data[0]} or ${data[1]}`);
+							}
 						})
 						.catch((e) => {
 							console.log("Error while converting predicted disease to JSON");
@@ -94,6 +124,7 @@ export default function AppDiseaseId() {
 			})
 			.catch((e) => {
 				console.warn(e);
+				pushToNotifications("The server is not responding to your request. Please inform the creator.");
 			});
 	};
 
@@ -139,17 +170,14 @@ export default function AppDiseaseId() {
 						</div>
 
 						<div className="allSymptomsContainer">
-							{allSyms.value ? (
+							{allSyms.value.length > 0 ? (
 								allSyms.value.map((symptom, index) => {
 									return (
 										<span
 											className={
-												"symptom" + 
-													(queryValue
-													? symptom
-															.toLowerCase()
-															.replaceAll("_", " ")
-															.includes(queryValue)
+												"symptom" +
+												(queryValue
+													? symptom.toLowerCase().replaceAll("_", " ").includes(queryValue)
 														? ""
 														: " hide"
 													: "")
@@ -162,7 +190,7 @@ export default function AppDiseaseId() {
 												setCurrentPanel(2);
 											}}
 										>
-											{index + 1} - {symptom.replaceAll("_", " ")}{" "}
+											{toTitleCase(symptom.replaceAll("_", " "))}
 										</span>
 									);
 								})
@@ -175,36 +203,39 @@ export default function AppDiseaseId() {
 				</section>
 
 				<section className={"panel panel2 relatedSymptomInput" + (currentPanel === 2 ? " show" : "")}>
-					Based on the main symptom {mainSymptom?.replaceAll("_", " ")}, I have a list of other possible
-					symptoms that you may be experiencing, please select all that apply.
-					<input type="text" />
+					Based on the main symptom <b>{toTitleCase(mainSymptom?.replaceAll("_", " "))}</b>, I have a list of
+					other possible symptoms that you may be experiencing, please select all that apply.
 					<div className="inputAndSymptomsWrapper">
 						<div className="inputWrapper">
 							<input type="text" ref={mainSymptomInput} />
 							<button>Clear</button>
 						</div>
 						<div className="allSymptomsContainer">
-							{relatedSyms.value.map((symptom, index) => {
-								return (
-									<span
-										className="symptom"
-										key={index}
-										onClick={(e) => {
-											if (selectedRelatedSyms.value.includes(symptom)) {
-												console.log(`Removing ${symptom}`);
-												e.target.classList.remove("selected");
-												selectedRelatedSyms.remove(symptom);
-											} else {
-												console.log(`Adding ${symptom}`);
-												e.target.classList.add("selected");
-												selectedRelatedSyms.push(symptom);
-											}
-										}}
-									>
-										{index + 1} - {symptom.replaceAll("_", " ")}{" "}
-									</span>
-								);
-							})}
+							{relatedSyms.value.length > 0 ? (
+								relatedSyms.value.map((symptom, index) => {
+									return (
+										<span
+											className="symptom"
+											key={index}
+											onClick={(e) => {
+												if (selectedRelatedSyms.value.includes(symptom)) {
+													console.log(`Removing ${symptom}`);
+													e.target.classList.remove("selected");
+													selectedRelatedSyms.remove(symptom);
+												} else {
+													console.log(`Adding ${symptom}`);
+													e.target.classList.add("selected");
+													selectedRelatedSyms.push(symptom);
+												}
+											}}
+										>
+											{toTitleCase(symptom.replaceAll("_", " "))}
+										</span>
+									);
+								})
+							) : (
+								<div>Loading...</div>
+							)}
 						</div>
 					</div>
 					<button
@@ -219,7 +250,7 @@ export default function AppDiseaseId() {
 
 				<section className={"panel panel3 relatedSymptomInput" + (currentPanel === 3 ? " show" : "")}>
 					Based on the all the symptoms you have given me, I think you have
-					<h2>{predictedDisease}</h2>
+					<h2>{(predictedDisease)}</h2>
 				</section>
 			</div>
 

@@ -269,13 +269,23 @@ def predict(symptoms_exp):
         return list(trained_model.predict([input_vector]))
 
 
-def predict_disease(symptoms_arr):
+def predict_disease(symptoms_arr: list) -> list:
     ts = pc()
     predicted_disease = predict(symptoms_arr)
     te = pc()
 
     print(te - ts)
-    return predicted_disease
+    print("----------------------")
+    print(type(present_disease))
+    print(type(predicted_disease))
+    print(f"First prediction: {present_disease}, Second prediction: {predicted_disease}")
+    print("----------------------")
+
+    predicted_disease.append(present_disease[0])
+    print("-------")
+    print(predicted_disease)
+
+    return list(predicted_disease)
 
 """
 

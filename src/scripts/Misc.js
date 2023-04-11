@@ -95,6 +95,25 @@ export const internetPresent = () => {
 //     }
 // }
 
+export const toTitleCase = (str) => {
+	if (!str.length) {
+		return;
+	}
+
+	str = str.split(" ");
+	return str
+		.map((word, index) => {
+			return (
+				(word.length > 3
+					? word.slice(0, 1).toUpperCase()
+					: (index === 0)
+					? word.slice(0, 1).toUpperCase()
+					: word.slice(0, 1)) + word.slice(1)
+			);
+		})
+		.join(" ");
+};
+
 const errors = {
 	"auth/user-disabled": "Your account has been disabled.",
 	"auth/user-not-found": "No user found with the given email ID.",

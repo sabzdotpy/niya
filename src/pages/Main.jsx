@@ -253,7 +253,7 @@ export default function Main() {
 				</div>
 			</div>
 			<section className="out">
-				<Outlet context={[setShowLogin]} />
+				<Outlet context={[setShowLogin, pushToNotifications]} />
 			</section>
 		</div>
 	);
