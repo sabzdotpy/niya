@@ -1,4 +1,3 @@
-import { Outlet } from "react-router-dom";
 import "../styles/Navbar.css";
 import "../styles/Notifications.scss";
 
@@ -22,7 +21,7 @@ import { AiOutlineFire } from "react-icons/ai"
 import { TiTick } from "react-icons/ti"
 
 
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Outlet } from "react-router-dom";
 import { CSSTransition } from "react-transition-group";
 
 export default function Main() {
@@ -70,6 +69,9 @@ export default function Main() {
 		});
 
 		console.log("adding scroll listener");
+		document.querySelector(".out").addEventListener("scroll", (se) => {
+			console.log("Main scrolled.")
+		})
 		window.addEventListener("scroll", () => {
 			navBlurCheck();
 		});
@@ -126,6 +128,8 @@ export default function Main() {
 						<img
 							src={niya}
 							alt="Niya Logo"
+							title="Go back to main page"
+							onClick={() => navigate("/")}
 						></img>
 						{/* <div className="menu-toggle" id="mobile-menu" ref={mobileNavToggler} onClick={mobileNavToggle}>
 							<span className="bar"></span>
@@ -173,24 +177,6 @@ export default function Main() {
 															</li>
 														);
 													})}
-													{/* <li className="item" onClick={() => navigate("/app-id")}>
-														Predict Diseases
-													</li>
-													<li className="item" onClick={() => navigate("/app")}>
-														Appointment Scheduling
-													</li>
-													<li className="item" onClick={() => navigate("/app")}>
-														Journal
-													</li>
-													<li className="item" onClick={() => navigate("/app")}>
-														Calorie Tracker
-													</li>
-													<li className="item" onClick={() => navigate("/app")}>
-														Mood Tracker
-													</li>
-													<li className="item" onClick={() => navigate("/app")}>
-														Recommendations
-													</li> */}
 												</ul>
 											</CSSTransition>
 										</div>

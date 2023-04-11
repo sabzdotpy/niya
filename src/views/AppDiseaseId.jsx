@@ -4,8 +4,9 @@ import avatarHmm from "../assets/hmmm.png";
 import useArray from "../hooks/useArray";
 import { useEffect, useState, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
+import { TiTick } from "react-icons/ti";
 
-import { toTitleCase } from "../scripts/Misc";
+import { pink, toTitleCase } from "../scripts/Misc";
 
 const BASE_URL = "http://localhost:5000";
 
@@ -19,6 +20,7 @@ export default function AppDiseaseId() {
 	const allSyms = useArray();
 	const relatedSyms = useArray();
 	const selectedRelatedSyms = useArray();
+	const precautionsList = useArray();
 
 	const [mainSymptom, setMainSymptom] = useState("");
 	const [currentPanel, setCurrentPanel] = useState(1);
@@ -92,7 +94,7 @@ export default function AppDiseaseId() {
 		console.log("Symptoms: ");
 		console.log(listOfSymptoms);
 		if (listOfSymptoms.length <= 0) {
-			console.warn("Symptoms length is zero. Provide atleast one symptom.");
+			pushToNotifications("Error", "Please provide atleast one symptom.", "error");
 			return;
 		}
 
@@ -108,9 +110,10 @@ export default function AppDiseaseId() {
 							console.log(data);
 							if (data[0] === data[1]) {
 								setPredictedDisease(data[0]);
-							}
-							else {
+								getPrecautions(data[0]);
+							} else {
 								setPredictedDisease(`${data[0]} or ${data[1]}`);
+								getPrecautions(data);
 							}
 						})
 						.catch((e) => {
@@ -128,10 +131,46 @@ export default function AppDiseaseId() {
 			});
 	};
 
+	const getPrecautions = (listOfDiseases) => {
+		fetch(URL(`/get_prec`), {
+			method: "post",
+			headers: { "Content-Type": "application/json, application/x-www-form-urlencoded" },
+			body: JSON.stringify(listOfDiseases),
+		})
+			.then((res) => {
+				if (res.status === 200) {
+					res.json()
+						.then((data) => {
+							console.log(data[0]);
+
+							precautionsList.push(data[0]);
+							pink("Printing precs")
+							// console.log(data)
+							// if (data[0] === data[1]) {
+							// 	setPrecautions(data[0]);
+							// } else {
+							// 	setPredictedDisease(`${data[0]} or ${data[1]}`);
+							// }
+						})
+						.catch((e) => {
+							console.log("Error while converting precautions to JSON");
+							console.warn(e);
+						});
+				} else {
+					console.warn("Server didn't sent 200");
+					console.log(res);
+				}
+			})
+			.catch((e) => {
+				console.warn(e);
+				pushToNotifications("The server is not responding to your request. Please inform the creator.");
+			});
+	};
+
 	return (
 		<div className="appDiseaseId">
 			<section className="topBanner">
-				<button
+				{/* <button
 					className="fetch"
 					onClick={() => {
 						predictDisease(["muscle_wasting", "patches_in_throat", "high_fever", "extra_marital_contacts"]);
@@ -139,7 +178,8 @@ export default function AppDiseaseId() {
 					}}
 				>
 					Test Predict
-				</button>
+				</button> */}
+				{/* Disease Identification */}
 			</section>
 
 			<div className="sectionsWrapper">
@@ -195,7 +235,7 @@ export default function AppDiseaseId() {
 									);
 								})
 							) : (
-								<div>Loading..</div>
+								<div>Getting data..</div>
 							)}
 						</div>
 					</div>
@@ -218,27 +258,35 @@ export default function AppDiseaseId() {
 											className="symptom"
 											key={index}
 											onClick={(e) => {
+												// console.log("Clicked on a symptom");
 												if (selectedRelatedSyms.value.includes(symptom)) {
 													console.log(`Removing ${symptom}`);
 													e.target.classList.remove("selected");
-													selectedRelatedSyms.remove(symptom);
+													selectedRelatedSyms.remove(
+														selectedRelatedSyms.value.indexOf(symptom)
+													);
 												} else {
 													console.log(`Adding ${symptom}`);
 													e.target.classList.add("selected");
 													selectedRelatedSyms.push(symptom);
 												}
+												console.log(selectedRelatedSyms.value);
 											}}
 										>
 											{toTitleCase(symptom.replaceAll("_", " "))}
+											<div className="overlay">
+												<span>✓</span>
+											</div>
 										</span>
 									);
 								})
 							) : (
-								<div>Loading...</div>
+								<div>Getting data...</div>
 							)}
 						</div>
 					</div>
 					<button
+						className="predictButton"
 						onClick={() => {
 							predictDisease(selectedRelatedSyms.value);
 							setCurrentPanel(3);
@@ -249,16 +297,29 @@ export default function AppDiseaseId() {
 				</section>
 
 				<section className={"panel panel3 relatedSymptomInput" + (currentPanel === 3 ? " show" : "")}>
-					Based on the all the symptoms you have given me, I think you have
-					<h2>{(predictedDisease)}</h2>
+					<div className="header">
+						<span>Based on the all the symptoms you have given me, I think you have</span>
+					<h2>{predictedDisease}</h2>
+					</div>
+
+					<h4>These are some precautions you can take for a relief. It is advisable to consult a doctor.</h4>
+					<ul className="precautionsContainer">
+						{precautionsList?.value[0]?.map((precaution, index) => {
+							return (
+								<li key={index}>
+									{toTitleCase(precaution)}
+								</li>
+							);
+						})}
+					</ul>
 				</section>
 			</div>
 
 			<footer className="disclaimer">
-				This tool does not provide medical advice It is intended for informational purposes only. It is not a
+				This tool does not provide medical advice. It is intended for informational purposes only. It is not a
 				substitute for professional medical advice, diagnosis or treatment. Never ignore professional medical
-				advice in seeking treatment because of something you have read on the WebMD Site. If you think you may
-				have a medical emergency, immediately call your doctor.
+				advice in seeking treatment. If you think you may have a medical emergency, immediately call your
+				doctor.
 			</footer>
 		</div>
 	);

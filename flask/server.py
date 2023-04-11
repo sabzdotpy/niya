@@ -1,7 +1,7 @@
 from flask import Flask, request, Response
 from flask_cors import CORS
 
-from ml import predict_disease, get_related_symptoms, train_model, get_all_symptoms
+from ml import predict_disease, get_related_symptoms, train_model, get_all_symptoms, precautionDictionary
 
 
 app = Flask(__name__)
@@ -32,6 +32,27 @@ def predict():
         return predict_disease(list(request.data.decode("UTF-8").replace("[", "").replace("]", "").replace(" ", "").replace('"', '').split(",")))
     except KeyError:
         return Response("[key error]", status=201)
+
+@app.route("/get_prec", methods=["POST"])
+def get_precautions():
+    print(request.data.decode("UTF-8")); 
+    precautions = []
+
+    for disease in (list(request.data.decode("UTF-8").replace("[", "").replace("]", "").replace('"', '').split(","))):
+        precautions.append(precautionDictionary[disease])
+
+    return precautions
+
+
+@app.route("/get_prec", methods=["GET"])
+def get_precautionsGET():
+    diseases = ["AIDS", "Acne"]
+    precautions = []
+    for disease in diseases:
+        precautions.append(precautionDictionary[disease])
+
+    return precautions
+
 
 @app.route("/get_related_syms")     # URL/get_related_syms?s=vomiting    - s is the symptom query param
 def get_related_syms():

@@ -106,12 +106,27 @@ export const toTitleCase = (str) => {
 			return (
 				(word.length > 3
 					? word.slice(0, 1).toUpperCase()
-					: (index === 0)
+					: index === 0
 					? word.slice(0, 1).toUpperCase()
 					: word.slice(0, 1)) + word.slice(1)
 			);
 		})
 		.join(" ");
+};
+
+export const getTimeBasedGreeting = () => {
+	let hours = new Date().getHours();
+	if (hours >= 16) {
+		return "Good Evening";
+	}
+	if (hours >= 12) {
+		return "Good Afternoon";
+	}
+	if (hours > 0) {
+		return "Good Morning";
+	}
+
+	return "Greetings";
 };
 
 const errors = {

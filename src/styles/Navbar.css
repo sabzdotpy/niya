@@ -39,6 +39,7 @@
 }
 
 .navbar img {
+	cursor: pointer;
 	height: 32px;
 	width: auto;
 	justify-self: start;

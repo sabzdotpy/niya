@@ -3,6 +3,7 @@ import classnames from "classnames";
 import { useIntersection } from "./intersectionObserver";
 import "../styles/ImageRenderer.scss";
 
+
 const ImageRenderer = ({ url, thumb, width, height }) => {
 	const [isLoaded, setIsLoaded] = useState(false);
 	const [isInView, setIsInView] = useState(false);
@@ -20,6 +21,7 @@ const ImageRenderer = ({ url, thumb, width, height }) => {
 			className="image-container"
 			ref={imgRef}
 			style={{
+				height: height,
 				width: "100%",
 			}}
 		>

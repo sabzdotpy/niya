@@ -16,7 +16,6 @@ function App() {
 	return (
 		<TransitionGroup component={null}>
 			<CSSTransition key={location.key} classNames="fade" timeout={300}>
-				{/* <Router basename="/"> */}
 				<Routes>
 					<Route path="/" element={<Main />} name="app" handler={App}>
 						<Route path="/" element={<Home />}></Route>
@@ -24,14 +23,8 @@ function App() {
 						<Route path="/app-id" element={<AppDiseaseId />}></Route>
 					</Route>
 					<Route path="/account" element={<AppDiseaseId />}></Route>
-
-					{/* <Route path="/pastes" element={<Pastes />} name="app" handler={App}></Route>
-					<Route path="/meta" element={<Meta />} name="app" handler={App}></Route>
-					*/}
-
 					<Route path="/*" element={<NotFound />} name="app" handler={App}></Route>
 				</Routes>
-				{/* </Router> */}
 			</CSSTransition>
 		</TransitionGroup>
 		// </AuthProvider>
