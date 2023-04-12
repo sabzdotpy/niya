@@ -22,7 +22,7 @@ const ImageRenderer = ({ url, thumb, width, height }) => {
 			ref={imgRef}
 			style={{
 				height: height,
-				width: "100%",
+				width: width,
 			}}
 		>
 			{isInView && (

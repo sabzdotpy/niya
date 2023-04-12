@@ -183,6 +183,7 @@ function SignInPrompt(props) {
 			// * validate email, pwd
 
 			console.log("clicked login button");
+			primaryBtnText.current.innerText = "Signing in...";
 			if (loginUsernameInput.current.value && loginPasswordInput.current.value) {
 				let email;
 				if (validateEmail(loginUsernameInput.current.value)) {
@@ -196,6 +197,7 @@ function SignInPrompt(props) {
 					} catch (readableError) {
 						red(readableError);
 						// alert(e);
+						primaryBtnText.current.innerText = "Login";
 						props.pushToNotifications("Error", readableError, "error");
 						return;
 					}
@@ -214,10 +216,12 @@ function SignInPrompt(props) {
 						clearAllInputTexts();
 						props.closeOverlay();
 						navigate("/");
+						primaryBtnText.current.innerText = "Login";
 					})
 					.catch((error) => {
 						red(error);
 						// alert(getErrorFromCode(error.code));
+						primaryBtnText.current.innerText = "Login"
 						props.pushToNotifications("Error", getErrorFromCode(error.code), "error");
 					});
 			} else {

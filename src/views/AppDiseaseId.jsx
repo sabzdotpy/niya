@@ -144,7 +144,7 @@ export default function AppDiseaseId() {
 							console.log(data[0]);
 
 							precautionsList.push(data[0]);
-							pink("Printing precs")
+							pink("Printing precs");
 							// console.log(data)
 							// if (data[0] === data[1]) {
 							// 	setPrecautions(data[0]);
@@ -299,18 +299,18 @@ export default function AppDiseaseId() {
 				<section className={"panel panel3 relatedSymptomInput" + (currentPanel === 3 ? " show" : "")}>
 					<div className="header">
 						<span>Based on the all the symptoms you have given me, I think you have</span>
-					<h2>{predictedDisease}</h2>
+						<h2>{predictedDisease}</h2>
 					</div>
 
 					<h4>These are some precautions you can take for a relief. It is advisable to consult a doctor.</h4>
 					<ul className="precautionsContainer">
-						{precautionsList?.value[0]?.map((precaution, index) => {
-							return (
-								<li key={index}>
-									{toTitleCase(precaution)}
-								</li>
-							);
-						})}
+						{precautionsList.value[0] ? (
+							precautionsList.value[0].map((precaution, index) => {
+								return <li key={index}>{toTitleCase(precaution)}</li>;
+							})
+						) : (
+							<li>Getting data...</li>
+						)}
 					</ul>
 				</section>
 			</div>

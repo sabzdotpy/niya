@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import "../styles/Home.scss";
+
 import avatarThat from "../assets/pointing_at_that.png";
+import avatarHidden from "../assets/hidden.png";
 import ImageRenderer from "../components/ImageRenderer";
 import { getTimeBasedGreeting } from "../scripts/Misc";
 import { MdWavingHand } from "react-icons/md";
@@ -36,7 +38,12 @@ export default function Home() {
 			<div className="mainContent">
 				<div className="avatarContainer">
 					<div className="avatarOffset"></div>
-					<ImageRenderer className="avatarRender" url={avatarThat} />
+					<span className="avatarRenderDesktop">
+						<ImageRenderer url={avatarThat} height={"400px"} />
+					</span>
+					<span className="avatarRenderMobile">
+						<ImageRenderer url={avatarHidden} width={"250px"} />
+					</span>
 				</div>
 				<div className="suggestionsContainer">
 					<div className="suggestionsTitle">Here are some things for you to do:</div>
