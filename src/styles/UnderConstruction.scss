@@ -1,0 +1,17 @@
+
+div.underConstruction {
+	// position: absolute;
+	height: 100vh !important;
+	width: 80vw !important;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin: 0 auto;
+
+    font-size: 20px;
+    font-weight: 600;
+
+	color: rgb(149, 41, 20);
+}

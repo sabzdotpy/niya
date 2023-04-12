@@ -15,9 +15,9 @@ export default function Home() {
 	const navigate = useNavigate();
 
 	const suggestedActivities = useArray([
-		{ text: "Write a journal entry", url: "/journal" },
-		{ text: "Disease identification", url: "/app-id" },
-		{ text: "Get a random quote", url: "/quotes" },
+		{ text: "Write a journal entry", url: "/app-jou" },
+		{ text: "Disease identification", url: "/app-ide" },
+		{ text: "Get a random quote", url: "/app-quo" },
 	]);
 
 	useEffect(() => {

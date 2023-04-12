@@ -18,7 +18,6 @@ import { GrTableAdd } from "react-icons/gr";
 import { BsJournalRichtext, BsQuestionLg } from "react-icons/bs";
 import { BiBrain } from "react-icons/bi";
 import { AiOutlineFire } from "react-icons/ai"
-import { TiTick } from "react-icons/ti"
 
 
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
@@ -42,12 +41,12 @@ export default function Main() {
 	]);
 
 	const apps = useArray([
-		{ name: "Disease Identification", icon: <FiSearch size={"25px"} />, route: "/app-id" },
-		{ name: "Book Appointments", icon: <GrTableAdd size={"25px"} />, route: "/app-id" },
-		{ name: "Journal", icon: <BsJournalRichtext size={"25px"} />, route: "/app-id" },
-		{ name: "Mood Tracker", icon: <FiSmile size={"25px"} />, route: "/app-id" },
-		{ name: "Recommendations", icon: <BiBrain size={"25px"} />, route: "/app-id" },
-		{ name: "Calorie Tracker", icon: <AiOutlineFire size={"25px"} />, route: "/app-id" },
+		{ name: "Disease Identification", icon: <FiSearch size={"25px"} />, route: "/app-ide" },
+		{ name: "Book Appointments", icon: <GrTableAdd size={"25px"} />, route: "/app-app" },
+		{ name: "Journal", icon: <BsJournalRichtext size={"25px"} />, route: "/app-jou" },
+		{ name: "Mood Tracker", icon: <FiSmile size={"25px"} />, route: "/app-moo" },
+		{ name: "Recommendations", icon: <BiBrain size={"25px"} />, route: "/app-reco" },
+		{ name: "Calorie Tracker", icon: <AiOutlineFire size={"25px"} />, route: "/app-calo" },
 	]);
 
 	//! ----------------  REF  ----------------
