@@ -54,7 +54,7 @@ export default function Hero(props) {
 
 					<div className="avatarWrapper">
 						{/* <img src={avatarHi} alt="image of niya saying hi" /> */}
-						<ImageRenderer url={avatarHi} width={450} height={500} />
+						<ImageRenderer url={avatarHi} width={330} height={500} />
 					</div>
 				</section>
 				<section className="about">
@@ -87,7 +87,7 @@ export default function Hero(props) {
 						</div>
 
 						<div className="aboutImageWrapper">
-							<ImageRenderer url={avatarAbout} width={450} height={500} />
+							<ImageRenderer url={avatarAbout} width={"330px"} height={"330px"} />
 						</div>
 					</div>
 				</section>

@@ -30,10 +30,8 @@
 			align-items: flex-end;
 			justify-content: center;
 
-			img {
-				// height: 500px;
-				width: 350px;
-				object-fit: contain;
+			.image-container {
+				align-items: flex-end;
 			}
 		}
 
@@ -96,9 +94,10 @@
 			// justify-content: center;
 			// align-items: center;
 
-			img {
-				width: 350px;
-			}
+			// .image-container {
+			// 	width: 330px;
+			// 	height: 330px;
+			// }
 		}
 
 		.aboutTextWrapper {
@@ -183,7 +182,6 @@
 	}
 
 	section.login {
-
 		.loginWrapper {
 			min-height: 80vh;
 			display: flex;
@@ -257,7 +255,7 @@
 			.aboutTextWrapper {
 				width: 100%;
 				gap: 1rem;
-				
+
 				div {
 					// margin: 0 auto;
 					// text-align: center;
