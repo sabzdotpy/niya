@@ -75,7 +75,8 @@
 					grid-template-columns: repeat(4, 1fr);
 					grid-template-rows: auto;
 					gap: 0.7rem;
-					height: 40vh;
+					min-height: auto;
+					max-height: 40vh;
 					padding: 0.3rem 0.7rem;
 					overflow: auto;
 

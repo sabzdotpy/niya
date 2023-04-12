@@ -156,7 +156,7 @@ export default function Hero(props) {
 					<div className="loginWrapper">
 						What are you waiting for? An all-in-one healthcare assistant is just a click away!
 						<button className="doubleBtn" onClick={() => setShowLogin(true)}>
-							{currentUser === "none" ? "Create an account" : "Sign In"}
+							{currentUser === "none" ? "Create an account" : "Go to Main Page"}
 						</button>
 					</div>
 				</section>

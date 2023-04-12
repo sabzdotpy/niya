@@ -26,6 +26,7 @@ export default function AppDiseaseId() {
 	const [currentPanel, setCurrentPanel] = useState(1);
 	const [predictedDisease, setPredictedDisease] = useState("");
 	const [queryValue, setQueryValue] = useState("");
+	const [relatedSymsQueryValue, setRelatedSymsQueryValue] = useState("");
 
 	const mainSymptomInput = useRef();
 
@@ -122,12 +123,13 @@ export default function AppDiseaseId() {
 						});
 				} else {
 					console.warn("Server didn't sent 200");
+					pushToNotifications("Whoa", "Unknown error. I'm as clueless as you are.", "error")
 					console.log(res);
 				}
 			})
 			.catch((e) => {
 				console.warn(e);
-				pushToNotifications("The server is not responding to your request. Please inform the creator.");
+				pushToNotifications("Unknown Error","The server is not responding to your request. Please inform the creator.", "error");
 			});
 	};
 
@@ -247,7 +249,9 @@ export default function AppDiseaseId() {
 					other possible symptoms that you may be experiencing, please select all that apply.
 					<div className="inputAndSymptomsWrapper">
 						<div className="inputWrapper">
-							<input type="text" ref={mainSymptomInput} />
+							<input type="text" ref={mainSymptomInput} onChange={(e) => {
+									setRelatedSymsQueryValue(e.target.value);
+								}} />
 							<button>Clear</button>
 						</div>
 						<div className="allSymptomsContainer">
@@ -255,7 +259,14 @@ export default function AppDiseaseId() {
 								relatedSyms.value.map((symptom, index) => {
 									return (
 										<span
-											className="symptom"
+											className={
+												"symptom" +
+												(relatedSymsQueryValue
+													? symptom.toLowerCase().replaceAll("_", " ").includes(relatedSymsQueryValue)
+														? ""
+														: " hide"
+													: "")
+											}
 											key={index}
 											onClick={(e) => {
 												// console.log("Clicked on a symptom");
@@ -281,7 +292,7 @@ export default function AppDiseaseId() {
 									);
 								})
 							) : (
-								<div>Getting data...</div>
+								<div>Getting related symptoms...</div>
 							)}
 						</div>
 					</div>
