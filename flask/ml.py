@@ -28,6 +28,7 @@ reduced_data = []
 precaution_list2 = ''
 color = ''
 
+
 GLOBALS = {}
 
 def path(path):
@@ -86,9 +87,14 @@ def getDicts():
             _prec = {row[0]: [row[1], row[2], row[3], row[4]]}
             precautionDictionary.update(_prec)
 
+
+#! ====================
+symptom_severity_df = pd.read_csv(path("datasets/symptom_severity.csv"))
+training_df = pd.read_csv(path("datasets/Training.csv"))
+
+
 def get_all_symptoms():
-    df = pd.read_csv(path("datasets/symptom_severity.csv"))
-    symptom_list = df['itching'].tolist()
+    symptom_list = symptom_severity_df['itching'].tolist()
     symptom_list.append('itching')
     symptom_list.remove('prognosis')
     # symptom_list = df.iloc[:,0:1]
@@ -206,15 +212,13 @@ def get_related_symptoms(symptom1):
     clf = clf[0]
 
 
-    training = pd.read_csv(path("datasets/Training.csv"))
-
-    if (symptom1 not in training.iloc[0:1, 0:-1]):
+    if (symptom1 not in training_df.iloc[0:1, 0:-1]):
         return "invalid sym"
 
-    cols = training.columns[:-1]
-    y = training['prognosis']
+    cols = training_df.columns[:-1]
+    y = training_df['prognosis']
 
-    reduced_data = training.groupby(training['prognosis']).max()
+    reduced_data = training_df.groupby(training_df['prognosis']).max()
     le = preprocessing.LabelEncoder()
     le.fit(y)
 
@@ -225,9 +229,8 @@ def get_related_symptoms(symptom1):
     return symptoms_given
 
 def train_model():
-	df = pd.read_csv(path("datasets/Training.csv"))
-	X = df.iloc[:, :-1]
-	y = df['prognosis']
+	X = training_df.iloc[:, :-1]
+	y = training_df['prognosis']
 	X_train, X_test, y_train, y_test = train_test_split(
 	X, y, test_size=0.3, random_state=20)
 	rf_clf = DecisionTreeClassifier()
@@ -247,8 +250,7 @@ def dump_model():
 
 
 def retrieve_model():
-    df = pd.read_csv(path("datasets/Training.csv"))
-    X = df.iloc[:, :-1]
+    X = training_df.iloc[:, :-1]
     model = joblib.load(path("model_save.pkl"))
 
     return model, X

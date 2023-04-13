@@ -11,6 +11,7 @@ import Home from "./views/Home";
 import AppDiseaseId from "./views/AppDiseaseId";
 import Account from "./views/Account";
 import UnderConstruction from "./views/UnderConstruction";
+import Quotes from "./views/Quotes.jsx";
 
 function App() {
 	const location = useLocation();
@@ -28,7 +29,7 @@ function App() {
 						<Route path="/app-moo" element={<UnderConstruction />}></Route>
 						<Route path="/app-reco" element={<UnderConstruction />}></Route>
 						<Route path="/app-calo" element={<UnderConstruction />}></Route>
-						<Route path="/app-quo" element={<UnderConstruction />}></Route>
+						<Route path="/app-quo" element={<Quotes />}></Route>
 						<Route path="/account" element={<Account />}></Route>
 						
 					</Route>

@@ -112,7 +112,7 @@ export const AuthProvider = ({ children }) => {
 			if (user) {
 				green("[AuthContext] user found!");
 				setCurrentUser(user);
-
+				console.log(user)
 				// user.getIdToken().then((token) => pink(token, "USER TOKEN", true))
 			} else {
 				red("[AuthContext] no logged in user found.");
@@ -296,6 +296,23 @@ export const AuthProvider = ({ children }) => {
 		});
 	};
 
+	const getUsernameFromUid = (uid) => {
+		return new Promise((resolve, reject) => {
+			const readRef = ref(database, `root/users/${uid}`);
+			// console.log(uid)
+			onValue(readRef, (snapshot) => {
+				// console.log(snapshot.val());
+				if (snapshot.val()) {
+					// console.log(`Username from UID = ${snapshot.val()["username"]}`);
+					resolve(snapshot.val()["username"]);
+				} else {
+					console.log("No username found with UID")
+					reject("???");
+				}
+			});
+		});
+	}
+
 	const value = {
 		author,
 		currentUser,
@@ -325,6 +342,7 @@ export const AuthProvider = ({ children }) => {
 		writeUserToDatabase,
 		readAllUsernames,
 		getEmailFromUsername,
+		getUsernameFromUid
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

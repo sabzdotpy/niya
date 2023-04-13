@@ -1,13 +1,32 @@
 import "../styles/Accounts.scss";
 
+import { useState, useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
+
 import { BiTrash, BiEdit } from "react-icons/all";
 
 import DefaultProfilePicture from "../assets/default_pp.png";
 import ImageRenderer from "../components/ImageRenderer";
 import { useAuth } from "../contexts/AuthContext";
+import { daysBetween } from "../scripts/Misc";
 
 export default function Accounts(props) {
-	const { currentUser } = useAuth();
+	const { currentUser, getUsernameFromUid } = useAuth();
+
+	const [username, setUsername] = useState("?");
+	const [setShowLogin, pushToNotifications] = useOutletContext();
+
+	useEffect(() => {
+		if (currentUser && currentUser !== "none") {
+			getUsernameFromUid(currentUser.uid)
+				.then((username) => {
+					setUsername(username);
+				})
+				.catch((erroredUsername) => {
+					setUsername(erroredUsername);
+				});
+		}
+	}, [currentUser]);
 	return (
 		<div className="Accounts">
 			<div className="accountContainer">
@@ -19,27 +38,33 @@ export default function Accounts(props) {
 							<div className="accountAvatarContainer">
 								<ImageRenderer url={DefaultProfilePicture} height={"150px"} width={"150px"} />
 								<div className="buttonsContainer">
-									<span className="changeImage" title="Upload an image">
+									<span className="changeImage" title="Upload an image" onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>
 										<BiEdit size={"25px"} />
 									</span>
-									<span className="removeImage" title="Delete profile image">
+									<span className="removeImage" title="Delete profile image" onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>
 										<BiTrash size={"25px"} />
 									</span>
 								</div>
 							</div>
 							<div className="accountDetailsContainer">
-								<span className="username">@username</span>
+								<span className="username">@{username}</span>
 								<span>{currentUser.displayName || "Display name"}</span>
-								<span>email@provider.com</span>
-								<span>Created 6 days ago</span>
+								<span>{currentUser.email}</span>
+								<span>
+									Created{" "}
+									{Math.floor(
+										daysBetween(new Date(parseInt(currentUser.metadata.createdAt)), new Date())
+									)}{" "}
+									days ago
+								</span>
 							</div>
 						</div>
 
 						<div className="accountEdit">
-							<span>Edit Profile</span>
-							<span>Change Username</span>
-							<span>Change Display Name</span>
-							<span>Update Other Account Details</span>
+							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Edit Profile</span>
+							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Change Username</span>
+							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Change Display Name</span>
+							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Update Other Account Details</span>
 						</div>
 					</>
 				)}

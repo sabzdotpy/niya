@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, useNavigate } from "react-router-dom";
 
 import "../styles/Hero.scss";
 
@@ -17,6 +17,7 @@ export default function Hero(props) {
 	const [windowWidth, setWindowWidth] = useState();
 	const { author, currentUser } = useAuth();
 	const [setShowLogin] = useOutletContext();
+	const navigate = useNavigate();
 	//! ----------------  REF  ----------------
 	const infodiv = useRef();
 	//! ---------------- EFFECTS ----------------
@@ -155,7 +156,7 @@ export default function Hero(props) {
 					<SectionDivider />
 					<div className="loginWrapper">
 						What are you waiting for? An all-in-one healthcare assistant is just a click away!
-						<button className="doubleBtn" onClick={() => setShowLogin(true)}>
+						<button className="doubleBtn" onClick={() => (currentUser === "none") ? setShowLogin(true) : navigate("/") }>
 							{currentUser === "none" ? "Create an account" : "Go to Main Page"}
 						</button>
 					</div>

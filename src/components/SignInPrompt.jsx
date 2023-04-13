@@ -102,6 +102,7 @@ function SignInPrompt(props) {
 			.then((userCredential) => {
 				// Signed in
 				const user = userCredential.user;
+				primaryBtnText.current.innerText = "Signing up...";
 				green("Added user to auth");
 				console.log(user);
 
@@ -117,7 +118,7 @@ function SignInPrompt(props) {
 				green("Created new user!");
 
 				props.pushToNotifications("Success", "Your account has been created successfully", "success");
-
+				primaryBtnText.current.innerText = "Sign Up";
 				setTimeout(() => {
 					props.pushToNotifications("Logging in", "Logging you in with created account credentials", "info");
 					signin(email, password).then(() => {
@@ -221,7 +222,7 @@ function SignInPrompt(props) {
 					.catch((error) => {
 						red(error);
 						// alert(getErrorFromCode(error.code));
-						primaryBtnText.current.innerText = "Login"
+						primaryBtnText.current.innerText = "Login";
 						props.pushToNotifications("Error", getErrorFromCode(error.code), "error");
 					});
 			} else {
@@ -232,10 +233,11 @@ function SignInPrompt(props) {
 			// * validate displayname, bday, location, pic
 			// setCurrentPage("login");
 			console.table([signupEmailInput.current.value]);
-
+			primaryBtnText.current.innerText = "Signing up...";
 			const emResp = validateEmail(signupEmailInput.current.value);
 			if (emResp !== true) {
 				red("Email invalid");
+				primaryBtnText.current.innerText = "Sign Up";
 				props.pushToNotifications("Invalid", emResp, "error");
 				return;
 			}
@@ -244,6 +246,7 @@ function SignInPrompt(props) {
 			if (usernameResp !== true) {
 				console.log("username resp not equal to true");
 				red(usernameResp);
+				primaryBtnText.current.innerText = "Sign Up";
 				// alert(usernameResp);
 				props.pushToNotifications("Invalid", usernameResp, "error");
 				return;
@@ -252,6 +255,7 @@ function SignInPrompt(props) {
 			const passwordResp = validatePassword(signupPasswordInput.current.value);
 			if (passwordResp !== true) {
 				red("Password is invalid");
+				primaryBtnText.current.innerText = "Sign Up";
 				props.pushToNotifications("Invalid", passwordResp, "error");
 				return;
 			}
@@ -259,6 +263,7 @@ function SignInPrompt(props) {
 			const daResp = validateDate(signupDobInput.current.value);
 			if (daResp !== true) {
 				red("DOB invaild");
+				primaryBtnText.current.innerText = "Sign Up";
 				props.pushToNotifications("Invalid", daResp, "error");
 				return;
 			}

@@ -15,9 +15,17 @@ export default function Home() {
 	const navigate = useNavigate();
 
 	const suggestedActivities = useArray([
-		{ text: "Write a journal entry", url: "/app-jou" },
 		{ text: "Disease identification", url: "/app-ide" },
+		{ text: "Write a journal entry", url: "/app-jou" },
 		{ text: "Get a random quote", url: "/app-quo" },
+	]);
+
+	const suggestionsText = useArray([
+		"Here are some things for you to do",
+		"Here are some things you can do",
+		"These are some suggested activities for you",
+		"Pick one!",
+		"How about we do one of this?",
 	]);
 
 	useEffect(() => {
@@ -46,7 +54,9 @@ export default function Home() {
 					</span>
 				</div>
 				<div className="suggestionsContainer">
-					<div className="suggestionsTitle">Here are some things for you to do:</div>
+					<div className="suggestionsTitle">
+						{suggestionsText.value[Math.floor(Math.random() * (suggestionsText.value.length))]}
+					</div>
 					<div className="suggestionActivities">
 						{suggestedActivities.value.map((activity, index) => {
 							return (
