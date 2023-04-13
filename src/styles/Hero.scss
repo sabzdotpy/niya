@@ -193,6 +193,11 @@
 			
 			.doubleBtn {
 				box-shadow: 0 1px 35px 15px rgba(rgb(210, 107, 17), .3);
+				transition: box-shadow .3s ease;
+
+				&:hover {
+					box-shadow: 0 0 40px 20px rgba(rgb(255, 132, 0), .3);
+				}
 			}
 		}
 	}

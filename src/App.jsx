@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Hero from "./views/Hero";
 import Home from "./views/Home";
 import AppDiseaseId from "./views/AppDiseaseId";
+import Account from "./views/Account";
 import UnderConstruction from "./views/UnderConstruction";
 
 function App() {
@@ -28,7 +29,7 @@ function App() {
 						<Route path="/app-reco" element={<UnderConstruction />}></Route>
 						<Route path="/app-calo" element={<UnderConstruction />}></Route>
 						<Route path="/app-quo" element={<UnderConstruction />}></Route>
-						<Route path="/account" element={<UnderConstruction />}></Route>
+						<Route path="/account" element={<Account />}></Route>
 						
 					</Route>
 					<Route path="/*" element={<NotFound />} name="app" handler={App}></Route>
