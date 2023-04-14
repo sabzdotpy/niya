@@ -8,7 +8,7 @@ import { TiTick } from "react-icons/ti";
 
 import { pink, toTitleCase } from "../scripts/Misc";
 
-const BASE_URL = "https://niyabackend.pythonanywhere.com";
+const BASE_URL = "http://niyabackend.pythonanywhere.com";
 
 const URL = (relative_url) => {
 	return `${BASE_URL}${relative_url}`;
