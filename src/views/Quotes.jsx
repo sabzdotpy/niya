@@ -9,22 +9,27 @@ export default function Quotes() {
 	const [quote, setQuote] = useState();
 
 	const getNewQuote = () => {
+		console.log("Getting new quote")
 		newQuoteBtn.current.classList.add("play");
-		fetch("https://api.quotable.io/random?tags=motivational")
+		newQuoteBtn.current.setAttribute("disabled", "disabled");
+		fetch("https://api.quotable.io/random?tags=motivational&maxLength=265")
 			.then((res) => {
 				res.json()
 					.then((data) => {
 						setQuote(data);
+						newQuoteBtn.current.removeAttribute("disabled");
 						newQuoteBtn.current.classList.remove("play");
 					})
 					.catch((err) => {
 						setQuote({ content: "Something went wrong :(", author: "Niya" });
+						newQuoteBtn.current.removeAttribute("disabled");
 						newQuoteBtn.current.classList.remove("play");
 					});
 			})
 			.catch((err) => {
 				console.log("No response");
 				setQuote({ content: "Something went wrong :(", author: "Niya" });
+				newQuoteBtn.current.removeAttribute("disabled");
 				newQuoteBtn.current.classList.remove("play");
 			});
 	};

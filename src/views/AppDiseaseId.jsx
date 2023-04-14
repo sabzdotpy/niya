@@ -8,7 +8,7 @@ import { TiTick } from "react-icons/ti";
 
 import { pink, toTitleCase } from "../scripts/Misc";
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = "https://niyabackend.pythonanywhere.com";
 
 const URL = (relative_url) => {
 	return `${BASE_URL}${relative_url}`;
@@ -29,8 +29,12 @@ export default function AppDiseaseId() {
 	const [relatedSymsQueryValue, setRelatedSymsQueryValue] = useState("");
 
 	const mainSymptomInput = useRef();
+	const mainSymptomPanel = useRef();
+	const relatedSymptomPanel = useRef();
+	const predictionPanel = useRef();
 
 	useEffect(() => {
+		mainSymptomPanel.current.classList.add("loading");
 		// console.log(process.env.REACT_APP_BACKEND)
 		fetch(URL("/get_all_syms"))
 			.then((res) => {
@@ -61,9 +65,12 @@ export default function AppDiseaseId() {
 					"error"
 				);
 			});
+		mainSymptomPanel.current.classList.remove("loading");
+		mainSymptomPanel.current.classList.add("doneLoading");
 	}, []);
 
 	const fetchRelatedSymptoms = (symptom) => {
+		relatedSymptomPanel.current.classList.add("loading");
 		fetch(URL(`/get_related_syms?s=${symptom}`))
 			.then((res) =>
 				res.json().then((data) => {
@@ -88,9 +95,12 @@ export default function AppDiseaseId() {
 					"error"
 				);
 			});
+		relatedSymptomPanel.current.classList.remove("loading");
+		relatedSymptomPanel.current.classList.add("doneLoading");
 	};
 
 	const predictDisease = async (listOfSymptoms) => {
+		predictionPanel.current.classList.add("loading");
 		listOfSymptoms.push(mainSymptom);
 		console.log("Symptoms: ");
 		console.log(listOfSymptoms);
@@ -123,14 +133,20 @@ export default function AppDiseaseId() {
 						});
 				} else {
 					console.warn("Server didn't sent 200");
-					pushToNotifications("Whoa", "Unknown error. I'm as clueless as you are.", "error")
+					pushToNotifications("Whoa", "Unknown error. I'm as clueless as you are :(", "error");
 					console.log(res);
 				}
 			})
 			.catch((e) => {
 				console.warn(e);
-				pushToNotifications("Unknown Error","The server is not responding to your request. Please inform the creator.", "error");
+				pushToNotifications(
+					"Unknown Error",
+					"The server is not responding to your request. Please inform the creator.",
+					"error"
+				);
 			});
+		predictionPanel.current.classList.remove("loading");
+		predictionPanel.current.classList.add("doneLoading");
 	};
 
 	const getPrecautions = (listOfDiseases) => {
@@ -189,7 +205,10 @@ export default function AppDiseaseId() {
 					<ImageRenderer src={avatarHmm} height={300} width={300} />
 				</div> */}
 
-				<section className={"panel panel1 mainSymptomInputs" + (currentPanel === 1 ? " show" : "")}>
+				<section
+					className={"panel panel1 mainSymptomInputs" + (currentPanel === 1 ? " show" : "")}
+					ref={mainSymptomPanel}
+				>
 					Please enter the main symptom you are experiencing
 					<div className="inputAndSymptomsWrapper">
 						<div className="inputWrapper">
@@ -244,14 +263,21 @@ export default function AppDiseaseId() {
 					{/* <button onClick={() => {}}>Proceed</button> */}
 				</section>
 
-				<section className={"panel panel2 relatedSymptomInput" + (currentPanel === 2 ? " show" : "")}>
+				<section
+					className={"panel panel2 relatedSymptomInput" + (currentPanel === 2 ? " show" : "")}
+					ref={relatedSymptomPanel}
+				>
 					Based on the main symptom <b>{toTitleCase(mainSymptom?.replaceAll("_", " "))}</b>, I have a list of
 					other possible symptoms that you may be experiencing, please select all that apply.
 					<div className="inputAndSymptomsWrapper">
 						<div className="inputWrapper">
-							<input type="text" ref={mainSymptomInput} onChange={(e) => {
+							<input
+								type="text"
+								ref={mainSymptomInput}
+								onChange={(e) => {
 									setRelatedSymsQueryValue(e.target.value);
-								}} />
+								}}
+							/>
 							<button>Clear</button>
 						</div>
 						<div className="allSymptomsContainer">
@@ -262,7 +288,10 @@ export default function AppDiseaseId() {
 											className={
 												"symptom" +
 												(relatedSymsQueryValue
-													? symptom.toLowerCase().replaceAll("_", " ").includes(relatedSymsQueryValue)
+													? symptom
+															.toLowerCase()
+															.replaceAll("_", " ")
+															.includes(relatedSymsQueryValue)
 														? ""
 														: " hide"
 													: "")
@@ -307,7 +336,10 @@ export default function AppDiseaseId() {
 					</button>
 				</section>
 
-				<section className={"panel panel3 relatedSymptomInput" + (currentPanel === 3 ? " show" : "")}>
+				<section
+					className={"panel panel3 predictionPanel" + (currentPanel === 3 ? " show" : "")}
+					ref={predictionPanel}
+				>
 					<div className="header">
 						<span>Based on the all the symptoms you have given me, I think you have</span>
 						<h2>{predictedDisease}</h2>

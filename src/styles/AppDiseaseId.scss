@@ -23,6 +23,14 @@
 			}
 		}
 
+		// .panel.loading {
+		// 	background-color: red;
+		// }
+
+		// .panel.doneLoading {
+		// 	background-color: blue;
+		// }
+
 		.panel {
 			min-height: 70vh;
 			.inputAndSymptomsWrapper {
@@ -34,7 +42,7 @@
 				.inputWrapper {
 					display: flex;
 					align-items: center;
-					gap: .5rem;
+					gap: 0.5rem;
 					width: 80%;
 					margin: 0 auto;
 					padding: 0.5rem;
@@ -72,8 +80,8 @@
 
 				div.allSymptomsContainer {
 					display: grid;
-					grid-template-columns: repeat(4, 1fr);
 					grid-template-rows: auto;
+					grid-template-columns: repeat(5, minmax(0, 1fr));
 					gap: 0.7rem;
 					min-height: auto;
 					max-height: 40vh;
@@ -85,7 +93,7 @@
 						display: flex;
 						justify-content: center;
 						align-items: center;
-						padding: .6rem 1.2rem;
+						padding: 0.6rem 1.2rem;
 						background: rgba(#fff, 0.3);
 						border-radius: 8px;
 						cursor: pointer;
@@ -113,7 +121,7 @@
 							width: 100%;
 							height: 100%;
 							top: 0;
-							transform: scale(.001);
+							transform: scale(0.001);
 							opacity: 0;
 							transition: transform 0.4s ease 0s;
 						}
@@ -134,11 +142,12 @@
 			}
 
 			.predictButton {
-				background-color: rgba(white, .3);
+				background-color: rgba(white, 0.3);
 				padding: 1rem 2rem;
 				border-radius: 8px;
 				border-style: none;
 				cursor: pointer;
+				margin-top: 1rem;
 			}
 
 			&.panel3 {
@@ -163,8 +172,8 @@
 					width: min(600px, 90%);
 					list-style: none;
 					margin: 0 auto;
-					background-color: rgba(white, .1);
-					border: 2px solid rgba(white, .3);
+					background-color: rgba(white, 0.1);
+					border: 2px solid rgba(white, 0.3);
 					border-radius: 8px;
 					padding: 2rem 0;
 					display: flex;
@@ -172,18 +181,32 @@
 					justify-content: center;
 					align-items: center;
 					font-size: 18px;
-					gap: .5rem;
-
+					gap: 0.5rem;
 				}
 			}
 		}
 	}
 
 	.disclaimer {
-		background-color: rgba(red, .3);
+		background-color: rgba(red, 0.3);
 		margin: auto auto 1rem auto;
 		padding: 1rem;
 		bottom: 0;
 		width: 85%;
+	}
+}
+
+@media screen and (max-width: 700px) {
+	.allSymptomsContainer {
+		grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+	}
+
+
+	.panel3 {
+		.header {
+			h2 {
+				font-size: 32px;
+			}
+		}
 	}
 }

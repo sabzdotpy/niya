@@ -112,7 +112,7 @@ export const AuthProvider = ({ children }) => {
 			if (user) {
 				green("[AuthContext] user found!");
 				setCurrentUser(user);
-				console.log(user)
+				// console.log(user)
 				// user.getIdToken().then((token) => pink(token, "USER TOKEN", true))
 			} else {
 				red("[AuthContext] no logged in user found.");

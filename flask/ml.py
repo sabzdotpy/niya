@@ -36,9 +36,9 @@ def path(path):
     return os.path.join(basedir, path)
 
 def GLOBAL_STORE(dic):
-    print('----------------------------------->')
-    print(f"Global Storage changing...")
-    print(dic)
+    # print('----------------------------------->')
+    # print(f"Global Storage changing...")
+    # print(dic)
     GLOBALS.update(dic)
 
 def get_label_encoder():
@@ -107,7 +107,7 @@ def get_all_symptoms():
 
 
 def calc_condition(symptoms_experienced, days):
-    print("calc_condition called")
+    # print("calc_condition called")
     sum = 0
     for item in symptoms_experienced:
         sum = sum+severityDictionary[item]
@@ -121,8 +121,8 @@ def calc_condition(symptoms_experienced, days):
     return condition1,color1
 
 def check_pattern(dis_list, inp):
-    print(f"First symptom: {inp}")
-    print("------------------------------------------------------")
+    # print(f"First symptom: {inp}")
+    # print("------------------------------------------------------")
     print("\n")
     import re
     pred_list = []
@@ -141,7 +141,7 @@ def check_pattern(dis_list, inp):
 
 
 def print_disease(node):
-    print("print_disease called")
+    # print("print_disease called")
     le = get_label_encoder()
     node = node[0]
     val = node.nonzero()
@@ -150,7 +150,7 @@ def print_disease(node):
 
 
 def tree_to_code(tree, feature_names, symptom1):
-    print("tree_to_code called")
+    # print("tree_to_code called")
     global condition
     global symptoms_given
     tree_ = tree.tree_
@@ -170,7 +170,7 @@ def tree_to_code(tree, feature_names, symptom1):
             break
 
     def recurse(node, depth):
-        print("recurse called")
+        # print("recurse called")
         global condition
         global present_disease
         global precaution_list
@@ -211,8 +211,8 @@ def get_related_symptoms(symptom1):
     clf = retrieve_model()  # decision tree classifier model
     clf = clf[0]
 
-
     if (symptom1 not in training_df.iloc[0:1, 0:-1]):
+        print(f"Received an invalid symptom - {symptom1}. Returning invalid sym as response.")
         return "invalid sym"
 
     cols = training_df.columns[:-1]
@@ -252,7 +252,6 @@ def dump_model():
 def retrieve_model():
     X = training_df.iloc[:, :-1]
     model = joblib.load(path("model_save.pkl"))
-
     return model, X
 
 def predict(symptoms_exp):
@@ -275,20 +274,20 @@ def predict(symptoms_exp):
 
 
 def predict_disease(symptoms_arr: list) -> list:
-    ts = pc()
+    # ts = pc()
     predicted_disease = predict(symptoms_arr)
-    te = pc()
+    # te = pc()
 
-    print(te - ts)
-    print("----------------------")
-    print(type(present_disease))
-    print(type(predicted_disease))
-    print(f"First prediction: {present_disease}, Second prediction: {predicted_disease}")
-    print("----------------------")
+    # print(te - ts)
+    # print("----------------------")
+    # print(type(present_disease))
+    # print(type(predicted_disease))
+    # print(f"First prediction: {present_disease}, Second prediction: {predicted_disease}")
+    # print("----------------------")
 
     predicted_disease.append(present_disease[0])
-    print("-------")
-    print(predicted_disease)
+    # print("-------")
+    # print(predicted_disease)
 
     return list(predicted_disease)
 

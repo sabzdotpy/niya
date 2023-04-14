@@ -63,7 +63,7 @@ def get_related_syms():
 def get_all_syms():
     return list(get_all_symptoms())
 
-if __name__ == "__main__":
-    print("Flask app running")
-    app.run(debug=True)
+# if __name__ == "__main__":
+#     print("Flask app running")
+#     app.run()
 
