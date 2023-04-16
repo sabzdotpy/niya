@@ -1,4 +1,8 @@
+<center>
+
 ![Logo](https://github.com/sabzdotpy/niya/blob/main/src/assets/niya.png)
+
+</center>
 
 # Introducing Niya - your personal healthcare assistant. 
 
@@ -78,12 +82,16 @@ Backend
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+<center>
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Home page](https://github.com/sabzdotpy/niya/blob/main/src/assets/home_page.png)
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![All symptoms page](https://github.com/sabzdotpy/niya/blob/main/src/assets/all_page.png)
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Related symptoms page](https://github.com/sabzdotpy/niya/blob/main/src/assets/rela_page.png)
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Prediction page](https://github.com/sabzdotpy/niya/blob/main/src/assets/predi_page.png)
+
+![Quotes page](https://github.com/sabzdotpy/niya/blob/main/src/assets/quotes_page.png)
+
+</center>
