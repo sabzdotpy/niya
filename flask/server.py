@@ -24,10 +24,10 @@ def predictGET():
 def predict():
     try:
         # return predict_disease(['burning_micturition', 'bladder_discomfort', 'foul_smell_of urine', 'continuous_feel_of_urine'])
-        print("---------------------------------------------")
-        print("Symptoms: ", end="")
-        print(list(request.data.decode("UTF-8").replace("[", "").replace("]", "").replace(" ", "").replace('"', '').split(",")))
-        print("---------------------------------------------")
+        # print("---------------------------------------------")
+        # print("Symptoms: ", end="")
+        # print(list(request.data.decode("UTF-8").replace("[", "").replace("]", "").replace(" ", "").replace('"', '').split(",")))
+        # print("---------------------------------------------")
 
         return predict_disease(list(request.data.decode("UTF-8").replace("[", "").replace("]", "").replace(" ", "").replace('"', '').split(",")))
     except KeyError:

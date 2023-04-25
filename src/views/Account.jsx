@@ -7,13 +7,15 @@ import { BiTrash, BiEdit } from "react-icons/all";
 
 import DefaultProfilePicture from "../assets/default_pp.png";
 import ImageRenderer from "../components/ImageRenderer";
+import ChangeDisplayName from "../components/ChangeDisplayName";
 import { useAuth } from "../contexts/AuthContext";
 import { daysBetween } from "../scripts/Misc";
 
 export default function Accounts(props) {
-	const { currentUser, getUsernameFromUid } = useAuth();
+	const { currentUser, getUsernameFromUid, signout } = useAuth();
 
 	const [username, setUsername] = useState("?");
+	const [showDisplayNameChangeModal, setShowDisplayNameChangeModal] = useState(false);
 	const [setShowLogin, pushToNotifications] = useOutletContext();
 
 	useEffect(() => {
@@ -29,6 +31,7 @@ export default function Accounts(props) {
 	}, [currentUser]);
 	return (
 		<div className="Accounts">
+			<ChangeDisplayName in={showDisplayNameChangeModal} closeOverlay={() => setShowDisplayNameChangeModal(false)} />
 			<div className="accountContainer">
 				{!currentUser || currentUser === "none" ? (
 					<div className="noUser">Please login to see account details</div>
@@ -63,8 +66,10 @@ export default function Accounts(props) {
 						<div className="accountEdit">
 							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Edit Profile</span>
 							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Change Username</span>
-							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Change Display Name</span>
+							<span onClick={() => setShowDisplayNameChangeModal(true)}>Change Display Name</span>
 							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Update Other Account Details</span>
+							<span onClick={signout}>Sign out</span>
+
 						</div>
 					</>
 				)}

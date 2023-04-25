@@ -5,10 +5,10 @@ import useArray from "../hooks/useArray";
 import { useEffect, useState, useRef } from "react";
 import { useOutletContext } from "react-router-dom";
 import { TiTick } from "react-icons/ti";
+import { backend_url as BASE_URL } from "../components/BackUrl";
 
 import { pink, toTitleCase } from "../scripts/Misc";
 
-const BASE_URL = "http://niyabackend.pythonanywhere.com";
 
 const URL = (relative_url) => {
 	return `${BASE_URL}${relative_url}`;

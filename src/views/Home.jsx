@@ -30,6 +30,11 @@ export default function Home() {
 
 	useEffect(() => {
 		// navigate("/hero")
+
+		// fetch(import.meta.env.VITE_BACKEND).then((res) => res.json().then((data) => {
+		// 	console.log(data)
+		// 	console.log("DATA")
+		// }))
 	}, []);
 
 	return (

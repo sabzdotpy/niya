@@ -306,12 +306,34 @@ export const AuthProvider = ({ children }) => {
 					// console.log(`Username from UID = ${snapshot.val()["username"]}`);
 					resolve(snapshot.val()["username"]);
 				} else {
-					console.log("No username found with UID")
+					console.log("No username found with UID");
 					reject("???");
 				}
 			});
 		});
-	}
+	};
+
+	const changeToCustomDisplayName = (displayName) => {
+		changedisplayname(displayName)
+			.then(() => {
+				console.log("Changed name in auth object. Proceeding to change in db");
+				let updates = {};
+				updates[`root/users/${currentUser.uid}/displayname`] = displayName;
+				// updates[`root/email_list/${encode(email)}`] = uid;
+
+				update(dRef(database), updates)
+					.then(() => {
+						green("Database change displayname success!");
+						// console.log("Added user name, dob and email to database.");
+					})
+					.catch(() => {
+						red("Database change displayname failure");
+					});
+			})
+			.catch((e) => {
+				console.log("Error changing name in auth.");
+			});
+	};
 
 	const value = {
 		author,
@@ -342,7 +364,9 @@ export const AuthProvider = ({ children }) => {
 		writeUserToDatabase,
 		readAllUsernames,
 		getEmailFromUsername,
-		getUsernameFromUid
+		getUsernameFromUid,
+
+		changeToCustomDisplayName,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -24,8 +24,8 @@
 
     .prompt {
         z-index: 70;
-        // background-color: lighten($color: #f8cf9c, $amount: 10);
-        color: $text;
+        background-color: lighten($color: #efa96c, $amount: 10);
+        color: #000;
         min-height: 300px;
         max-height: 90%;
         width: min(80%, 400px);
@@ -37,7 +37,7 @@
         transition: all 200ms cubic-bezier(1, 0, 0, 1);
 
         .header {
-            background-color: lighten($color: $bg, $amount: 10);
+            // background-color: lighten($color: $bg, $amount: 10);
             height: 60%;
             font-size: 25px;
             margin: 0 auto;

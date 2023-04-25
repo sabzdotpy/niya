@@ -96,7 +96,7 @@ function SignInPrompt(props) {
 	};
 
 	const createNewWithEmail = (email, password, username, dateofbirth) => {
-		console.table({ Email: email, Password: password, Username: username, DOB: dateofbirth });
+		console.table({ Email: email, Password: password, Username: username.toLowerCase(), DOB: dateofbirth });
 
 		signup(email, password)
 			.then((userCredential) => {
@@ -114,7 +114,7 @@ function SignInPrompt(props) {
 						console.warn(error.message);
 						// return
 					});
-				writeUserToDatabase(user.uid, getDisplayNameFromUserName(username), username, dateofbirth, email);
+				writeUserToDatabase(user.uid, getDisplayNameFromUserName(username), username.toLowerCase(), dateofbirth, email);
 				green("Created new user!");
 
 				props.pushToNotifications("Success", "Your account has been created successfully", "success");

@@ -1,0 +1,1 @@
+export const backend_url = "http://niyabackend.pythonanywhere.com"
