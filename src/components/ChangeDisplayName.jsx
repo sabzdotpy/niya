@@ -14,7 +14,7 @@ export default function ChangeDisplayName(props) {
 
 	return (
 		<CSSTransition in={props.in} timeout={200} classNames="promptanim" unmountOnExit>
-			<PromptOverlay {...props} header={"Change DisplayName"}>
+			<PromptOverlay {...props} header={"Change Display Name"}>
 				<div className="change">
 					<div className="prev">
 						<span>Previously:</span>{" "}
@@ -26,7 +26,6 @@ export default function ChangeDisplayName(props) {
 
 					<div className="done">
 						<button
-							disabled={newDisplayName?.current?.value === currentUser?.displayName}
 							onClick={() => {
 								if (newDisplayName.current.value === currentUser.displayName) {
 									props.closeOverlay();
