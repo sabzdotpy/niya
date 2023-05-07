@@ -48,17 +48,19 @@ h1 {
 	/* color: rgb(10, 10, 10); */
 }
 
-button {
+button:not(.mainBtn),
+button:not(.doubleBtn) {
 	padding: .8rem 2rem;
 	background: rgba(255, 255, 255, .1);
-	border: 2px solid rgba(255, 255, 255, .7) !important;
-	cursor: pointer;
 	border-style: none;
+	border: 2px solid rgba(255, 255, 255, .7);
+	cursor: pointer;
 	border-radius: 8px;
 	transition: all .3s ease;
 }
 
-button:hover, button:focus {
+button:not(.mainBtn):hover, button:not(.mainBtn):focus,
+button:not(.doubleBtn):hover, button:not(.doubleBtn):focus {
 	background-color: rgba(255, 255, 255, .2);
 	border-color: rgba(255, 255, 255, .9);
 }
@@ -148,7 +150,7 @@ button:focus-visible {
 }
 
 /* button */
-.mainBtn {
+button.mainBtn {
 	color: #111 !important;
 	font-weight: 600;
 	font-size: 18px;
@@ -173,18 +175,18 @@ button:focus-visible {
 	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
-.mainBtn:focus {
+button.mainBtn:focus {
 	outline: none;
 }
-.mainBtn > span {
+button.mainBtn > span {
 	vertical-align: top;
 }
 
-.mainBtn span svg {
+button.mainBtn span svg {
 	vertical-align: top;
 }
 
-.mainBtn::before {
+button.mainBtn::before {
 	content: "";
 	position: absolute;
 	top: 0;
@@ -200,12 +202,12 @@ button:focus-visible {
 	-webkit-transition: -webkit-transform 0.3s, opacity 0.3s, background-color 0.3s;
 	transition: transform 0.3s, opacity 0.3s, background-color 0.3s;
 }
-.mainBtn:hover {
+button.mainBtn:hover {
 	color: rgb(221, 221, 221) !important;
 	border-color: rgb(29, 29, 29);
 	cursor: pointer;
 }
-.mainBtn:hover::before {
+button.mainBtn:hover::before {
 	opacity: 1;
 	background-color: rgb(36, 36, 36);
 	-webkit-transform: rotate3d(0, 0, 1, 0deg);
@@ -226,7 +228,7 @@ button:focus-visible {
 }
 
 /* button */
-.doubleBtn {
+button.doubleBtn {
 	color: #111 !important;
 	font-weight: 600;
 	font-size: 18px;
@@ -251,18 +253,18 @@ button:focus-visible {
 	-webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
-.doubleBtn:focus {
+button.doubleBtn:focus {
 	outline: none;
 }
-.doubleBtn > span {
+button.doubleBtn > span {
 	vertical-align: top;
 }
 
-.doubleBtn span svg {
+button.doubleBtn span svg {
 	vertical-align: top;
 }
 
-.doubleBtn::before {
+button.doubleBtn::before {
 	content: "";
 	position: absolute;
 	top: 0;
@@ -278,12 +280,12 @@ button:focus-visible {
 	-webkit-transition: -webkit-transform 0.4s, opacity 0.4s, background-color 0.4s;
 	transition: transform 0.4s, opacity 0.4s, background-color 0.4s;
 }
-.doubleBtn:hover {
+button.doubleBtn:hover {
 	color: rgb(221, 221, 221) !important;
 	border-color: rgb(29, 29, 29);
 	cursor: pointer;
 }
-.doubleBtn:hover::before {
+button.doubleBtn:hover::before {
 	opacity: 1;
 	background-color: rgb(36, 36, 36);
 	-webkit-transform: rotate3d(0, 0, 1, 0deg);
@@ -292,7 +294,7 @@ button:focus-visible {
 	transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
 
-.doubleBtn::after {
+button.doubleBtn::after {
 	content: "";
 	position: absolute;
 	bottom: 0;
@@ -309,7 +311,7 @@ button:focus-visible {
 	transition: transform 0.4s, opacity 0.4s, background-color 0.4s;
 }
 
-.doubleBtn:hover::after {
+button.doubleBtn:hover::after {
 	opacity: 1;
 	background-color: rgb(36, 36, 36);
 	-webkit-transform: rotate3d(0, 0, 1, 0deg);

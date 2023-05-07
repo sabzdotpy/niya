@@ -96,9 +96,9 @@ export default function Main() {
 	const navBlurCheck = () => {
 		console.log("checking scroll");
 		if (window.scrollY) {
-			navBar.current.classList.remove("noeff");
+			navBar?.current?.classList.remove("noeff");
 		} else {
-			navBar.current.classList.add("noeff");
+			navBar?.current?.classList.add("noeff");
 		}
 	};
 
@@ -238,7 +238,7 @@ export default function Main() {
 				</div>
 			</div>
 			<section className="out">
-				<Outlet context={[setShowLogin, pushToNotifications]} />
+				<Outlet context={ [setShowLogin, pushToNotifications] } />
 			</section>
 		</div>
 	);

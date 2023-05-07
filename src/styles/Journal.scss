@@ -1,0 +1,71 @@
+.out {
+	min-height: 100vh;
+}
+
+.Journal {
+	// height: 100vh;
+	// overflow-y: auto;
+
+	.journalContent {
+		margin-top: 6rem;
+
+		.journalList {
+			// background-color: red;
+			padding: 2rem 1rem 1rem 1rem;
+			display: flex;
+			flex-direction: column-reverse;
+			gap: 1rem;
+
+			.journalEntry {
+				width: 80%;
+				margin: 0 auto;
+				background-color: rgba(white, 0.1);
+				border: 1px solid rgba(white, 0.3);
+				border-radius: 8px;
+				padding: 2rem 3rem;
+				display: flex;
+				gap: 0.5rem;
+				flex-direction: column;
+				align-items: flex-start;
+				cursor: pointer;
+				transition: all 0.3s ease;
+
+				&:hover {
+					background-color: rgba(white, 0.2);
+					transform: scale(1.002);
+				}
+
+				.titleAndDateContainer {
+					font-size: 18px;
+					width: 100%;
+					display: flex;
+					justify-content: space-between;
+
+					.date {
+						font-weight: 500;
+					}
+				}
+
+				.text {
+					font-size: 14px;
+				}
+			}
+		}
+	}
+
+	.addEntry {
+		position: fixed;
+		bottom: 1rem;
+		right: 1rem;
+		height: 5rem;
+		width: 5rem;
+		border-radius: 50%;
+		background-color: rgba(rgb(255, 11, 23), 0.8);
+		border: 2px solid rgba(rgb(255, 11, 23), 0.8);
+		transition: all 0.3s ease;
+
+		&:hover {
+			border-color: white !important;
+		}
+	}
+}

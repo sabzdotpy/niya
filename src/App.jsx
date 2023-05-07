@@ -10,6 +10,7 @@ import NotFound from "./pages/NotFound";
 import Hero from "./views/Hero";
 import Home from "./views/Home";
 import AppDiseaseId from "./views/AppDiseaseId";
+import Journal from "./views/Journal";
 import Account from "./views/Account";
 import UnderConstruction from "./views/UnderConstruction";
 import Quotes from "./views/Quotes.jsx";
@@ -23,10 +24,11 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Main />} name="app" handler={App}>
 						<Route path="/" element={<Home />}></Route>
+						<Route path="/hero" element={<Hero />}></Route>
 						<Route path="/meta" element={<Meta />}></Route>
 						<Route path="/app-ide" element={<AppDiseaseId />}></Route>
 						<Route path="/app-app" element={<UnderConstruction />}></Route>
-						<Route path="/app-jou" element={<UnderConstruction />}></Route>
+						<Route path="/app-jou" element={<Journal />}></Route>
 						<Route path="/app-moo" element={<UnderConstruction />}></Route>
 						<Route path="/app-reco" element={<UnderConstruction />}></Route>
 						<Route path="/app-calo" element={<UnderConstruction />}></Route>
@@ -34,7 +36,6 @@ function App() {
 						<Route path="/account" element={<Account />}></Route>
 						
 					</Route>
-					<Route path="/hero" element={<Hero />}></Route>
 					<Route path="/*" element={<NotFound />} name="app" handler={App}></Route>
 				</Routes>
 			</CSSTransition>
