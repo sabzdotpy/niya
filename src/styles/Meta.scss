@@ -1,0 +1,30 @@
+.Meta {
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	gap: 1.5rem;
+
+	.content {
+		ul {
+			list-style: none;
+
+			li {
+				margin-bottom: 0.5rem;
+			}
+		}
+	}
+
+	.links {
+        width: 95%;
+
+		span {
+			display: flex;
+            gap: .5rem;
+            height: auto;
+            justify-content: center;
+			// grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+		}
+	}
+}
