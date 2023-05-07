@@ -181,7 +181,6 @@ function SignInPrompt(props) {
 
 	const handlePrimaryBtnClick = async () => {
 		if (currentPage === "login") {
-			// * validate email, pwd
 
 			console.log("clicked login button");
 			primaryBtnText.current.innerText = "Signing in...";
@@ -216,7 +215,7 @@ function SignInPrompt(props) {
 						console.log(`Logged in as: ${user.displayName}`);
 						clearAllInputTexts();
 						props.closeOverlay();
-						navigate("/");
+						// navigate("/");
 						primaryBtnText.current.innerText = "Login";
 					})
 					.catch((error) => {

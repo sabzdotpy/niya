@@ -282,6 +282,7 @@ export const AuthProvider = ({ children }) => {
 
 	const getEmailFromUsername = (username) => {
 		return new Promise((resolve, reject) => {
+			console.log("Read username_list looking for email")
 			const readRef = ref(database, `root/username_list/${username}`);
 
 			onValue(readRef, (snapshot) => {

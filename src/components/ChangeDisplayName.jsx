@@ -26,11 +26,14 @@ export default function ChangeDisplayName(props) {
 
 					<div className="done">
 						<button
+							disabled={newDisplayName?.current?.value === currentUser?.displayName}
 							onClick={() => {
-								if (newDisplayName.current.value) {
+								if (newDisplayName.current.value === currentUser.displayName) {
+									props.closeOverlay();
+								} else if (newDisplayName.current.value) {
 									changeToCustomDisplayName(newDisplayName.current.value);
 									pushToNotifications("Success!", "Display name changed successfully!", "success");
-									setTimeout(() => props.closeOverlay(), 400)
+									setTimeout(() => props.closeOverlay(), 400);
 								} else {
 									pushToNotifications("Error", "Enter a valid name", "alert");
 								}

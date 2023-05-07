@@ -31,7 +31,10 @@ export default function Accounts(props) {
 	}, [currentUser]);
 	return (
 		<div className="Accounts">
-			<ChangeDisplayName in={showDisplayNameChangeModal} closeOverlay={() => setShowDisplayNameChangeModal(false)} />
+			<ChangeDisplayName
+				in={showDisplayNameChangeModal}
+				closeOverlay={() => setShowDisplayNameChangeModal(false)}
+			/>
 			<div className="accountContainer">
 				{!currentUser || currentUser === "none" ? (
 					<div className="noUser">Please login to see account details</div>
@@ -41,17 +44,25 @@ export default function Accounts(props) {
 							<div className="accountAvatarContainer">
 								<ImageRenderer url={DefaultProfilePicture} height={"150px"} width={"150px"} />
 								<div className="buttonsContainer">
-									<span className="changeImage" title="Upload an image" onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>
+									<span
+										className="changeImage"
+										title="Upload an image"
+										onClick={() => pushToNotifications("", "Content not yet developed.", "info")}
+									>
 										<BiEdit size={"25px"} />
 									</span>
-									<span className="removeImage" title="Delete profile image" onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>
+									<span
+										className="removeImage"
+										title="Delete profile image"
+										onClick={() => pushToNotifications("", "Content not yet developed.", "info")}
+									>
 										<BiTrash size={"25px"} />
 									</span>
 								</div>
 							</div>
 							<div className="accountDetailsContainer">
 								<span className="username">@{username}</span>
-								<span>{currentUser.displayName || "Display name"}</span>
+								<span key={currentUser.displayName}>{currentUser.displayName || "Display name"}</span>
 								<span>{currentUser.email}</span>
 								<span>
 									Created{" "}
@@ -64,12 +75,17 @@ export default function Accounts(props) {
 						</div>
 
 						<div className="accountEdit">
-							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Edit Profile</span>
-							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Change Username</span>
+							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>
+								Edit Profile
+							</span>
+							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>
+								Change Username
+							</span>
 							<span onClick={() => setShowDisplayNameChangeModal(true)}>Change Display Name</span>
-							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>Update Other Account Details</span>
+							<span onClick={() => pushToNotifications("", "Content not yet developed.", "info")}>
+								Update Other Account Details
+							</span>
 							<span onClick={signout}>Sign out</span>
-
 						</div>
 					</>
 				)}
