@@ -5,9 +5,12 @@ import { EditorState, ContentState, RichUtils, convertFromRaw, convertToRaw } fr
 
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function AddJournalEntry() {
 
+
+	const { addJournalEntryToDatabase } = useAuth();
 	const [title, setTitle] = useState( localStorage.getItem("title") || "" );
 
 	const titleInput = useRef();
@@ -94,8 +97,24 @@ export default function AddJournalEntry() {
 		const rawText = convertToRaw(editorState.getCurrentContent());
 
 		console.log(rawText);
-		localStorage.setItem("title", titleInput.current.value)
-		localStorage.setItem("text", JSON.stringify(rawText));
+		// localStorage.setItem("title", titleInput.current.value)
+		// localStorage.setItem("text", JSON.stringify(rawText));
+
+		console.table(
+			{
+				title: titleInput.current.value,
+				text: JSON.stringify(rawText)
+			}
+		)
+
+		addJournalEntryToDatabase(titleInput.current.value, JSON.stringify(rawText))
+			.then((res) => {
+				console.log(res)
+			})
+			.catch((e) => {
+				console.log(e)
+			});
+
 		// console.log(convertFromRaw(convertToRaw(editorState.getCurrentContent())))
 	};
 

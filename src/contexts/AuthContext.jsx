@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }) => {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [USER_METADATA, SET_USER_METADATA] = useState();
 	const [USER_MISCDATA, SET_USER_MISCDATA] = useState();
+	const [JOURNAL_ENTRIES, SET_JOURNAL_ENTRIES] = useState();
 	const [author] = useState("Sabz");
 
 	const SET_USER = (user) => {
@@ -282,7 +283,7 @@ export const AuthProvider = ({ children }) => {
 
 	const getEmailFromUsername = (username) => {
 		return new Promise((resolve, reject) => {
-			console.log("Read username_list looking for email")
+			console.log("Read username_list looking for email");
 			const readRef = ref(database, `root/username_list/${username}`);
 
 			onValue(readRef, (snapshot) => {
@@ -336,6 +337,56 @@ export const AuthProvider = ({ children }) => {
 			});
 	};
 
+	const addJournalEntryToDatabase = (title, text) => {
+		return new Promise((resolve, reject) => {
+			if (currentUser && currentUser !== "none") {
+				const updates = {};
+				updates[`root/journal_entries/${currentUser.uid}/${Date.now()}/title`] = title;
+				updates[`root/journal_entries/${currentUser.uid}/${Date.now()}/text`] = text;
+				updates[`root/journal_entries/${currentUser.uid}/${Date.now()}/timestamp`] = Date.now();
+				// updates[`root/journal_entries/${currentUser.uid}/date_added`] = username;
+
+				update(dRef(database), updates)
+					.then(() => {
+						green("Added journal entry to db!");
+						resolve("Journal entry added to database");
+					})
+					.catch((e) => {
+						red("Couldn't add journal entry to db :(");
+						console.log(e);
+						reject(e);
+					});
+			} else {
+				reject("No user found.");
+			}
+		});
+	};
+
+	const readAllJournalEntries = () => {
+		return new Promise((resolve, reject) => {
+			console.log("inside promise");
+			if (currentUser && currentUser !== "none") {
+				const readRef = ref(database, `root/journal_entries/${currentUser.uid}`);
+
+				try {
+					onValue(readRef, (snapshot) => {
+						if (snapshot.val()) {
+							console.log("Entries has value");
+							resolve(snapshot.val());
+						} else {
+							console.log("Entries has no value");
+							resolve([]);
+						}
+					});
+				} catch (e) {
+					reject(e)
+				}
+			} else {
+				reject("No user found.");
+			}
+		});
+	};
+
 	const value = {
 		author,
 		currentUser,
@@ -368,6 +419,8 @@ export const AuthProvider = ({ children }) => {
 		getUsernameFromUid,
 
 		changeToCustomDisplayName,
+		addJournalEntryToDatabase,
+		readAllJournalEntries,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
