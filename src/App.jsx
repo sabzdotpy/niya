@@ -11,6 +11,7 @@ import Hero from "./views/Hero";
 import Home from "./views/Home";
 import AppDiseaseId from "./views/AppDiseaseId";
 import Journal from "./views/Journal";
+import AddJournalEntry from "./views/AddJournalEntry";
 import Account from "./views/Account";
 import UnderConstruction from "./views/UnderConstruction";
 import Quotes from "./views/Quotes.jsx";
@@ -29,12 +30,12 @@ function App() {
 						<Route path="/app-ide" element={<AppDiseaseId />}></Route>
 						<Route path="/app-app" element={<UnderConstruction />}></Route>
 						<Route path="/app-jou" element={<Journal />}></Route>
+						<Route path="app-jou/new" element={<AddJournalEntry />}></Route>
 						<Route path="/app-moo" element={<UnderConstruction />}></Route>
 						<Route path="/app-reco" element={<UnderConstruction />}></Route>
 						<Route path="/app-calo" element={<UnderConstruction />}></Route>
 						<Route path="/app-quo" element={<Quotes />}></Route>
 						<Route path="/account" element={<Account />}></Route>
-						
 					</Route>
 					<Route path="/*" element={<NotFound />} name="app" handler={App}></Route>
 				</Routes>

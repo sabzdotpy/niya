@@ -1,6 +1,11 @@
 import "../styles/Journal.scss";
 
+import {useNavigate} from "react-router-dom";
+
 export default function Journal() {
+
+    const navigate = useNavigate();
+
 	const entries = [
 		{ title: "My first entry!", text: "Today is the ...", date: "31 December" },
 		{ title: "New year!", text: "This year is going to be a good one..", date: "01 January" },
@@ -26,7 +31,7 @@ export default function Journal() {
 				</div>
 			</div>
 
-			<button className="addEntry">+</button>
+			<button className="addEntry" onClick={() => navigate("/app-jou/new") }>+</button>
 		</div>
 	);
 }

@@ -1,0 +1,118 @@
+.out {
+	margin-top: 9rem;
+}
+
+.addNew {
+	margin-top: 3rem;
+
+	.saveEntry {
+		position: fixed;
+		bottom: 1.5rem;
+		right: 1.5rem;
+	}
+
+	.editorToolbar {
+		width: 90vw;
+		margin: 0 auto;
+		padding: 0.5rem 1rem;
+		// border-radius: 8px 8px 0 0;
+		border: 3px solid rgba(white, 0.3);
+		background-color: rgba(white, 0.2);
+
+		div {
+			div.rdw-option-wrapper,
+			div.rdw-dropdown-wrapper {
+				background-color: rgba(white, 0.3);
+				border-style: none;
+
+				&.rdw-option-active {
+					background-color: rgba(white, 0.8);
+					border-style: none;
+				}
+			}
+
+			div.rdw-dropdown-wrapper {
+				a.rdw-dropdown-selectedtext {
+					span {
+						color: black;
+					}
+				}
+
+				ul {
+					background-color: #e6ac64;
+					border: 1px solid white;
+					border-radius: 0 0 8px 8px;
+
+					li.rdw-dropdownoption-default {
+						transition: background-color 0.15s ease;
+					}
+
+					li.rdw-dropdownoption-default:hover {
+						background-color: rgba(white, 0.3);
+					}
+
+					li.rdw-dropdownoption-active {
+						background-color: rgba(white, 0.5);
+					}
+				}
+			}
+
+			div.rdw-fontsize-dropdown {
+				padding: 0 0.5rem;
+			}
+		}
+	}
+}
+
+input.titleInput {
+	font-family: "Jost";
+	font-weight: 600;
+	width: 90vw;
+	padding: 2rem 1rem;
+	background-color: rgba(black, 0.02);
+	font-size: 20px;
+
+	border-style: none;
+	border: 3px solid rgba(white, 0.3);
+	border-color: rgba(white, 0.3) rgba(white, 0.3) transparent rgba(white, 0.3);
+	border-radius: 8px 8px 0 0;
+
+	&::placeholder {
+		color: rgba(black, 0.6);
+	}
+
+	&:focus {
+		&::placeholder {
+			color: rgba(black, 0.3) !important;
+		}
+	}
+}
+
+.DraftEditor-root {
+	min-height: 80vh;
+	width: 90vw;
+	background-color: rgba(black, 0.02);
+	border: 3px solid rgba(white, 0.3);
+	border-color: transparent rgba(white, 0.3) rgba(white, 0.3) rgba(white, 0.3);
+	border-radius: 0 0 8px 8px;
+	padding: 1rem;
+	margin: 0 auto;
+
+	.DraftEditor-editorContainer {
+		// background-color: red;
+		position: relative;
+		height: 100% !important;
+	}
+
+	.public-DraftEditorPlaceholder-root {
+		color: rgba(black, 0.6);
+
+		.public-DraftEditorPlaceholder-inner {
+			margin-top: 1rem;
+		}
+	}
+
+	.public-DraftEditorPlaceholder-hasFocus {
+		color: rgba(black, 0.2) !important;
+	}
+}
