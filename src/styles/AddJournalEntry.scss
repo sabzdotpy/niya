@@ -120,7 +120,6 @@ input.titleInput {
 	}
 }
 
-
 .addNew.view {
 	.editorToolbar {
 		display: none;
@@ -128,10 +127,17 @@ input.titleInput {
 
 	.titleInput {
 		padding-bottom: 0;
-		color: rgba(black, .8);
+		color: rgba(black, 0.8);
 	}
 
 	.DraftEditor-root {
-		color: rgba(black, .8);
+		color: rgba(black, 0.8);
 	}
+}
+
+.errorMessage {
+	font-size: 20px;
+	font-weight: 600;
+
+	color: rgb(149, 41, 20);
 }

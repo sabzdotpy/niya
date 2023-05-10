@@ -13,12 +13,14 @@ export default function AddJournalEntry() {
 	const { addJournalEntryToDatabase, readAndSetJournalEntries } = useAuth();
 	const [setShowLogin, pushToNotifications] = useOutletContext();
 
-	const [mode, setMode] = useState("edit");
+	const [mode, setMode] = useState("view");
 	const [currentlyEditing, setCurrentlyEditing] = useState(false);
 
 	const [title, setTitle] = useState("");
 	const [editorState, setEditorState] = useState();
 	const [timestamp, setTimestamp] = useState(null);
+
+	const [error, setError] = useState(null);
 
 	const titleInput = useRef();
 
@@ -72,21 +74,24 @@ export default function AddJournalEntry() {
 			green(`looking for ${entryID}`);
 			const index = getEntryData(entryID);
 
-			console.log("--------------");
-			console.log(Object.values(JOURNAL_ENTRIES?.value[index]));
+			if (index === -1) {
+				setError("The journal entry you are looking for was not found on the server.");
+			} else {
+				console.log("--------------");
+				console.log(Object.values(JOURNAL_ENTRIES?.value[index]));
+				console.log("--------------");
 
-			setTimestamp(Object.values(JOURNAL_ENTRIES?.value[index])[0].timestamp);
+				setTimestamp(Object.values(JOURNAL_ENTRIES?.value[index])[0].timestamp);
 
-			setTitle(Object.values(JOURNAL_ENTRIES?.value[index])[0].title);
+				setTitle(Object.values(JOURNAL_ENTRIES?.value[index])[0].title);
 
-			console.log(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text));
-			setEditorState(
-				EditorState.createWithContent(
-					convertFromRaw(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text))
-				)
-			);
-
-			console.log("--------------");
+				console.log(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text));
+				setEditorState(
+					EditorState.createWithContent(
+						convertFromRaw(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text))
+					)
+				);
+			}
 		} else if (entryID[2] === "new") {
 			pink("Add new entry");
 			setMode("edit");
@@ -118,16 +123,6 @@ export default function AddJournalEntry() {
 		}
 
 		return -1;
-
-		// JOURNAL_ENTRIES?.value.forEach((entry, index) => {
-		// 	if (Object.values(entry)[0].timestamp == entryID) {
-		// 		green(`Found at ${index}`);
-		// 		return index;
-		// 	} else {
-		// 		red(`Not found at ${index}`);
-		// 		return -1;
-		// 	}
-		// });
 	};
 
 	const saveEntry = () => {
@@ -173,44 +168,51 @@ export default function AddJournalEntry() {
 
 	return (
 		<div className={"addNew " + mode}>
-			{/* <Editor /> */}
-			<div className="TITLECONTAINER">
-				<input
-					ref={titleInput}
-					type="text"
-					className="titleInput"
-					placeholder={mode === "view" ? "" : "Enter a title..."}
-					value={title}
-					onChange={(e) => setTitle(e.currentTarget.value)}
-					readOnly={mode === "view"}
-				/>
-			</div>
-			<Editor
-				editorState={editorState}
-				toolbarClassName="editorToolbar"
-				wrapperClassName="wrapperClassName"
-				editorClassName="editorClassName"
-				onEditorStateChange={setEditorState}
-				toolbar={toolbarOptions}
-				placeholder={mode === "view" ? "" : "Type something..."}
-				readOnly={mode === "view"}
-			/>
-
-			{mode === "edit" ? (
-				<button className="saveEntry" onClick={saveEntry}>
-					Save
-				</button>
+			{error ? (
+				<div className="errorMessage">{error}</div>
 			) : (
-				<button
-					className="saveEntry"
-					onClick={() => {
-						setCurrentlyEditing(true);
-						setMode("edit");
-					}}
-				>
-					Edit
-				</button>
+				<>
+					<div className="TITLECONTAINER">
+						<input
+							ref={titleInput}
+							type="text"
+							className="titleInput"
+							placeholder={mode === "view" ? "" : "Enter a title..."}
+							value={title}
+							onChange={(e) => setTitle(e.currentTarget.value)}
+							readOnly={mode === "view"}
+						/>
+					</div>
+					<Editor
+						editorState={editorState}
+						toolbarClassName="editorToolbar"
+						wrapperClassName="wrapperClassName"
+						editorClassName="editorClassName"
+						onEditorStateChange={setEditorState}
+						toolbar={toolbarOptions}
+						placeholder={mode === "view" ? "" : "Type something..."}
+						readOnly={mode === "view"}
+					/>
+
+					{mode === "edit" ? (
+						<button className="saveEntry" onClick={saveEntry}>
+							Save
+						</button>
+					) : (
+						<button
+							className="saveEntry"
+							onClick={() => {
+								setCurrentlyEditing(true);
+								setMode("edit");
+							}}
+						>
+							Edit
+						</button>
+					)}
+				</>
 			)}
+
+			{/* <Editor /> */}
 		</div>
 	);
 }

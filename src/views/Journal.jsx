@@ -3,44 +3,15 @@ import "../styles/Journal.scss";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import useArray from "../hooks/useArray";
 import { green } from "../scripts/Misc";
 
 export default function Journal() {
 	const navigate = useNavigate();
-	const { currentUser, JOURNAL_ENTRIES, readAllJournalEntries, readAndSetJournalEntries } = useAuth();
-	// const JOURNAL_ENTRIES = useArray([]);
-
-	const entries = [
-		{ title: "My first entry!", text: "Today is the ...", date: "31 December" },
-		{ title: "New year!", text: "This year is going to be a good one..", date: "01 January" },
-		{ title: "I am dead inside", text: "Worst year so far", date: "03 January" },
-	];
+	const { currentUser, JOURNAL_ENTRIES, readAndSetJournalEntries } = useAuth();
 
 	useEffect(() => {
 		console.log("Reading entries...");
 		readAndSetJournalEntries();
-		// let temp = [];
-		// readAllJournalEntries()
-		// 	.then((entries) => {
-		// 		Object.getOwnPropertyNames(entries).map((timestamp) => {
-		// 			// JOURNAL_ENTRIES.push(entries[timestamp])
-		// 			var obj = {};
-		// 			obj[timestamp] = entries[timestamp];
-		// 			temp.push(obj);
-
-		// 			// temp[timestamp] = entries[timestamp]
-		// 		});
-		// 		console.log(temp);
-		// 		temp.map((item) => {
-		// 			console.log(item.timestamp);
-		// 		});
-		// 		JOURNAL_ENTRIES.setValue(temp);
-		// 	})
-		// 	.catch((e) => {
-		// 		console.log("error in reading all journal entries");
-		// 		console.log(e);
-			// });
 	}, [currentUser]);
 
 	return (
@@ -76,7 +47,6 @@ export default function Journal() {
 								);
 							})}
 						</div>
-						{/* </div> */}
 
 						<button className="addEntry" onClick={() => navigate("/app-jou/new")}>
 							+

@@ -369,17 +369,14 @@ export const AuthProvider = ({ children }) => {
 
 	const readAllJournalEntries = () => {
 		return new Promise((resolve, reject) => {
-			console.log("inside promise");
 			if (currentUser && currentUser !== "none") {
 				const readRef = ref(database, `root/journal_entries/${currentUser.uid}`);
 
 				try {
 					onValue(readRef, (snapshot) => {
 						if (snapshot.val()) {
-							console.log("Entries has value");
 							resolve(snapshot.val());
 						} else {
-							console.log("Entries has no value");
 							resolve([]);
 						}
 					});
@@ -403,10 +400,6 @@ export const AuthProvider = ({ children }) => {
 					temp.push(obj);
 
 					// temp[timestamp] = entries[timestamp]
-				});
-				console.log(temp);
-				temp.map((item) => {
-					console.log(item.timestamp);
 				});
 				JOURNAL_ENTRIES.setValue(temp);
 			})
