@@ -390,23 +390,27 @@ export const AuthProvider = ({ children }) => {
 	};
 
 	const readAndSetJournalEntries = () => {
-		let temp = [];
-		readAllJournalEntries()
-			.then((entries) => {
-				Object.getOwnPropertyNames(entries).map((timestamp) => {
-					// JOURNAL_ENTRIES.push(entries[timestamp])
-					var obj = {};
-					obj[timestamp] = entries[timestamp];
-					temp.push(obj);
+		return new Promise((resolve, reject) => {
+			let temp = [];
+			readAllJournalEntries()
+				.then((entries) => {
+					Object.getOwnPropertyNames(entries).map((timestamp) => {
+						// JOURNAL_ENTRIES.push(entries[timestamp])
+						var obj = {};
+						obj[timestamp] = entries[timestamp];
+						temp.push(obj);
 
-					// temp[timestamp] = entries[timestamp]
+						// temp[timestamp] = entries[timestamp]
+					});
+					JOURNAL_ENTRIES.setValue(temp);
+					resolve();
+				})
+				.catch((e) => {
+					console.log("error in reading all journal entries");
+					console.log(e);
+					reject(e);
 				});
-				JOURNAL_ENTRIES.setValue(temp);
-			})
-			.catch((e) => {
-				console.log("error in reading all journal entries");
-				console.log(e);
-			});
+		});
 	};
 
 	const value = {

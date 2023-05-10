@@ -31,12 +31,12 @@ export default function AddJournalEntry() {
 			"inline",
 			"blockType",
 			"fontSize",
-			"fontFamily",
+			// "fontFamily",
 			"list",
 			// "textAlign",
 			"colorPicker",
 			"link",
-			"embedded",
+			// "embedded",
 			"emoji",
 			"image",
 			"remove",
@@ -145,25 +145,16 @@ export default function AddJournalEntry() {
 			.then((res) => {
 				console.log(res);
 				pushToNotifications("", res, "success");
-				readAndSetJournalEntries();
+				readAndSetJournalEntries()
+				.catch((e) => {
+					setError(e);
+				});
 				setMode("view");
 			})
 			.catch((e) => {
 				console.log(e);
 				pushToNotifications("", e, "error");
 			});
-
-		// console.log(convertFromRaw(convertToRaw(editorState.getCurrentContent())))
-	};
-
-	const readEntry = () => {
-		// setEditorState(convertFromRaw( JSON.parse(localStorage.getItem("text")) ))
-		const parsedText = JSON.parse(localStorage.getItem("text"));
-
-		// console.log(parsedText)
-		// setEditorState(parsedText)
-		setTitle(localStorage.getItem("title"));
-		// setEditorState(EditorState.createWithContent(convertFromRaw(parsedText)));
 	};
 
 	return (
