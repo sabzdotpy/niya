@@ -8,7 +8,7 @@ import { green } from "../scripts/Misc";
 
 export default function Journal() {
 	const navigate = useNavigate();
-	const { currentUser, JOURNAL_ENTRIES, readAllJournalEntries } = useAuth();
+	const { currentUser, JOURNAL_ENTRIES, readAllJournalEntries, readAndSetJournalEntries } = useAuth();
 	// const JOURNAL_ENTRIES = useArray([]);
 
 	const entries = [
@@ -19,27 +19,28 @@ export default function Journal() {
 
 	useEffect(() => {
 		console.log("Reading entries...");
-		let temp = [];
-		readAllJournalEntries()
-			.then((entries) => {
-				Object.getOwnPropertyNames(entries).map((timestamp) => {
-					// JOURNAL_ENTRIES.push(entries[timestamp])
-					var obj = {};
-					obj[timestamp] = entries[timestamp];
-					temp.push(obj);
+		readAndSetJournalEntries();
+		// let temp = [];
+		// readAllJournalEntries()
+		// 	.then((entries) => {
+		// 		Object.getOwnPropertyNames(entries).map((timestamp) => {
+		// 			// JOURNAL_ENTRIES.push(entries[timestamp])
+		// 			var obj = {};
+		// 			obj[timestamp] = entries[timestamp];
+		// 			temp.push(obj);
 
-					// temp[timestamp] = entries[timestamp]
-				});
-				console.log(temp);
-				temp.map((item) => {
-					console.log(item.timestamp);
-				});
-				JOURNAL_ENTRIES.setValue(temp);
-			})
-			.catch((e) => {
-				console.log("error in reading all journal entries");
-				console.log(e);
-			});
+		// 			// temp[timestamp] = entries[timestamp]
+		// 		});
+		// 		console.log(temp);
+		// 		temp.map((item) => {
+		// 			console.log(item.timestamp);
+		// 		});
+		// 		JOURNAL_ENTRIES.setValue(temp);
+		// 	})
+		// 	.catch((e) => {
+		// 		console.log("error in reading all journal entries");
+		// 		console.log(e);
+			// });
 	}, [currentUser]);
 
 	return (

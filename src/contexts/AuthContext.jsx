@@ -392,6 +392,30 @@ export const AuthProvider = ({ children }) => {
 		});
 	};
 
+	const readAndSetJournalEntries = () => {
+		let temp = [];
+		readAllJournalEntries()
+			.then((entries) => {
+				Object.getOwnPropertyNames(entries).map((timestamp) => {
+					// JOURNAL_ENTRIES.push(entries[timestamp])
+					var obj = {};
+					obj[timestamp] = entries[timestamp];
+					temp.push(obj);
+
+					// temp[timestamp] = entries[timestamp]
+				});
+				console.log(temp);
+				temp.map((item) => {
+					console.log(item.timestamp);
+				});
+				JOURNAL_ENTRIES.setValue(temp);
+			})
+			.catch((e) => {
+				console.log("error in reading all journal entries");
+				console.log(e);
+			});
+	};
+
 	const value = {
 		author,
 		currentUser,
@@ -427,6 +451,7 @@ export const AuthProvider = ({ children }) => {
 		changeToCustomDisplayName,
 		addJournalEntryToDatabase,
 		readAllJournalEntries,
+		readAndSetJournalEntries,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

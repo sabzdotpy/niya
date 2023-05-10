@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "../styles/AddJournalEntry.scss";
 import { EditorState, ContentState, RichUtils, convertFromRaw, convertToRaw } from "draft-js";
 // import "draft-js/dist/Draft.css";
+import { useOutletContext } from "react-router-dom";
 
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -9,7 +10,8 @@ import { useAuth } from "../contexts/AuthContext";
 import { green, pink, red } from "../scripts/Misc";
 
 export default function AddJournalEntry() {
-	const { addJournalEntryToDatabase } = useAuth();
+	const { addJournalEntryToDatabase, readAndSetJournalEntries } = useAuth();
+	const [setShowLogin, pushToNotifications] = useOutletContext();
 
 	const [mode, setMode] = useState("edit");
 	const [currentlyEditing, setCurrentlyEditing] = useState(false);
@@ -73,7 +75,7 @@ export default function AddJournalEntry() {
 			console.log("--------------");
 			console.log(Object.values(JOURNAL_ENTRIES?.value[index]));
 
-			setTimestamp(Object.values(JOURNAL_ENTRIES?.value[index])[0].timestamp)
+			setTimestamp(Object.values(JOURNAL_ENTRIES?.value[index])[0].timestamp);
 
 			setTitle(Object.values(JOURNAL_ENTRIES?.value[index])[0].title);
 
@@ -130,10 +132,9 @@ export default function AddJournalEntry() {
 
 	const saveEntry = () => {
 		if (currentlyEditing) {
-			console.log("I should update this entry.")
-		}
-		else {
-			console.log("I am creating a new entry.")
+			console.log("I should update this entry.");
+		} else {
+			console.log("I am creating a new entry.");
 		}
 
 		// return;
@@ -148,10 +149,13 @@ export default function AddJournalEntry() {
 		addJournalEntryToDatabase(titleInput.current.value, JSON.stringify(rawText), timestamp)
 			.then((res) => {
 				console.log(res);
-				setMode("view")
+				pushToNotifications("", res, "success");
+				readAndSetJournalEntries();
+				setMode("view");
 			})
 			.catch((e) => {
 				console.log(e);
+				pushToNotifications("", e, "error");
 			});
 
 		// console.log(convertFromRaw(convertToRaw(editorState.getCurrentContent())))
