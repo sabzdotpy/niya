@@ -12,6 +12,7 @@
 	}
 
 	.editorToolbar {
+		height: auto;
 		width: 90vw;
 		margin: 0 auto;
 		padding: 0.5rem 1rem;
@@ -74,6 +75,7 @@ input.titleInput {
 
 	border-style: none;
 	border: 3px solid rgba(white, 0.3);
+	color: black;
 	border-color: rgba(white, 0.3) rgba(white, 0.3) transparent rgba(white, 0.3);
 	border-radius: 8px 8px 0 0;
 
@@ -91,6 +93,7 @@ input.titleInput {
 .DraftEditor-root {
 	min-height: 80vh;
 	width: 90vw;
+	color: black;
 	background-color: rgba(black, 0.02);
 	border: 3px solid rgba(white, 0.3);
 	border-color: transparent rgba(white, 0.3) rgba(white, 0.3) rgba(white, 0.3);
@@ -114,5 +117,21 @@ input.titleInput {
 
 	.public-DraftEditorPlaceholder-hasFocus {
 		color: rgba(black, 0.2) !important;
+	}
+}
+
+
+.addNew.view {
+	.editorToolbar {
+		display: none;
+	}
+
+	.titleInput {
+		padding-bottom: 0;
+		color: rgba(black, .8);
+	}
+
+	.DraftEditor-root {
+		color: rgba(black, .8);
 	}
 }

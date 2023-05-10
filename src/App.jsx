@@ -31,6 +31,7 @@ function App() {
 						<Route path="/app-app" element={<UnderConstruction />}></Route>
 						<Route path="/app-jou" element={<Journal />}></Route>
 						<Route path="app-jou/new" element={<AddJournalEntry />}></Route>
+						<Route path="app-jou/:timestamp" element={<AddJournalEntry />}></Route>
 						<Route path="/app-moo" element={<UnderConstruction />}></Route>
 						<Route path="/app-reco" element={<UnderConstruction />}></Route>
 						<Route path="/app-calo" element={<UnderConstruction />}></Route>

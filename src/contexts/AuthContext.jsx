@@ -17,6 +17,7 @@ import {
 	signOut,
 } from "firebase/auth";
 import { set, ref, child, get, onValue, query, orderByChild, startAt, limitToFirst, equalTo } from "firebase/database";
+import useArray from "../hooks/useArray";
 
 export const AuthContext = React.createContext();
 
@@ -43,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 	const [currentUser, setCurrentUser] = useState(null);
 	const [USER_METADATA, SET_USER_METADATA] = useState();
 	const [USER_MISCDATA, SET_USER_MISCDATA] = useState();
-	const [JOURNAL_ENTRIES, SET_JOURNAL_ENTRIES] = useState();
+	const JOURNAL_ENTRIES = useArray();
 	const [author] = useState("Sabz");
 
 	const SET_USER = (user) => {
@@ -337,13 +338,17 @@ export const AuthProvider = ({ children }) => {
 			});
 	};
 
-	const addJournalEntryToDatabase = (title, text) => {
+	const addJournalEntryToDatabase = (title, text, timestamp) => {
 		return new Promise((resolve, reject) => {
 			if (currentUser && currentUser !== "none") {
+				if (!timestamp) {
+					const timestamp = Date.now();
+				}
+
 				const updates = {};
-				updates[`root/journal_entries/${currentUser.uid}/${Date.now()}/title`] = title;
-				updates[`root/journal_entries/${currentUser.uid}/${Date.now()}/text`] = text;
-				updates[`root/journal_entries/${currentUser.uid}/${Date.now()}/timestamp`] = Date.now();
+				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/title`] = title;
+				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/text`] = text;
+				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/timestamp`] = timestamp;
 				// updates[`root/journal_entries/${currentUser.uid}/date_added`] = username;
 
 				update(dRef(database), updates)
@@ -379,7 +384,7 @@ export const AuthProvider = ({ children }) => {
 						}
 					});
 				} catch (e) {
-					reject(e)
+					reject(e);
 				}
 			} else {
 				reject("No user found.");
@@ -395,6 +400,7 @@ export const AuthProvider = ({ children }) => {
 		USER_PRESENT,
 		USER_METADATA,
 		USER_MISCDATA,
+		JOURNAL_ENTRIES,
 		signin,
 		signout,
 		signinwithpopup,

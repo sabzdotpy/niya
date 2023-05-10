@@ -68,9 +68,9 @@ export default function Main() {
 		});
 
 		console.log("adding scroll listener");
-		document.querySelector(".out").addEventListener("scroll", (se) => {
-			console.log("Main scrolled.")
-		})
+		// document.querySelector(".out").addEventListener("scroll", (se) => {
+		// 	console.log("Main scrolled.")
+		// })
 		window.addEventListener("scroll", () => {
 			navBlurCheck();
 		});
@@ -78,6 +78,7 @@ export default function Main() {
 		return () => {
 			// return a cleanup function to unregister our function since it's going to run multiple times
 			window.removeEventListener("scroll", (e) => console.log("unregistering main scroll listener"));
+			window.removeEventListener("resize", () => console.log("unregistering resize listener"))
 		};
 	}, []);
 
@@ -94,7 +95,7 @@ export default function Main() {
 	//! -----------------------------------------
 
 	const navBlurCheck = () => {
-		console.log("checking scroll");
+		// console.log("checking scroll");
 		if (window.scrollY) {
 			navBar?.current?.classList.remove("noeff");
 		} else {

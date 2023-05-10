@@ -8,8 +8,8 @@ import { green } from "../scripts/Misc";
 
 export default function Journal() {
 	const navigate = useNavigate();
-	const { currentUser, readAllJournalEntries } = useAuth();
-	const journalEntries = useArray([]);
+	const { currentUser, JOURNAL_ENTRIES, readAllJournalEntries } = useAuth();
+	// const JOURNAL_ENTRIES = useArray([]);
 
 	const entries = [
 		{ title: "My first entry!", text: "Today is the ...", date: "31 December" },
@@ -18,52 +18,73 @@ export default function Journal() {
 	];
 
 	useEffect(() => {
-		console.log("Reading entries...")
+		console.log("Reading entries...");
 		let temp = [];
 		readAllJournalEntries()
-		.then((entries) => {
-			(Object.getOwnPropertyNames(entries)).map((timestamp) => {
-				// journalEntries.push(entries[timestamp])
+			.then((entries) => {
+				Object.getOwnPropertyNames(entries).map((timestamp) => {
+					// JOURNAL_ENTRIES.push(entries[timestamp])
+					var obj = {};
+					obj[timestamp] = entries[timestamp];
+					temp.push(obj);
 
-				temp.push( {data: entries[timestamp]} )
-
-				// temp[timestamp] = entries[timestamp]
+					// temp[timestamp] = entries[timestamp]
+				});
+				console.log(temp);
+				temp.map((item) => {
+					console.log(item.timestamp);
+				});
+				JOURNAL_ENTRIES.setValue(temp);
 			})
-			console.log(temp)
-			temp.map((item) => {
-				console.log(item.timestamp)
-			})
-			journalEntries.setValue(temp)
-
-		})
-		.catch((e) => {
-			console.log("error in reading all journal entries")
-			console.log(e)
-		})
+			.catch((e) => {
+				console.log("error in reading all journal entries");
+				console.log(e);
+			});
 	}, [currentUser]);
 
 	return (
 		<div className="Journal">
 			<div className="journalContent">
-				<div className="jounralInfo">You have written {journalEntries.value?.length} journal entries so far!</div>
-				<div className="journalList">
-					{journalEntries.value?.map((entry, index) => {
-						return (
-							<div className="journalEntry" key={index} onClick={() => console.log(journalEntries.value)}>
-								<span className="titleAndDateContainer">
-									<span className="title">{entry.data.title}</span>
-									<span className="date">{new Date(entry.data.timestamp).getDate()}</span>
-								</span>
-								<span className="text">{JSON.parse(entry.data.text).blocks[0].text}</span>
-							</div>
-						);
-					})}
-				</div>
-			</div>
+				{currentUser && currentUser !== "none" ? (
+					<>
+						<div className="jounralInfo" onClick={() => console.log(JOURNAL_ENTRIES.value)}>
+							You have written {JOURNAL_ENTRIES.value?.length} journal entries so far!
+						</div>
+						<div className="journalList">
+							{JOURNAL_ENTRIES.value?.map((entry, index) => {
+								return (
+									<div
+										className="journalEntry"
+										key={index}
+										onClick={() => navigate(`/app-jou/${Object.values(entry)[0].timestamp}`)}
+									>
+										<span className="titleAndDateContainer">
+											<span className="title">{Object.values(entry)[0].title}</span>
+											<span className="date">
+												{new Date(Object.values(entry)[0].timestamp)
+													.toLocaleDateString("default", { month: "long" })
+													.slice(0, 4) +
+													" " +
+													new Date(Object.values(entry)[0].timestamp).getDate()}
+											</span>
+										</span>
+										<span className="text">
+											{JSON.parse(Object.values(entry)[0].text).blocks[0].text}
+										</span>
+									</div>
+								);
+							})}
+						</div>
+						{/* </div> */}
 
-			<button className="addEntry" onClick={() => navigate("/app-jou/new")}>
-				+
-			</button>
+						<button className="addEntry" onClick={() => navigate("/app-jou/new")}>
+							+
+						</button>
+					</>
+				) : (
+					<div className="loginBlock">You don't seem to be logged in. Please login to use the journal.</div>
+				)}
+			</div>
 		</div>
 	);
 }

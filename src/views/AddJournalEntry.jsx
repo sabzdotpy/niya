@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../styles/AddJournalEntry.scss";
 import { EditorState, ContentState, RichUtils, convertFromRaw, convertToRaw } from "draft-js";
 // import "draft-js/dist/Draft.css";
@@ -6,59 +6,21 @@ import { EditorState, ContentState, RichUtils, convertFromRaw, convertToRaw } fr
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useAuth } from "../contexts/AuthContext";
+import { green, pink, red } from "../scripts/Misc";
 
 export default function AddJournalEntry() {
-
-
 	const { addJournalEntryToDatabase } = useAuth();
-	const [title, setTitle] = useState( localStorage.getItem("title") || "" );
+
+	const [mode, setMode] = useState("edit");
+	const [currentlyEditing, setCurrentlyEditing] = useState(false);
+
+	const [title, setTitle] = useState("");
+	const [editorState, setEditorState] = useState();
+	const [timestamp, setTimestamp] = useState(null);
 
 	const titleInput = useRef();
 
-	const sampleVal = {
-		entityMap: {},
-		blocks: [
-			{
-				key: "637gr",
-				text: "This is some bold italic underlined and strikethrough text.",
-				type: "unstyled",
-				depth: 0,
-				inlineStyleRanges: [
-					{
-						offset: 0,
-						length: 59,
-						style: "fontfamily-Arial",
-					},
-					{
-						offset: 13,
-						length: 4,
-						style: "BOLD",
-					},
-					{
-						offset: 18,
-						length: 6,
-						style: "ITALIC",
-					},
-					{
-						offset: 25,
-						length: 10,
-						style: "UNDERLINE",
-					},
-					{
-						offset: 40,
-						length: 13,
-						style: "STRIKETHROUGH",
-					},
-				],
-				entityRanges: [],
-				data: {},
-			},
-		],
-	};
-
-	const [editorState, setEditorState] = React.useState(() =>
-		EditorState.createWithContent(convertFromRaw(sampleVal))
-	);
+	const { JOURNAL_ENTRIES } = useAuth();
 
 	const toolbarOptions = {
 		options: [
@@ -67,7 +29,7 @@ export default function AddJournalEntry() {
 			"fontSize",
 			"fontFamily",
 			"list",
-			"textAlign",
+			// "textAlign",
 			"colorPicker",
 			"link",
 			"embedded",
@@ -89,30 +51,107 @@ export default function AddJournalEntry() {
 		},
 		fontFamily: {
 			// options: ["Jost", "Arial", "Georgia", "Impact", "Tahoma", "Times New Roman", "Verdana"],
-			options: ["Arial"]
+			options: ["Arial"],
 		},
 	};
 
+	useEffect(() => {
+		console.log(Object.values(JOURNAL_ENTRIES.value));
+
+		// for( let i in JOURNAL_ENTRIES.value) {
+		// 	console.log(JOURNAL_ENTRIES[i])
+		// }
+
+		console.log(window.location.pathname.split("/"));
+		let entryID = window.location.pathname.split("/");
+		if (entryID.length === 3 && entryID[2] && entryID[2] !== "new") {
+			entryID = entryID[2];
+			setMode("view");
+			green(`looking for ${entryID}`);
+			const index = getEntryData(entryID);
+
+			console.log("--------------");
+			console.log(Object.values(JOURNAL_ENTRIES?.value[index]));
+
+			setTimestamp(Object.values(JOURNAL_ENTRIES?.value[index])[0].timestamp)
+
+			setTitle(Object.values(JOURNAL_ENTRIES?.value[index])[0].title);
+
+			console.log(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text));
+			setEditorState(
+				EditorState.createWithContent(
+					convertFromRaw(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text))
+				)
+			);
+
+			console.log("--------------");
+		} else if (entryID[2] === "new") {
+			pink("Add new entry");
+			setMode("edit");
+		}
+
+		// if (entryID) {
+		// 	if (JOURNAL_ENTRIES?.value.includes(parseInt(entryID))) {
+		// 		green("exists")
+		// 	}
+		// 	else {
+		// 		red("nope")
+		// 	}
+		// }
+	}, []);
+
+	const getEntryData = (entryID) => {
+		console.log(`Looking for ID when length is ${JOURNAL_ENTRIES.value.length}`);
+
+		for (let index = 0; index < JOURNAL_ENTRIES?.value.length; index++) {
+			let entry = JOURNAL_ENTRIES?.value[index];
+			console.log(entry);
+
+			if (Object.values(entry)[0].timestamp == entryID) {
+				green(`Found at ${index}`);
+				return index;
+			} else {
+				red(`Not found at ${index}`);
+			}
+		}
+
+		return -1;
+
+		// JOURNAL_ENTRIES?.value.forEach((entry, index) => {
+		// 	if (Object.values(entry)[0].timestamp == entryID) {
+		// 		green(`Found at ${index}`);
+		// 		return index;
+		// 	} else {
+		// 		red(`Not found at ${index}`);
+		// 		return -1;
+		// 	}
+		// });
+	};
+
 	const saveEntry = () => {
+		if (currentlyEditing) {
+			console.log("I should update this entry.")
+		}
+		else {
+			console.log("I am creating a new entry.")
+		}
+
+		// return;
 		const rawText = convertToRaw(editorState.getCurrentContent());
 
 		console.log(rawText);
-		// localStorage.setItem("title", titleInput.current.value)
-		// localStorage.setItem("text", JSON.stringify(rawText));
+		console.table({
+			title: titleInput.current.value,
+			text: JSON.stringify(rawText),
+		});
 
-		console.table(
-			{
-				title: titleInput.current.value,
-				text: JSON.stringify(rawText)
-			}
-		)
-
-		addJournalEntryToDatabase(titleInput.current.value, JSON.stringify(rawText))
+		addJournalEntryToDatabase(titleInput.current.value, JSON.stringify(rawText), timestamp)
 			.then((res) => {
-				console.log(res)
+				console.log(res);
+				setMode("view")
 			})
 			.catch((e) => {
-				console.log(e)
+				console.log(e);
 			});
 
 		// console.log(convertFromRaw(convertToRaw(editorState.getCurrentContent())))
@@ -124,15 +163,23 @@ export default function AddJournalEntry() {
 
 		// console.log(parsedText)
 		// setEditorState(parsedText)
-		setTitle(localStorage.getItem("title"))
-		setEditorState(EditorState.createWithContent(convertFromRaw(parsedText)));
+		setTitle(localStorage.getItem("title"));
+		// setEditorState(EditorState.createWithContent(convertFromRaw(parsedText)));
 	};
 
 	return (
-		<div className="addNew">
+		<div className={"addNew " + mode}>
 			{/* <Editor /> */}
 			<div className="TITLECONTAINER">
-				<input ref={titleInput} type="text" className="titleInput" placeholder="Enter a catchy title..." value={title} onChange={(e) => setTitle(e.currentTarget.value)} />
+				<input
+					ref={titleInput}
+					type="text"
+					className="titleInput"
+					placeholder={mode === "view" ? "" : "Enter a title..."}
+					value={title}
+					onChange={(e) => setTitle(e.currentTarget.value)}
+					readOnly={mode === "view"}
+				/>
 			</div>
 			<Editor
 				editorState={editorState}
@@ -141,18 +188,25 @@ export default function AddJournalEntry() {
 				editorClassName="editorClassName"
 				onEditorStateChange={setEditorState}
 				toolbar={toolbarOptions}
-				placeholder={"Type something..."}
-				// readOnly
+				placeholder={mode === "view" ? "" : "Type something..."}
+				readOnly={mode === "view"}
 			/>
 
-
-
-			<button className="saveEntry" onClick={saveEntry}>
-				Save to localStorage
-			</button>
-			<button className="" onClick={readEntry}>
-				Read from localStorage
-			</button>
+			{mode === "edit" ? (
+				<button className="saveEntry" onClick={saveEntry}>
+					Save
+				</button>
+			) : (
+				<button
+					className="saveEntry"
+					onClick={() => {
+						setCurrentlyEditing(true);
+						setMode("edit");
+					}}
+				>
+					Edit
+				</button>
+			)}
 		</div>
 	);
 }
