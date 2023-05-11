@@ -46,7 +46,7 @@ export default function Quotes() {
 				<div className="quote">{quote?.content}</div>
 				<span className="author">- {quote?.author}</span>
 			</div>
-			<button className="getNewQuote" ref={newQuoteBtn} onClick={getNewQuote}>
+			<button className="getNewQuote noMobileTapHighlight" ref={newQuoteBtn} onClick={getNewQuote}>
 				<BsDice5Fill size={"30px"} />
 			</button>
 		</div>

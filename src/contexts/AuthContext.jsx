@@ -342,7 +342,8 @@ export const AuthProvider = ({ children }) => {
 		return new Promise((resolve, reject) => {
 			if (currentUser && currentUser !== "none") {
 				if (!timestamp) {
-					const timestamp = Date.now();
+					console.log("No timestamp was provided")
+					timestamp = Date.now();
 				}
 
 				const updates = {};
@@ -375,8 +376,10 @@ export const AuthProvider = ({ children }) => {
 				try {
 					onValue(readRef, (snapshot) => {
 						if (snapshot.val()) {
+							console.log("Jounral has value");
 							resolve(snapshot.val());
 						} else {
+							console.log("Jounral has no value");
 							resolve([]);
 						}
 					});
@@ -394,7 +397,17 @@ export const AuthProvider = ({ children }) => {
 			let temp = [];
 			readAllJournalEntries()
 				.then((entries) => {
+					console.log(entries)
+					if (Object.keys(entries).length < 1) {
+						// console.log(Object.keys(entries).length)
+						console.log("Jounral entry length 0");
+						JOURNAL_ENTRIES.setValue([]);
+						resolve([]);
+						return;
+					}
+
 					Object.getOwnPropertyNames(entries).map((timestamp) => {
+						console.log("Parsing jounral entries...")
 						// JOURNAL_ENTRIES.push(entries[timestamp])
 						var obj = {};
 						obj[timestamp] = entries[timestamp];

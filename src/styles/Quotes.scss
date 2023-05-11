@@ -43,6 +43,11 @@ div.Quotes {
         transition: all 3s ease;
 		animation: none;
 
+		&:hover {
+			background-color: transparent;
+			border-color: rgb(57, 18, 10);
+		}
+
 		&.play {
 			animation: rotate 1s infinite ease;
 		}

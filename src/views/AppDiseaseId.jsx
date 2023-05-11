@@ -8,7 +8,7 @@ import { TiTick } from "react-icons/ti";
 import { backend_url as BASE_URL } from "../components/BackUrl";
 
 import { pink, toTitleCase } from "../scripts/Misc";
-
+import LoadingScreen from "../components/LoadingScreen";
 
 const URL = (relative_url) => {
 	return `${BASE_URL}${relative_url}`;
@@ -16,6 +16,8 @@ const URL = (relative_url) => {
 
 export default function AppDiseaseId() {
 	const [setShowLogin, pushToNotifications] = useOutletContext();
+
+	const [showLoading, setShowLoading] = useState(true);
 
 	const allSyms = useArray();
 	const relatedSyms = useArray();
@@ -59,6 +61,7 @@ export default function AppDiseaseId() {
 			.catch((err) => {
 				console.log("No response");
 				console.warn(err);
+				setShowLoading(false);
 				pushToNotifications(
 					"Server down",
 					"The server is not responding to your request. Please inform the creator.",
@@ -256,7 +259,7 @@ export default function AppDiseaseId() {
 									);
 								})
 							) : (
-								<div>Getting data..</div>
+								<LoadingScreen className="panel" in={true && showLoading} unmountOnExit transparent noprompt />
 							)}
 						</div>
 					</div>
@@ -321,7 +324,7 @@ export default function AppDiseaseId() {
 									);
 								})
 							) : (
-								<div>Getting related symptoms...</div>
+								<LoadingScreen in={true && showLoading} unmountOnExit transparent noprompt />
 							)}
 						</div>
 					</div>
@@ -352,7 +355,7 @@ export default function AppDiseaseId() {
 								return <li key={index}>{toTitleCase(precaution)}</li>;
 							})
 						) : (
-							<li>Getting data...</li>
+							<LoadingScreen in={true && showLoading} unmountOnExit transparent noprompt />
 						)}
 					</ul>
 				</section>

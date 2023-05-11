@@ -1,0 +1,62 @@
+@import "./Colors.scss";
+
+
+@keyframes rotateAnim {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loader {
+    // background-color: green;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    min-height: 50px;
+    width: 100%;    
+    z-index: 101;
+    transition: all .25s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading_icon {
+    animation: rotateAnim 1s ease infinite;
+    fill: rgb(57, 18, 10);
+}
+
+.promptanim-enter {
+    opacity: 0;
+}
+
+.loadinganim-enter .load_info {
+    transform: scale(0.93);
+}
+
+.loadinganim-enter-active {
+    opacity: 1;
+    transform: scale(1);
+
+}
+
+.loadinganim-enter-active .load_info { 
+    transform: scale(1);
+}
+
+.loadinganim-exit {
+    opacity: 1;
+}
+
+.loadinganim-exit .load_info {
+    transform: scale(1);
+}
+
+.loadinganim-exit-active {
+    opacity: 0;
+}
+
+.loadinganim-exit-active .load_info {
+    transform: scale(0.93);
+}
