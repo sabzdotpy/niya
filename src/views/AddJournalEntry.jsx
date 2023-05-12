@@ -2,7 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import "../styles/AddJournalEntry.scss";
 import { EditorState, ContentState, RichUtils, convertFromRaw, convertToRaw } from "draft-js";
 // import "draft-js/dist/Draft.css";
-import { useOutletContext } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { BiTrash } from "react-icons/bi";
 
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -12,19 +13,20 @@ import { green, pink, red } from "../scripts/Misc";
 export default function AddJournalEntry() {
 	const { addJournalEntryToDatabase, readAndSetJournalEntries } = useAuth();
 	const [setShowLogin, pushToNotifications] = useOutletContext();
+	const navigate = useNavigate();
 
 	const [mode, setMode] = useState("view");
 	const [currentlyEditing, setCurrentlyEditing] = useState(false);
 
 	const [title, setTitle] = useState("");
-	const [editorState, setEditorState] = useState();
+	const [editorState, setEditorState] = useState(null);
 	const [timestamp, setTimestamp] = useState(null);
 
 	const [error, setError] = useState(null);
 
 	const titleInput = useRef();
 
-	const { JOURNAL_ENTRIES } = useAuth();
+	const { JOURNAL_ENTRIES, deleteJournalEntryFromDatabase } = useAuth();
 
 	const toolbarOptions = {
 		options: [
@@ -86,11 +88,19 @@ export default function AddJournalEntry() {
 				setTitle(Object.values(JOURNAL_ENTRIES?.value[index])[0].title);
 
 				console.log(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text));
-				setEditorState(
-					EditorState.createWithContent(
-						convertFromRaw(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text))
-					)
-				);
+				if (
+					JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0] && // 👈 null and undefined check
+					Object.keys(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0]).length === 0 &&
+					Object.getPrototypeOf(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0]) === Object.prototype
+				) {
+					setEditorState("");
+				} else {
+					setEditorState(
+						EditorState.createWithContent(
+							convertFromRaw(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text))
+						)
+					);
+				}
 			}
 		} else if (entryID[2] === "new") {
 			pink("Add new entry");
@@ -131,29 +141,55 @@ export default function AddJournalEntry() {
 		} else {
 			console.log("I am creating a new entry.");
 		}
+		let jsonText;
 
-		// return;
-		const rawText = convertToRaw(editorState.getCurrentContent());
+		if (editorState) {
+			jsonText = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
+			console.log(jsonText);
+		} else {
+			jsonText = JSON.stringify([{}]);
+		}
 
-		console.log(rawText);
 		console.table({
 			title: titleInput.current.value,
-			text: JSON.stringify(rawText),
+			text: jsonText,
 		});
 
-		addJournalEntryToDatabase(titleInput.current.value, JSON.stringify(rawText), timestamp)
+		addJournalEntryToDatabase(titleInput.current.value, jsonText, timestamp)
 			.then((res) => {
 				console.log(res);
 				pushToNotifications("", res, "success");
 				readAndSetJournalEntries()
+				.then(() => {
+					navigate(`/app-jou/${timestamp}`)
+					//! CHANGES TO NULL FOR SOME REASON.
+				})
 				.catch((e) => {
 					setError(e);
 				});
-				setMode("view");
+				// setMode("view");
 			})
 			.catch((e) => {
 				console.log(e);
 				pushToNotifications("", e, "error");
+			});
+	};
+
+	const deleteEntry = () => {
+		if (!timestamp) {
+			pushToNotifications("Critical error", "Could not delete. No entry found", "error");
+			console.error("no timestamp found");
+			return;
+		}
+
+		deleteJournalEntryFromDatabase(timestamp)
+			.then((res) => {
+				pushToNotifications("Success", res, "success");
+				navigate("/app-jou");
+			})
+			.catch((e) => {
+				pushToNotifications("Error", e.message, "error");
+				console.warn(e);
 			});
 	};
 
@@ -163,13 +199,42 @@ export default function AddJournalEntry() {
 				<div className="errorMessage">{error}</div>
 			) : (
 				<>
-					<div className="TITLECONTAINER">
+					<div className="topBar">
+						{mode === "edit" ? (
+							<button className="edit" onClick={saveEntry} title="Save Entry">
+								Save
+							</button>
+						) : (
+							<button
+								className="edit"
+								title="Edit Entry"
+								onClick={() => {
+									setCurrentlyEditing(true);
+									setMode("edit");
+								}}
+							>
+								Edit
+							</button>
+						)}
+						{mode === "view" || (mode === "edit" && currentlyEditing) ? (
+							<button className="delete" title="Delete Entry" onClick={deleteEntry}>
+								<BiTrash size={25} />
+							</button>
+						) : (
+							<></>
+						)}
+					</div>
+					<div className="titleContainer">
 						<input
 							ref={titleInput}
 							type="text"
 							className="titleInput"
 							placeholder={mode === "view" ? "" : "Enter a title..."}
 							value={title}
+							onClick={() => {
+								console.log(mode);
+								console.log(currentlyEditing);
+							}}
 							onChange={(e) => setTitle(e.currentTarget.value)}
 							readOnly={mode === "view"}
 						/>
@@ -185,7 +250,7 @@ export default function AddJournalEntry() {
 						readOnly={mode === "view"}
 					/>
 
-					{mode === "edit" ? (
+					{/* {mode === "edit" ? (
 						<button className="saveEntry" onClick={saveEntry}>
 							Save
 						</button>
@@ -199,7 +264,7 @@ export default function AddJournalEntry() {
 						>
 							Edit
 						</button>
-					)}
+					)} */}
 				</>
 			)}
 

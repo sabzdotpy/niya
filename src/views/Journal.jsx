@@ -17,18 +17,16 @@ export default function Journal() {
 			console.log("Reading entries...");
 			readAndSetJournalEntries()
 				.then(() => {
-					console.log(JOURNAL_ENTRIES.value)
+					console.log(JOURNAL_ENTRIES.value);
 					setShowLoading(false);
 				})
 				.catch(() => {
-					console.log(JOURNAL_ENTRIES.value)
+					console.log(JOURNAL_ENTRIES.value);
 					setShowLoading(false);
 				});
-		}
-		else {
+		} else {
 			setShowLoading(false);
 		}
-		
 	}, [currentUser]);
 
 	return (
@@ -67,7 +65,15 @@ export default function Journal() {
 												</span>
 											</span>
 											<span className="text">
-												{JSON.parse(Object.values(entry)[0]?.text).blocks[0]?.text}
+												{/* JSON.parse(Object.values(entry)[0]?.text)[0] === {} */}
+												{(JSON.parse(Object.values(entry)[0]?.text)[0] && // 👈 null and undefined check
+												Object.keys(JSON.parse(Object.values(entry)[0]?.text)[0]).length ===
+													0 &&
+												Object.getPrototypeOf(JSON.parse(Object.values(entry)[0]?.text)[0]) ===
+													Object.prototype)
+													  // ? JSON.parse(Object.values(entry)[0]?.text)
+													? ""
+													: JSON.parse(Object.values(entry)[0]?.text).blocks[0]?.text}
 											</span>
 										</div>
 									);

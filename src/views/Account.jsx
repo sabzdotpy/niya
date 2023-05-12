@@ -3,7 +3,7 @@ import "../styles/Accounts.scss";
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
 
-import { BiTrash, BiEdit } from "react-icons/all";
+import { BiTrash, BiEdit } from "react-icons/bi";
 
 import DefaultProfilePicture from "../assets/default_pp.png";
 import ImageRenderer from "../components/ImageRenderer";

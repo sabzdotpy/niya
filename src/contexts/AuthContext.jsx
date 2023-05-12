@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { auth, database } from "../components/firebaseCtx";
 import { green, red, pink } from "../scripts/Misc";
-import { update, ref as dRef } from "firebase/database";
+import { update, remove, ref as dRef } from "firebase/database";
 import { encode } from "firebase-key";
 
 import {
@@ -368,6 +368,30 @@ export const AuthProvider = ({ children }) => {
 		});
 	};
 
+	const deleteJournalEntryFromDatabase = (timestamp) => {
+		return new Promise((resolve, reject) => {
+			if (currentUser && currentUser !== "none") {
+				if (!timestamp) {
+					reject("no timestamp was provided")
+				}
+
+				remove(dRef(database), `root/journal_entries/${currentUser.uid}/${timestamp}`)
+				.then(() => {
+					green("Deleted entry from db.")
+					resolve("Entry deleted.")
+				})
+				.catch((e) => {
+					red("Error while deleting entry from db.")
+					reject(e);
+				})
+			}
+			else {
+				reject("No user found.")
+			}
+		})
+
+	}
+
 	const readAllJournalEntries = () => {
 		return new Promise((resolve, reject) => {
 			if (currentUser && currentUser !== "none") {
@@ -460,6 +484,8 @@ export const AuthProvider = ({ children }) => {
 
 		changeToCustomDisplayName,
 		addJournalEntryToDatabase,
+		deleteJournalEntryFromDatabase,
+		
 		readAllJournalEntries,
 		readAndSetJournalEntries,
 	};
