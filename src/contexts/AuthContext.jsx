@@ -355,7 +355,8 @@ export const AuthProvider = ({ children }) => {
 				update(dRef(database), updates)
 					.then(() => {
 						green("Added journal entry to db!");
-						resolve("Journal entry added to database");
+						console.log("Journal entry added to database");
+						resolve(timestamp);
 					})
 					.catch((e) => {
 						red("Couldn't add journal entry to db :(");

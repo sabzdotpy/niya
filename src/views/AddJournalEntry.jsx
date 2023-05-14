@@ -156,13 +156,15 @@ export default function AddJournalEntry() {
 		});
 
 		addJournalEntryToDatabase(titleInput.current.value, jsonText, timestamp)
-			.then((res) => {
-				console.log(res);
-				pushToNotifications("", res, "success");
+			.then((timestamp) => {
+				setTimestamp(timestamp);
+				// console.log(res);
+				pushToNotifications("", "Journal entry saved.", "success");
 				readAndSetJournalEntries()
 				.then(() => {
-					navigate(`/app-jou/${timestamp}`)
-					//! CHANGES TO NULL FOR SOME REASON.
+					// console.log(`This is timestamp -> ${timestamp}`)
+					navigate(`/app-jou/${timestamp}`);
+					// ! CHANGES TO NULL FOR SOME REASON.
 				})
 				.catch((e) => {
 					setError(e);
@@ -173,6 +175,7 @@ export default function AddJournalEntry() {
 				console.log(e);
 				pushToNotifications("", e, "error");
 			});
+
 	};
 
 	const deleteEntry = () => {
