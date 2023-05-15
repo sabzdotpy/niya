@@ -19,18 +19,6 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useAuth } from "../contexts/AuthContext";
 import { green, pink, red } from "../scripts/Misc";
 
-import {
-	RiNumber1,
-	RiNumber2,
-	RiNumber3,
-	RiNumber4,
-	RiNumber5,
-	RiNumber6,
-	RiNumber7,
-	RiNumber8,
-	RiNumber9,
-	// RiNumber10,
-} from "react-icons/ri";
 import useArray from "../hooks/useArray";
 
 export default function AddJournalEntry() {
