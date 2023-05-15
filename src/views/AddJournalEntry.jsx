@@ -11,7 +11,6 @@ import { useAuth } from "../contexts/AuthContext";
 import { green, pink, red } from "../scripts/Misc";
 
 export default function AddJournalEntry() {
-	const { addJournalEntryToDatabase, readAndSetJournalEntries } = useAuth();
 	const [setShowLogin, pushToNotifications] = useOutletContext();
 	const navigate = useNavigate();
 
@@ -26,7 +25,13 @@ export default function AddJournalEntry() {
 
 	const titleInput = useRef();
 
-	const { JOURNAL_ENTRIES, deleteJournalEntryFromDatabase } = useAuth();
+	const {
+		currentUser,
+		JOURNAL_ENTRIES,
+		deleteJournalEntryFromDatabase,
+		addJournalEntryToDatabase,
+		readAndSetJournalEntries,
+	} = useAuth();
 
 	const toolbarOptions = {
 		options: [
@@ -67,45 +72,58 @@ export default function AddJournalEntry() {
 		// for( let i in JOURNAL_ENTRIES.value) {
 		// 	console.log(JOURNAL_ENTRIES[i])
 		// }
-
-		console.log(window.location.pathname.split("/"));
-		let entryID = window.location.pathname.split("/");
-		if (entryID.length === 3 && entryID[2] && entryID[2] !== "new") {
-			entryID = entryID[2];
-			setMode("view");
-			green(`looking for ${entryID}`);
-			const index = getEntryData(entryID);
-
-			if (index === -1) {
-				setError("The journal entry you are looking for was not found on the server.");
-			} else {
-				console.log("--------------");
-				console.log(Object.values(JOURNAL_ENTRIES?.value[index]));
-				console.log("--------------");
-
-				setTimestamp(Object.values(JOURNAL_ENTRIES?.value[index])[0].timestamp);
-
-				setTitle(Object.values(JOURNAL_ENTRIES?.value[index])[0].title);
-
-				console.log(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text));
-				if (
-					JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0] && // 👈 null and undefined check
-					Object.keys(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0]).length === 0 &&
-					Object.getPrototypeOf(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0]) === Object.prototype
-				) {
-					setEditorState("");
-				} else {
-					setEditorState(
-						EditorState.createWithContent(
-							convertFromRaw(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text))
-						)
-					);
-				}
-			}
-		} else if (entryID[2] === "new") {
-			pink("Add new entry");
-			setMode("edit");
+		if (currentUser === "none") {
+			setError("You don't seem to be logged in. Please log in to use journal.");
+			return;
 		}
+
+		if (!currentUser && currentUser !== "none") {
+			setError("Loading.");
+			return;
+		}
+
+		readAndSetJournalEntries().then(() => {
+			console.log(window.location.pathname.split("/"));
+			let entryID = window.location.pathname.split("/");
+			if (entryID.length === 3 && entryID[2] && entryID[2] !== "new") {
+				entryID = entryID[2];
+				setMode("view");
+				green(`looking for ${entryID}`);
+				const index = getEntryData(entryID);
+
+				if (index === -1) {
+					setError("The journal entry you are looking for was not found on the server.");
+				} else {
+					console.log("--------------");
+					console.log(Object.values(JOURNAL_ENTRIES?.value[index]));
+					console.log("--------------");
+
+					setTimestamp(Object.values(JOURNAL_ENTRIES?.value[index])[0].timestamp);
+
+					setTitle(Object.values(JOURNAL_ENTRIES?.value[index])[0].title);
+
+					console.log(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text));
+					if (
+						JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0] && // 👈 null and undefined check
+						Object.keys(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0]).length ===
+							0 &&
+						Object.getPrototypeOf(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0]) ===
+							Object.prototype
+					) {
+						setEditorState("");
+					} else {
+						setEditorState(
+							EditorState.createWithContent(
+								convertFromRaw(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text))
+							)
+						);
+					}
+				}
+			} else if (entryID[2] === "new") {
+				pink("Add new entry");
+				setMode("edit");
+			}
+		});
 
 		// if (entryID) {
 		// 	if (JOURNAL_ENTRIES?.value.includes(parseInt(entryID))) {
@@ -115,7 +133,7 @@ export default function AddJournalEntry() {
 		// 		red("nope")
 		// 	}
 		// }
-	}, []);
+	}, [currentUser]);
 
 	const getEntryData = (entryID) => {
 		console.log(`Looking for ID when length is ${JOURNAL_ENTRIES.value.length}`);
@@ -161,21 +179,20 @@ export default function AddJournalEntry() {
 				// console.log(res);
 				pushToNotifications("", "Journal entry saved.", "success");
 				readAndSetJournalEntries()
-				.then(() => {
-					// console.log(`This is timestamp -> ${timestamp}`)
-					navigate(`/app-jou/${timestamp}`);
-					// ! CHANGES TO NULL FOR SOME REASON.
-				})
-				.catch((e) => {
-					setError(e);
-				});
+					.then(() => {
+						// console.log(`This is timestamp -> ${timestamp}`)
+						navigate(`/app-jou/${timestamp}`);
+						// ! CHANGES TO NULL FOR SOME REASON.
+					})
+					.catch((e) => {
+						setError(e);
+					});
 				// setMode("view");
 			})
 			.catch((e) => {
 				console.log(e);
 				pushToNotifications("", e, "error");
 			});
-
 	};
 
 	const deleteEntry = () => {
