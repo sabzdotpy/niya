@@ -1,4 +1,5 @@
 import "../styles/Accounts.scss";
+import { Helmet } from "react-helmet";
 
 import { useState, useEffect } from "react";
 import { useOutletContext } from "react-router-dom";
@@ -30,6 +31,10 @@ export default function Accounts(props) {
 		}
 	}, [currentUser]);
 	return (
+		<>
+		<Helmet>
+			<title>Account - Niya</title>
+		</Helmet>
 		<div className="Accounts">
 			<ChangeDisplayName
 				in={showDisplayNameChangeModal}
@@ -91,5 +96,6 @@ export default function Accounts(props) {
 				)}
 			</div>
 		</div>
+		</>
 	);
 }

@@ -4,11 +4,34 @@ import { EditorState, ContentState, RichUtils, convertFromRaw, convertToRaw } fr
 // import "draft-js/dist/Draft.css";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { BiTrash } from "react-icons/bi";
-
+import {
+	BsEmojiSmileFill,
+	BsEmojiFrownFill,
+	BsEmojiAngryFill,
+	BsEmojiExpressionlessFill,
+	BsEmojiHeartEyesFill,
+	BsEmojiLaughingFill,
+	BsEmojiWinkFill,
+	BsEmojiSunglassesFill,
+} from "react-icons/bs";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useAuth } from "../contexts/AuthContext";
 import { green, pink, red } from "../scripts/Misc";
+
+import {
+	RiNumber1,
+	RiNumber2,
+	RiNumber3,
+	RiNumber4,
+	RiNumber5,
+	RiNumber6,
+	RiNumber7,
+	RiNumber8,
+	RiNumber9,
+	// RiNumber10,
+} from "react-icons/ri";
+import useArray from "../hooks/useArray";
 
 export default function AddJournalEntry() {
 	const [setShowLogin, pushToNotifications] = useOutletContext();
@@ -17,13 +40,28 @@ export default function AddJournalEntry() {
 	const [mode, setMode] = useState("view");
 	const [currentlyEditing, setCurrentlyEditing] = useState(false);
 
+	const [moodsOpen, setMoodsOpen] = useState(false);
+
 	const [title, setTitle] = useState("");
 	const [editorState, setEditorState] = useState(null);
 	const [timestamp, setTimestamp] = useState(null);
-
+	const [selectedMood, setSelectedMood] = useState(4);
 	const [error, setError] = useState(null);
 
 	const titleInput = useRef();
+
+	const moodOptions = useArray([
+		{ number: 1, icon: <BsEmojiSmileFill size={"25px"} /> },
+		{ number: 2, icon: <BsEmojiFrownFill size={"25px"} /> },
+		{ number: 3, icon: <BsEmojiAngryFill size={"25px"} /> },
+		{ number: 4, icon: <BsEmojiExpressionlessFill size={"25px"} /> },
+		{ number: 5, icon: <BsEmojiHeartEyesFill size={"25px"} /> },
+		{ number: 6, icon: <BsEmojiLaughingFill size={"25px"} /> },
+		{ number: 7, icon: <BsEmojiWinkFill size={"25px"} /> },
+		{ number: 8, icon: <BsEmojiSunglassesFill size={"25px"} /> },
+		// { number: 9, icon: <RiNumber9 size={"25px"} /> },
+		// { number: 10, icon: <RiNumber10 /> },
+	]);
 
 	const {
 		currentUser,
@@ -101,8 +139,10 @@ export default function AddJournalEntry() {
 					setTimestamp(Object.values(JOURNAL_ENTRIES?.value[index])[0].timestamp);
 
 					setTitle(Object.values(JOURNAL_ENTRIES?.value[index])[0].title);
+					setSelectedMood(Object.values(JOURNAL_ENTRIES?.value[index])[0].mood || 4);
 
 					console.log(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text));
+
 					if (
 						JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0] && // 👈 null and undefined check
 						Object.keys(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0]?.text)[0]).length ===
@@ -171,18 +211,17 @@ export default function AddJournalEntry() {
 		console.table({
 			title: titleInput.current.value,
 			text: jsonText,
+			mood: selectedMood,
 		});
 
-		addJournalEntryToDatabase(titleInput.current.value, jsonText, timestamp)
+		addJournalEntryToDatabase(titleInput.current.value, jsonText, timestamp, selectedMood)
 			.then((timestamp) => {
 				setTimestamp(timestamp);
 				// console.log(res);
 				pushToNotifications("", "Journal entry saved.", "success");
 				readAndSetJournalEntries()
 					.then(() => {
-						// console.log(`This is timestamp -> ${timestamp}`)
 						navigate(`/app-jou/${timestamp}`);
-						// ! CHANGES TO NULL FOR SOME REASON.
 					})
 					.catch((e) => {
 						setError(e);
@@ -220,6 +259,33 @@ export default function AddJournalEntry() {
 			) : (
 				<>
 					<div className="topBar">
+						<div
+							className={"mood " + (mode === "edit" ? "edit" : "")}
+							onClick={() => {
+								if (mode === "edit") {
+									setMoodsOpen((moodsOpen) => !moodsOpen);
+								}
+							}}
+							onBlur={() => setMoodsOpen(false)}
+						>
+							{React.cloneElement(moodOptions.value.find((mood) => mood.number === selectedMood).icon, {
+								size: "20px",
+							})}
+							{/* <BsEmojiSmileFill className="dropbtn" /> */}
+							<div class={"dropdown-content" + (moodsOpen ? " show" : "")}>
+								{/* <ul className="moods-dropdown"> */}
+								{moodOptions.value.map((mood, index) => {
+									return (
+										<div key={index} className="item" onClick={() => setSelectedMood(mood.number)}>
+											<span className="icon">{mood.icon}</span>
+											{/* <span className="name">{mood.number}</span> */}
+										</div>
+									);
+								})}
+								{/* </ul> */}
+							</div>
+						</div>
+
 						{mode === "edit" ? (
 							<button className="edit" onClick={saveEntry} title="Save Entry">
 								Save

@@ -338,7 +338,7 @@ export const AuthProvider = ({ children }) => {
 			});
 	};
 
-	const addJournalEntryToDatabase = (title, text, timestamp) => {
+	const addJournalEntryToDatabase = (title, text, timestamp, mood) => {
 		return new Promise((resolve, reject) => {
 			if (currentUser && currentUser !== "none") {
 				if (!timestamp) {
@@ -350,6 +350,7 @@ export const AuthProvider = ({ children }) => {
 				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/title`] = title;
 				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/text`] = text;
 				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/timestamp`] = timestamp;
+				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/mood`] = mood;
 				// updates[`root/journal_entries/${currentUser.uid}/date_added`] = username;
 
 				update(dRef(database), updates)
