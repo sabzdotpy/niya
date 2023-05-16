@@ -39,14 +39,14 @@ export default function AddJournalEntry() {
 	const titleInput = useRef();
 
 	const moodOptions = useArray([
-		{ number: 1, icon: <BsEmojiSmileFill size={"25px"} /> },
-		{ number: 2, icon: <BsEmojiFrownFill size={"25px"} /> },
-		{ number: 3, icon: <BsEmojiAngryFill size={"25px"} /> },
-		{ number: 4, icon: <BsEmojiExpressionlessFill size={"25px"} /> },
-		{ number: 5, icon: <BsEmojiHeartEyesFill size={"25px"} /> },
-		{ number: 6, icon: <BsEmojiLaughingFill size={"25px"} /> },
-		{ number: 7, icon: <BsEmojiWinkFill size={"25px"} /> },
-		{ number: 8, icon: <BsEmojiSunglassesFill size={"25px"} /> },
+		{ number: 1, icon: <BsEmojiSmileFill size={"30px"} color={"#f3f36b"} title={"Good"} /> },
+		{ number: 2, icon: <BsEmojiFrownFill size={"30px"} color={"#ff8658"} title={"Sad"} /> },
+		{ number: 3, icon: <BsEmojiAngryFill size={"30px"} title={"Angry"} /> },
+		{ number: 4, icon: <BsEmojiExpressionlessFill size={"30px"} title={"Meh"} /> },
+		{ number: 5, icon: <BsEmojiHeartEyesFill size={"30px"} title={"Love"} /> },
+		{ number: 6, icon: <BsEmojiLaughingFill size={"30px"} title={"Haha"} /> },
+		{ number: 7, icon: <BsEmojiWinkFill size={"30px"} title={"Wink"} /> },
+		{ number: 8, icon: <BsEmojiSunglassesFill size={"30px"} title={"Cool"} /> },
 		// { number: 9, icon: <RiNumber9 size={"25px"} /> },
 		// { number: 10, icon: <RiNumber10 /> },
 	]);

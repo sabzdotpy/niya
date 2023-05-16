@@ -38,6 +38,11 @@
 			&.edit {
 				cursor: pointer;
 			}
+
+			svg {
+				stroke-width: 0.15;
+				stroke: black;
+			}
 		}
 
 		.edit {
@@ -196,7 +201,6 @@ input.titleInput {
 
 // !
 
-
 .mood {
 	position: relative;
 	display: inline-block;
@@ -239,7 +243,6 @@ input.titleInput {
 	display: grid;
 	top: 2.5rem;
 }
-
 
 // !
 
@@ -292,8 +295,9 @@ input.titleInput {
 
 	& span.icon svg {
 		color: darken($brown, 10);
+		stroke-width: 0.25;
+		stroke: black;
 	}
-
 }
 
 .dropdown-content div:hover {
