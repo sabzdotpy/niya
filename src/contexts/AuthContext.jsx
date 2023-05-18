@@ -377,7 +377,10 @@ export const AuthProvider = ({ children }) => {
 					reject("no timestamp was provided")
 				}
 
-				remove(dRef(database), `root/journal_entries/${currentUser.uid}/${timestamp}`)
+				const deletes = {};
+				deletes[`root/journal_entries/${currentUser.uid}/${timestamp}`] = null
+
+				update(dRef(database), deletes)
 				.then(() => {
 					green("Deleted entry from db.")
 					resolve("Entry deleted.")
