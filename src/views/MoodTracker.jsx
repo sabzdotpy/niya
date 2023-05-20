@@ -36,7 +36,8 @@ export default function MoodTracker() {
 		// })
 
 		entries.map((entry, index) => {
-			moodCount[moodIndices.at(Object.values(entry)[0]?.mood + 1)] += 1;
+			console.log(`${moodIndices.at(Object.values(entry)[0]?.mood)}`);
+			moodCount[moodIndices.at(Object.values(entry)[0]?.mood - 1)] += 1;
 		});
 
 		const parsed = Object.keys(moodCount).map((moodKey, index) => {

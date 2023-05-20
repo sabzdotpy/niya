@@ -3,8 +3,9 @@ import "../styles/Journal.scss";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { green } from "../scripts/Misc";
+// import { green } from "../scripts/Misc";
 import LoadingScreen from "../components/LoadingScreen";
+import { FiSmile } from "react-icons/fi";
 
 export default function Journal() {
 	const navigate = useNavigate();
@@ -72,10 +73,13 @@ export default function Journal() {
 												Object.getPrototypeOf(JSON.parse(Object.values(entry)[0]?.text)[0]) ===
 													Object.prototype
 													? ""
-													: (JSON.parse(Object.values(entry)[0]?.text).blocks[0]?.text.length > 100)
-													? JSON.parse(Object.values(entry)[0]?.text).blocks[0]?.text.slice(0,100) + "..."
+													: JSON.parse(Object.values(entry)[0]?.text).blocks[0]?.text.length >
+													  100
+													? JSON.parse(Object.values(entry)[0]?.text).blocks[0]?.text.slice(
+															0,
+															100
+													  ) + "..."
 													: JSON.parse(Object.values(entry)[0]?.text).blocks[0]?.text}
-
 											</span>
 										</div>
 									);
@@ -85,9 +89,22 @@ export default function Journal() {
 							)}
 						</div>
 
-						<button className="addEntry" onClick={() => navigate("/app-jou/new")}>
-							+
-						</button>
+						<div className="ctaContainer">
+							<button
+								className="goToMood"
+								title={"Go to moods page"}
+								onClick={() => navigate("/app-moo")}
+							>
+								<FiSmile />
+							</button>
+							<button
+								className="addEntry"
+								title={"Create a new journal entry"}
+								onClick={() => navigate("/app-jou/new")}
+							>
+								+
+							</button>
+						</div>
 					</>
 				) : currentUser === "none" ? (
 					<div className="loginBlock">You don't seem to be logged in. Please login to use the journal.</div>

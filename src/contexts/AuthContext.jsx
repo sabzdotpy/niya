@@ -342,8 +342,13 @@ export const AuthProvider = ({ children }) => {
 		return new Promise((resolve, reject) => {
 			if (currentUser && currentUser !== "none") {
 				if (!timestamp) {
-					console.log("No timestamp was provided")
+					console.log("No timestamp was provided");
 					timestamp = Date.now();
+				}
+
+				if (!title && !(JSON.stringify(text) === "[{}]")) {
+					console.log("both text and title are empty/");
+					reject("Both title and content cannot be empty.");
 				}
 
 				const updates = {};
@@ -374,28 +379,26 @@ export const AuthProvider = ({ children }) => {
 		return new Promise((resolve, reject) => {
 			if (currentUser && currentUser !== "none") {
 				if (!timestamp) {
-					reject("no timestamp was provided")
+					reject("no timestamp was provided");
 				}
 
 				const deletes = {};
-				deletes[`root/journal_entries/${currentUser.uid}/${timestamp}`] = null
+				deletes[`root/journal_entries/${currentUser.uid}/${timestamp}`] = null;
 
 				update(dRef(database), deletes)
-				.then(() => {
-					green("Deleted entry from db.")
-					resolve("Entry deleted.")
-				})
-				.catch((e) => {
-					red("Error while deleting entry from db.")
-					reject(e);
-				})
+					.then(() => {
+						green("Deleted entry from db.");
+						resolve("Entry deleted.");
+					})
+					.catch((e) => {
+						red("Error while deleting entry from db.");
+						reject(e);
+					});
+			} else {
+				reject("No user found.");
 			}
-			else {
-				reject("No user found.")
-			}
-		})
-
-	}
+		});
+	};
 
 	const readAllJournalEntries = () => {
 		return new Promise((resolve, reject) => {
@@ -426,7 +429,7 @@ export const AuthProvider = ({ children }) => {
 			let temp = [];
 			readAllJournalEntries()
 				.then((entries) => {
-					console.log(entries)
+					console.log(entries);
 					if (Object.keys(entries).length < 1) {
 						// console.log(Object.keys(entries).length)
 						console.log("Jounral entry length 0");
@@ -436,7 +439,7 @@ export const AuthProvider = ({ children }) => {
 					}
 
 					Object.getOwnPropertyNames(entries).map((timestamp) => {
-						console.log("Parsing jounral entries...")
+						console.log("Parsing jounral entries...");
 						// JOURNAL_ENTRIES.push(entries[timestamp])
 						var obj = {};
 						obj[timestamp] = entries[timestamp];
@@ -490,7 +493,7 @@ export const AuthProvider = ({ children }) => {
 		changeToCustomDisplayName,
 		addJournalEntryToDatabase,
 		deleteJournalEntryFromDatabase,
-		
+
 		readAllJournalEntries,
 		readAndSetJournalEntries,
 	};

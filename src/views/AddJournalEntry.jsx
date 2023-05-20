@@ -243,9 +243,12 @@ export default function AddJournalEntry() {
 	return (
 		<div className={"addNew " + mode}>
 			<>
-				<button className="goBack" onClick={() => navigate("/app-jou")}>
-					{"< Go Back"}
-				</button>
+				<div className="backContainer">
+					<button className="goBack" onClick={() => navigate("/app-jou")}>
+						{"< Go Back"}
+					</button>
+				</div>
+
 				{error ? (
 					<div className="errorMessage">{error}</div>
 				) : (
@@ -267,7 +270,7 @@ export default function AddJournalEntry() {
 									}
 								)}
 								{/* <BsEmojiSmileFill className="dropbtn" /> */}
-								<div class={"dropdown-content" + (moodsOpen ? " show" : "")}>
+								<div className={"dropdown-content" + (moodsOpen ? " show" : "")}>
 									{/* <ul className="moods-dropdown"> */}
 									{moodOptions.value.map((mood, index) => {
 										return (

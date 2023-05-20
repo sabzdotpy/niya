@@ -54,19 +54,38 @@
 		}
 	}
 
-	.addEntry {
+	.ctaContainer {
 		position: fixed;
 		bottom: 1rem;
 		right: 1rem;
-		height: 5rem;
-		width: 5rem;
-		border-radius: 50%;
-		background-color: rgba(rgb(255, 11, 23), 0.8);
-		border: 2px solid rgba(rgb(255, 11, 23), 0.8);
-		transition: all 0.3s ease;
+		display: flex;
+		flex-direction: column;
+		gap: .5rem;
 
-		&:hover {
-			border-color: white !important;
+		.addEntry {
+			height: 5rem;
+			width: 5rem;
+			border-radius: 50%;
+			background-color: rgba(rgb(255, 11, 23), 0.8);
+			border: 2px solid rgba(rgb(255, 11, 23), 0.8);
+			transition: all 0.3s ease;
+
+			&:hover {
+				border-color: white !important;
+			}
+		}
+
+		.goToMood {
+			height: 5rem;
+			width: 5rem;
+			border-radius: 50%;
+			background-color: rgba(rgb(255, 121, 11), 0.8);
+			border: 2px solid rgba(rgb(255, 121, 11), 0.8);
+			transition: all 0.3s ease;
+
+			&:hover {
+				border-color: white !important;
+			}
 		}
 	}
 
