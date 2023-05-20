@@ -15,6 +15,7 @@ import AddJournalEntry from "./views/AddJournalEntry";
 import Account from "./views/Account";
 import UnderConstruction from "./views/UnderConstruction";
 import Quotes from "./views/Quotes.jsx";
+import MoodTracker from "./views/MoodTracker";
 
 function App() {
 	const location = useLocation();
@@ -32,7 +33,7 @@ function App() {
 						<Route path="/app-jou" element={<Journal />}></Route>
 						<Route path="app-jou/new" element={<AddJournalEntry />}></Route>
 						<Route path="app-jou/:timestamp" element={<AddJournalEntry />}></Route>
-						<Route path="/app-moo" element={<UnderConstruction />}></Route>
+						<Route path="/app-moo" element={<MoodTracker />}></Route>
 						<Route path="/app-reco" element={<UnderConstruction />}></Route>
 						<Route path="/app-calo" element={<UnderConstruction />}></Route>
 						<Route path="/app-quo" element={<Quotes />}></Route>

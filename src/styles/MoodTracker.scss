@@ -1,0 +1,42 @@
+.out {
+    padding-top: 6rem;
+}
+
+.MoodTracker {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    // align-items: center;
+    // padding-right: .5rem;
+
+    .moodInfo {
+        background-color: rgba(black, .1);
+        background-color: red !important;
+        padding: .5rem 0;
+        width: 80%;
+        border-radius: 4px;
+        font-size: 18px !important;
+        display: flex;
+        justify-content: center !important;
+        align-items: center !important;
+
+        .close {
+            position: relative;
+            height: 100% !important;
+            background-color: red;
+            padding: .8rem ;
+            cursor: pointer;
+            // border-radius: 4px;
+
+            &:hover {
+                background-color: rgba(black, .2);
+            }
+
+        }
+    }
+
+    .recharts-wrapper {
+        padding-right: .5rem;
+        margin-top: 1rem;
+    }
+}
