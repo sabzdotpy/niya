@@ -242,89 +242,100 @@ export default function AddJournalEntry() {
 
 	return (
 		<div className={"addNew " + mode}>
-			{error ? (
-				<div className="errorMessage">{error}</div>
-			) : (
-				<>
-					<div className="topBar">
-						<div
-							className={"mood " + (mode === "edit" ? "edit" : "")}
-							onClick={() => {
-								if (mode === "edit") {
-									setMoodsOpen((moodsOpen) => !moodsOpen);
-								}
-							}}
-							onBlur={() => setMoodsOpen(false)}
-						>
-							{React.cloneElement(moodOptions.value.find((mood) => mood.number === selectedMood).icon, {
-								size: "20px",
-							})}
-							{/* <BsEmojiSmileFill className="dropbtn" /> */}
-							<div class={"dropdown-content" + (moodsOpen ? " show" : "")}>
-								{/* <ul className="moods-dropdown"> */}
-								{moodOptions.value.map((mood, index) => {
-									return (
-										<div key={index} className="item" onClick={() => setSelectedMood(mood.number)}>
-											<span className="icon">{mood.icon}</span>
-											{/* <span className="name">{mood.number}</span> */}
-										</div>
-									);
-								})}
-								{/* </ul> */}
-							</div>
-						</div>
-
-						{mode === "edit" ? (
-							<button className="edit" onClick={saveEntry} title="Save Entry">
-								Save
-							</button>
-						) : (
-							<button
-								className="edit"
-								title="Edit Entry"
+			<>
+				<button className="goBack" onClick={() => navigate("/app-jou")}>
+					{"< Go Back"}
+				</button>
+				{error ? (
+					<div className="errorMessage">{error}</div>
+				) : (
+					<>
+						<div className="topBar">
+							<div
+								className={"mood " + (mode === "edit" ? "edit" : "")}
 								onClick={() => {
-									setCurrentlyEditing(true);
-									setMode("edit");
+									if (mode === "edit") {
+										setMoodsOpen((moodsOpen) => !moodsOpen);
+									}
 								}}
+								onBlur={() => setMoodsOpen(false)}
 							>
-								Edit
-							</button>
-						)}
-						{mode === "view" || (mode === "edit" && currentlyEditing) ? (
-							<button className="delete" title="Delete Entry" onClick={deleteEntry}>
-								<BiTrash size={25} />
-							</button>
-						) : (
-							<></>
-						)}
-					</div>
-					<div className="titleContainer">
-						<input
-							ref={titleInput}
-							type="text"
-							className="titleInput"
-							placeholder={mode === "view" ? "" : "Enter a title..."}
-							value={title}
-							onClick={() => {
-								console.log(mode);
-								console.log(currentlyEditing);
-							}}
-							onChange={(e) => setTitle(e.currentTarget.value)}
+								{React.cloneElement(
+									moodOptions.value.find((mood) => mood.number === selectedMood).icon,
+									{
+										size: "20px",
+									}
+								)}
+								{/* <BsEmojiSmileFill className="dropbtn" /> */}
+								<div class={"dropdown-content" + (moodsOpen ? " show" : "")}>
+									{/* <ul className="moods-dropdown"> */}
+									{moodOptions.value.map((mood, index) => {
+										return (
+											<div
+												key={index}
+												className="item"
+												onClick={() => setSelectedMood(mood.number)}
+											>
+												<span className="icon">{mood.icon}</span>
+												{/* <span className="name">{mood.number}</span> */}
+											</div>
+										);
+									})}
+									{/* </ul> */}
+								</div>
+							</div>
+
+							{mode === "edit" ? (
+								<button className="edit" onClick={saveEntry} title="Save Entry">
+									Save
+								</button>
+							) : (
+								<button
+									className="edit"
+									title="Edit Entry"
+									onClick={() => {
+										setCurrentlyEditing(true);
+										setMode("edit");
+									}}
+								>
+									Edit
+								</button>
+							)}
+							{mode === "view" || (mode === "edit" && currentlyEditing) ? (
+								<button className="delete" title="Delete Entry" onClick={deleteEntry}>
+									<BiTrash size={25} />
+								</button>
+							) : (
+								<></>
+							)}
+						</div>
+						<div className="titleContainer">
+							<input
+								ref={titleInput}
+								type="text"
+								className="titleInput"
+								placeholder={mode === "view" ? "" : "Enter a title..."}
+								value={title}
+								onClick={() => {
+									console.log(mode);
+									console.log(currentlyEditing);
+								}}
+								onChange={(e) => setTitle(e.currentTarget.value)}
+								readOnly={mode === "view"}
+							/>
+						</div>
+						<Editor
+							editorState={editorState}
+							toolbarClassName="editorToolbar"
+							wrapperClassName="wrapperClassName"
+							editorClassName="editorClassName"
+							onEditorStateChange={setEditorState}
+							toolbar={toolbarOptions}
+							placeholder={mode === "view" ? "" : "Type something..."}
 							readOnly={mode === "view"}
 						/>
-					</div>
-					<Editor
-						editorState={editorState}
-						toolbarClassName="editorToolbar"
-						wrapperClassName="wrapperClassName"
-						editorClassName="editorClassName"
-						onEditorStateChange={setEditorState}
-						toolbar={toolbarOptions}
-						placeholder={mode === "view" ? "" : "Type something..."}
-						readOnly={mode === "view"}
-					/>
 
-					{/* {mode === "edit" ? (
+						{/* {mode === "edit" ? (
 						<button className="saveEntry" onClick={saveEntry}>
 							Save
 						</button>
@@ -339,8 +350,9 @@ export default function AddJournalEntry() {
 							Edit
 						</button>
 					)} */}
-				</>
-			)}
+					</>
+				)}
+			</>
 
 			{/* <Editor /> */}
 		</div>
