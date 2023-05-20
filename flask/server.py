@@ -54,7 +54,7 @@ def get_precautionsGET():
     return precautions
 
 
-@app.route("/get_related_syms")     # URL/get_related_syms?s=vomiting    - s is the symptom query param
+@app.route("/get_related_syms")
 def get_related_syms():
     related_symptoms = get_related_symptoms(request.args.get("s"))
     return list(related_symptoms)

@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 import pickle 
-from sklearn import preprocessing #gives label encoder
+from sklearn import preprocessing
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier, _tree
 import joblib
@@ -36,9 +36,6 @@ def path(path):
     return os.path.join(basedir, path)
 
 def GLOBAL_STORE(dic):
-    # print('----------------------------------->')
-    # print(f"Global Storage changing...")
-    # print(dic)
     GLOBALS.update(dic)
 
 def get_label_encoder():
@@ -208,7 +205,7 @@ def get_related_symptoms(symptom1):
     global le
     global reduced_data
     
-    clf = retrieve_model()  # decision tree classifier model
+    clf = retrieve_model()
     clf = clf[0]
 
     if (symptom1 not in training_df.iloc[0:1, 0:-1]):
@@ -290,19 +287,3 @@ def predict_disease(symptoms_arr: list) -> list:
     # print(predicted_disease)
 
     return list(predicted_disease)
-
-"""
-
-after giving first symptom - train()
-call check_pattern
-call recurse() - gives possible related symptoms in /symptoms
-after getting possible related symptoms - call train() again
-call recurse()
-call print_disease()
-call getDicts()
-call recurse2() once
-call sec_predict()
-# call get_symptoms_list()
-call list_to_string()
-
-"""
