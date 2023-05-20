@@ -66,14 +66,16 @@ export default function Journal() {
 											</span>
 											<span className="text">
 												{/* JSON.parse(Object.values(entry)[0]?.text)[0] === {} */}
-												{(JSON.parse(Object.values(entry)[0]?.text)[0] && // 👈 null and undefined check
+												{JSON.parse(Object.values(entry)[0]?.text)[0] && // 👈 null and undefined check
 												Object.keys(JSON.parse(Object.values(entry)[0]?.text)[0]).length ===
 													0 &&
 												Object.getPrototypeOf(JSON.parse(Object.values(entry)[0]?.text)[0]) ===
-													Object.prototype)
-													  // ? JSON.parse(Object.values(entry)[0]?.text)
+													Object.prototype
 													? ""
+													: (JSON.parse(Object.values(entry)[0]?.text).blocks[0]?.text.length > 100)
+													? JSON.parse(Object.values(entry)[0]?.text).blocks[0]?.text.slice(0,100) + "..."
 													: JSON.parse(Object.values(entry)[0]?.text).blocks[0]?.text}
+
 											</span>
 										</div>
 									);
