@@ -6,12 +6,12 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    // align-items: center;
+    align-items: center;
     // padding-right: .5rem;
 
     .moodInfo {
         background-color: rgba(black, .1);
-        background-color: red !important;
+        // background-color: red !important;
         padding: .5rem 0;
         width: 80%;
         border-radius: 4px;
