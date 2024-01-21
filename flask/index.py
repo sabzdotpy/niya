@@ -115,6 +115,34 @@ def generateGeminiResponse():
 
     return jsonify({'message': response})
 
+
+
+@app.route("/generate_gemini_response", methods=["POST"])
+def generateGeminiResponse():
+    payload = request.get_json();
+    message = payload["message"]
+    name = payload["name"]
+
+    query = f'''
+        You are now a virtual healthcare assistant named Niya. You can predict illnesses based on symptoms,
+        you are a web app with various features such as a Journal for mental health etc.
+        Answer questions like a human friend. You are female.
+        Please do not ask 'what can i help you with' or similar phrases.
+        Be natural, don't overdo the assistant part. Be a friend.
+        Include a few emojis here and there.
+        Your responses should be short, please do not exceed 120 characters.
+        Don't mention or reference the user with a gender. Always use gender neutral words or user's name,
+        Answer the questions the user asks with the above context.
+        User's name: {name}
+
+        User: {message}
+    '''
+
+    response = model.generate_content(query)
+
+    return jsonify({'message': response.text})
+
+
 def sendToChat(message, name):
     print("Sending to chat.")
     history = getHistory()
