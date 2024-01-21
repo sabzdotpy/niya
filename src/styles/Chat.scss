@@ -1,0 +1,39 @@
+.out {
+    padding: 0 !important;
+    margin-top: 6rem !important;
+}
+
+.chat {
+    overflow-y: hidden;
+}
+
+
+.messageBox {
+    margin-top: 1rem;
+
+    input {
+        width: 60%;
+        border-radius: 12px 0 0 12px;
+        padding: 1rem 2rem;
+        background-color: rgba(white, .25);
+        border: 2px solid rgba(white, .9);
+        border-right-color: transparent;
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: .5;
+        }
+    }
+    
+    button {
+        border-radius: 0 12px 12px 0 !important;
+        padding: 1rem 2rem !important;
+        background-color: rgba(white, .25) !important;
+        border: 2px solid rgba(white, .9) !important;        
+
+        &:disabled {
+            cursor: not-allowed;
+            opacity: .7;
+        }
+    }    
+}

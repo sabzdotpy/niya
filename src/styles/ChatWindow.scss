@@ -1,0 +1,79 @@
+
+
+
+.chatWindow {
+    margin: 0 auto;
+    width: 95vw;
+
+    border: 4px solid rgba(white, .4);
+
+    border-radius: 10px;
+    
+    .chatHeader {
+        padding: .6rem 2rem;
+        background-color: rgba(white, .25);
+        border: 1px solid transparent;
+        border-bottom-color: rgba(white, .4);
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: center;
+
+        .name {
+            font-size: x-large;
+            font-weight: 600;
+        }
+
+        .status {
+            font-size: large;
+        }
+    }
+
+    .chatBox {
+        height: 27vw;
+        overflow-y: auto;
+        padding: .5rem 0 .5rem 0;
+
+        .messageContainer {
+            margin: 0 auto;
+            width: 96%;
+            padding: .2rem 1rem;
+
+            display: flex;
+
+            &.user {
+                justify-content: flex-end;
+
+                .messageBubble {
+                    text-align: right;
+                }
+            }
+
+            &.niya {
+                justify-content: flex-start;
+                
+                .messageBubble {
+                    text-align: left;
+                }
+            }
+
+            .messageBubble {
+                background-color: rgba(white, .7);
+                border-radius: 26px;
+                max-width: 60%;
+                padding: 1rem 1.5rem;
+
+                transition: all .2s ease-in-out;
+                transform: scale(0) translateY(20px);
+                opacity: .7;
+
+                &.visible {
+                    opacity: 1;
+                    transform: scale(1) translateY(0);
+                }
+            }
+        }
+
+    }
+
+}

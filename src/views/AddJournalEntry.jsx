@@ -33,10 +33,17 @@ export default function AddJournalEntry() {
 	const [title, setTitle] = useState("");
 	const [editorState, setEditorState] = useState(null);
 	const [timestamp, setTimestamp] = useState(null);
+	const [geminiEnabledOrNot, setGeminiEnabledOrNot] = useState(false);
 	const [selectedMood, setSelectedMood] = useState(4);
 	const [error, setError] = useState(null);
 
+	const [geminiResponding, setGeminiResponding] = useState(false);
+	const [geminiResponse, setGeminiResponse] = useState("");
+
 	const titleInput = useRef();
+	const geminiToggle = useRef();
+	const geminiResponseDiv = useRef();
+	const saveButton = useRef();
 
 	const moodOptions = useArray([
 		{ number: 1, icon: <BsEmojiSmileFill size={"30px"} color={"#f3f36b"} title={"Good"} /> },
@@ -92,6 +99,11 @@ export default function AddJournalEntry() {
 		},
 	};
 
+	const geminiEnableToggle = () => {
+		console.log("Toggling.")
+		if (geminiToggle.current) setGeminiEnabledOrNot(geminiToggle.current.checked)
+	};
+
 	useEffect(() => {
 		console.log(Object.values(JOURNAL_ENTRIES.value));
 
@@ -127,6 +139,8 @@ export default function AddJournalEntry() {
 					setTimestamp(Object.values(JOURNAL_ENTRIES?.value[index])[0].timestamp);
 
 					setTitle(Object.values(JOURNAL_ENTRIES?.value[index])[0].title);
+					setGeminiEnabledOrNot(Object.values(JOURNAL_ENTRIES?.value[index])[0].geminiEnabled);
+					setGeminiResponse(Object.values(JOURNAL_ENTRIES?.value[index])[0].geminiResponse);
 					setSelectedMood(Object.values(JOURNAL_ENTRIES?.value[index])[0].mood || 4);
 
 					console.log(JSON.parse(Object.values(JOURNAL_ENTRIES?.value[index])[0].text));
@@ -182,16 +196,20 @@ export default function AddJournalEntry() {
 	};
 
 	const saveEntry = () => {
+		saveButton.current.textContent = "Saving...";
 		if (currentlyEditing) {
 			console.log("I should update this entry.");
 		} else {
 			console.log("I am creating a new entry.");
 		}
 		let jsonText;
+		let plainText;
 
 		if (editorState) {
 			jsonText = JSON.stringify(convertToRaw(editorState.getCurrentContent()));
-			console.log(jsonText);
+			console.log("Plain text: ")
+			plainText = (editorState.getCurrentContent().getPlainText());
+			
 		} else {
 			jsonText = JSON.stringify([{}]);
 		}
@@ -200,12 +218,17 @@ export default function AddJournalEntry() {
 			title: titleInput.current.value,
 			text: jsonText,
 			mood: selectedMood,
+			geminiEnabled: geminiToggle.current.checked
 		});
+		
+		if (geminiToggle.current.checked) {
+			geminiResponseDiv.current.scrollIntoView();
+		}
 
-		addJournalEntryToDatabase(titleInput.current.value, jsonText, timestamp, selectedMood)
-			.then((timestamp) => {
+		addJournalEntryToDatabase(titleInput.current.value, jsonText, plainText, timestamp, geminiToggle.current.checked, selectedMood)
+			.then( async (timestamp) => {
 				setTimestamp(timestamp);
-				// console.log(res);
+				setGeminiResponding(true);
 				pushToNotifications("", "Journal entry saved.", "success");
 				readAndSetJournalEntries()
 					.then(() => {
@@ -254,6 +277,29 @@ export default function AddJournalEntry() {
 				) : (
 					<>
 						<div className="topBar">
+							{
+								(mode === "edit") ? (
+								<div className="geminiEnable popup" aria-label="Activate Gemini for personalized responses. Data auto-deletes after response generation.">
+									<span>Enable AI</span>
+									<input type="checkbox" 
+											id="switch" 
+											className="geminiToggle" 
+											ref={geminiToggle}
+											defaultChecked={geminiEnabledOrNot}
+											onClick={geminiEnableToggle}
+											disabled={(mode === "view")} 
+									/>
+									<label for="switch">Toggle</label>
+								</div>
+								) : (
+									<button>
+										{
+											geminiEnabledOrNot ? "AI Enabled" : "AI Disabled"
+										}
+									</button>
+								)
+							}
+							
 							<div
 								className={"mood " + (mode === "edit" ? "edit" : "")}
 								onClick={() => {
@@ -289,7 +335,7 @@ export default function AddJournalEntry() {
 							</div>
 
 							{mode === "edit" ? (
-								<button className="edit" onClick={saveEntry} title="Save Entry">
+								<button className="edit" onClick={saveEntry} ref={saveButton} title="Save Entry">
 									Save
 								</button>
 							) : (
@@ -337,6 +383,24 @@ export default function AddJournalEntry() {
 							placeholder={mode === "view" ? "" : "Type something..."}
 							readOnly={mode === "view"}
 						/>
+
+						{
+							(geminiEnabledOrNot) ? (
+								<div className="geminiResponse" ref={geminiResponseDiv}>
+									<span className="niyaSays">Niya says:</span>
+									<span className="response">
+										{
+											(geminiResponding) ? (
+											"Generating response..." ) :
+											( (geminiResponse) ? geminiResponse : "" )
+										}
+									</span>
+								</div>
+							) : (
+								<></>
+							)
+						}
+						
 
 						{/* {mode === "edit" ? (
 						<button className="saveEntry" onClick={saveEntry}>

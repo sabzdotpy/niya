@@ -18,6 +18,7 @@ import { GrTableAdd } from "react-icons/gr";
 import { BsJournalRichtext, BsQuestionLg } from "react-icons/bs";
 import { BiBrain } from "react-icons/bi";
 import { AiOutlineFire } from "react-icons/ai"
+import { TiMessageTyping } from "react-icons/ti";
 
 
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
@@ -45,6 +46,7 @@ export default function Main() {
 		{ name: "Book Appointments", icon: <GrTableAdd size={"25px"} />, route: "/app-app" },
 		{ name: "Journal", icon: <BsJournalRichtext size={"25px"} />, route: "/app-jou" },
 		{ name: "Mood Tracker", icon: <FiSmile size={"25px"} />, route: "/app-moo" },
+		{ name: "Chat", icon: <TiMessageTyping size={"25px"} />, route: "/chat" },
 		{ name: "Recommendations", icon: <BiBrain size={"25px"} />, route: "/app-reco" },
 		{ name: "Calorie Tracker", icon: <AiOutlineFire size={"25px"} />, route: "/app-calo" },
 	]);

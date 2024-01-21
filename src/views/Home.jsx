@@ -17,7 +17,7 @@ export default function Home() {
 	const suggestedActivities = useArray([
 		{ text: "Disease identification", url: "/app-ide" },
 		{ text: "Write a journal entry", url: "/app-jou" },
-		{ text: "Get a random quote", url: "/app-quo" },
+		{ text: "Chat!", url: "/chat" },
 	]);
 
 	const suggestionsText = useArray([

@@ -16,6 +16,7 @@ import Account from "./views/Account";
 import UnderConstruction from "./views/UnderConstruction";
 import Quotes from "./views/Quotes.jsx";
 import MoodTracker from "./views/MoodTracker";
+import Chat from "./views/Chat.jsx";
 
 function App() {
 	const location = useLocation();
@@ -28,6 +29,7 @@ function App() {
 						<Route path="/" element={<Home />}></Route>
 						<Route path="/hero" element={<Hero />}></Route>
 						<Route path="/meta" element={<Meta />}></Route>
+						<Route path="/chat" element={<Chat />}></Route>
 						<Route path="/app-ide" element={<AppDiseaseId />}></Route>
 						<Route path="/app-app" element={<UnderConstruction />}></Route>
 						<Route path="/app-jou" element={<Journal />}></Route>

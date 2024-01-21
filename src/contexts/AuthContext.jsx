@@ -338,8 +338,10 @@ export const AuthProvider = ({ children }) => {
 			});
 	};
 
-	const addJournalEntryToDatabase = (title, text, timestamp, mood) => {
-		return new Promise((resolve, reject) => {
+	const addJournalEntryToDatabase = (title, text, plainText, timestamp, geminiEnabled, mood) => {
+		return new Promise(async (resolve, reject) => {
+			let geminiResponse;
+
 			if (currentUser && currentUser !== "none") {
 				if (!timestamp) {
 					console.log("No timestamp was provided");
@@ -351,12 +353,36 @@ export const AuthProvider = ({ children }) => {
 					reject("Both title and content cannot be empty.");
 				}
 
+				if (geminiEnabled) {
+					try {
+						let response = await fetch((import.meta.env.VITE_BACKEND || "http://localhost:5000") + "/generate_gemini_response", {
+							method: "POST",
+							headers: {
+								"Content-Type": "application/json",
+							},
+							body: JSON.stringify({
+								message: plainText,
+								name: currentUser.displayName,
+							}),
+						})
+
+						let res = await response.json();
+						console.log(res);
+						geminiResponse = res.message;
+					}
+					catch (e) {
+						console.warn(e)
+					}
+				}
+
 				const updates = {};
 				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/title`] = title;
 				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/text`] = text;
 				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/timestamp`] = timestamp;
 				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/mood`] = mood;
-				// updates[`root/journal_entries/${currentUser.uid}/date_added`] = username;
+				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/geminiEnabled`] = geminiEnabled;
+				updates[`root/journal_entries/${currentUser.uid}/${timestamp}/geminiResponse`] = (geminiResponse ?? "");
+
 
 				update(dRef(database), updates)
 					.then(() => {
