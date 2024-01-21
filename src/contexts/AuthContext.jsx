@@ -3,6 +3,7 @@ import { auth, database } from "../components/firebaseCtx";
 import { green, red, pink } from "../scripts/Misc";
 import { update, remove, ref as dRef } from "firebase/database";
 import { encode } from "firebase-key";
+import axios from "../scripts/axios";
 
 import {
 	signInWithEmailAndPassword,
@@ -355,7 +356,7 @@ export const AuthProvider = ({ children }) => {
 
 				if (geminiEnabled) {
 					try {
-						let response = await fetch((import.meta.env.VITE_BACKEND || "http://localhost:5000") + "/generate_gemini_response", {
+						let response = await fetch("https://niyabackend.pythonanywhere.com" + "/generate_gemini_response", {
 							method: "POST",
 							headers: {
 								"Content-Type": "application/json",
@@ -365,7 +366,6 @@ export const AuthProvider = ({ children }) => {
 								name: currentUser.displayName,
 							}),
 						})
-
 						let res = await response.json();
 						console.log(res);
 						geminiResponse = res.message;
