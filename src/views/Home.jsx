@@ -16,7 +16,7 @@ export default function Home() {
 
 	const suggestedActivities = useArray([
 		{ text: "Disease identification", url: "/app-ide" },
-		{ text: "Write a journal entry", url: "/app-jou" },
+		{ text: "Write a diary entry", url: "/app-jou" },
 		{ text: "Chat!", url: "/chat" },
 	]);
 
@@ -29,12 +29,9 @@ export default function Home() {
 	]);
 
 	useEffect(() => {
-		// navigate("/hero")
 
-		// fetch(import.meta.env.VITE_BACKEND).then((res) => res.json().then((data) => {
-		// 	console.log(data)
-		// 	console.log("DATA")
-		// }))
+		// console.log(import.meta.env.VITE_API_URL)
+
 	}, []);
 
 	return (

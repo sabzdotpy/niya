@@ -373,8 +373,6 @@ export const AuthProvider = ({ children }) => {
 					catch (e) {
 						console.warn(e)
 					}
-
-					axios
 				}
 
 				const updates = {};

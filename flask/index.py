@@ -3,7 +3,7 @@ from flask_cors import CORS
 from google.generativeai import configure, GenerativeModel
 
 from ml import predict_disease, get_related_symptoms, train_model, get_all_symptoms, precautionDictionary
-
+from firebase_functions import *
 
 gemini_api_key = "xxx"
 configure(api_key = gemini_api_key)
@@ -36,13 +36,11 @@ safety_settings = [
 model = GenerativeModel('gemini-pro', generation_config=generation_config, safety_settings=safety_settings)
 chat_history = []
 
-def getHistory():
-    global chat_history
-    return chat_history
+def getHistory(uid):
+    return getHistoryFromDatabase(uid)
 
-def setHistory(history):
-    global chat_history
-    chat_history = history
+def setHistory(uid, history):
+    return setHistoryInDatabase(uid, history)
 
 app = Flask(__name__)
 CORS(app)
@@ -57,7 +55,7 @@ def symptoms():
 
 @app.route("/meta")
 def meta():
-    return "id: gemini chat"
+    return "id: gemini chat & journal"
 
 @app.route("/predict", methods=["GET"])
 def predictGET():
@@ -103,15 +101,16 @@ def get_all_syms():
 
 
 @app.route("/chat", methods=["POST"])
-def generateGeminiResponse():
+def chat():
 
     payload = request.get_json();
     message = payload["message"]
     name = payload["name"]
+    uid = payload["uid"]
 
     print(f"{name} is saying {message}.")
 
-    response = sendToChat(message, name)
+    response = sendToChat(message, name, uid)
 
     return jsonify({'message': response})
 
@@ -143,9 +142,12 @@ def generateGeminiResponse():
     return jsonify({'message': response.text})
 
 
-def sendToChat(message, name):
+def sendToChat(message, name, uid):
     print("Sending to chat.")
-    history = getHistory()
+    history = getHistory(uid)
+    print("User history:")
+    print(history)
+    print("----------------- history end.")
 
     context = f'''
         You are now a virtual healthcare assistant named Niya. You can predict illnesses based on symptoms,
@@ -159,31 +161,51 @@ def sendToChat(message, name):
         Answer the questions the user asks with the above context.
         User's name: {name}
     '''
-    chat = model.start_chat(history=history)
+    chat = model.start_chat(history=[])
 
-    if (len(history) == 0):
+    if (history is None):
         print("Sending context because history is empty.")
         chat.send_message(context)
 
     response = chat.send_message(message)
 
-    setHistory(chat.history)
-    print("----------------------------------")
-    print(response.prompt_feedback.block_reason)
-    print("----------------------------------")
+    print("Updating history.")
+    setHistory(uid, chat.history)
+    print("--------------------- history updated.")
+
+    
 
     if (response.prompt_feedback.block_reason == 0):
         return (response.candidates[0].content.parts[0].text)
     else:
-        return "error wtf did you say?"
+        print("----------------------------------")
+        print(response.prompt_feedback.block_reason)
+        print("----------------------------------")
+        return "error gemini block"
 
-def test():
-    chat = model.start_chat(history=[])
-    res = chat.send_message("how are you my name is asbz")
-    # res = chat.send_message("are you ok")
-    # res = chat.send_message("how is your day")
+@app.route("/diary_entry")
+def diary_entry():
+    payload = request.get_json();
+    text = payload["text"]
+    uid = payload["uid"]
 
-    print(dir(res))
+    query = f'''
+        The user is writing a diary entry.
+        You don't have to respond to this message. But this diary entry is very important.
+        The user might ask questions based on this diary entry.
+        This diary entry was added on January 29, 2024  6PM.
+
+        Diary entry: {text}
+    '''
+    history = getHistory(uid)
+    chat = model.start_chat(history=history)
+
+    if (history is None):
+        print("Sending context because history is empty.")
+        chat.send_message(context)
+
+    response = chat.send_message(message)
+    setHistory(uid, chat.history)
 
 if __name__ == "__main__":
     print("Flask app running")

@@ -39,8 +39,8 @@ export default function Journal() {
 						{JOURNAL_ENTRIES.value ? (
 							<div className="jounralInfo" onClick={() => console.log(JOURNAL_ENTRIES.value.length)}>
 								{JOURNAL_ENTRIES.value?.length > 0
-									? `You have written ${JOURNAL_ENTRIES.value?.length} journal entries so far!`
-									: "You haven't written a jounral entry yet. Let's start."}
+									? `You have written ${JOURNAL_ENTRIES.value?.length} diary entries so far!`
+									: "You haven't written a diary entry yet. Let's start."}
 							</div>
 						) : (
 							<></>
@@ -107,7 +107,7 @@ export default function Journal() {
 						</div>
 					</>
 				) : currentUser === "none" ? (
-					<div className="loginBlock">You don't seem to be logged in. Please login to use the journal.</div>
+					<div className="loginBlock">You don't seem to be logged in. Please login to use diary.</div>
 				) : (
 					<></>
 				)}

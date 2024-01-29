@@ -44,7 +44,7 @@ export default function Main() {
 	const apps = useArray([
 		{ name: "Disease Identification", icon: <FiSearch size={"25px"} />, route: "/app-ide" },
 		{ name: "Book Appointments", icon: <GrTableAdd size={"25px"} />, route: "/app-app" },
-		{ name: "Journal", icon: <BsJournalRichtext size={"25px"} />, route: "/app-jou" },
+		{ name: "Diary", icon: <BsJournalRichtext size={"25px"} />, route: "/app-jou" },
 		{ name: "Mood Tracker", icon: <FiSmile size={"25px"} />, route: "/app-moo" },
 		{ name: "Chat", icon: <TiMessageTyping size={"25px"} />, route: "/chat" },
 		{ name: "Recommendations", icon: <BiBrain size={"25px"} />, route: "/app-reco" },

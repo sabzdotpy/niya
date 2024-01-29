@@ -32,7 +32,8 @@ const Chat = () => {
 
         axios.post("/chat", {
             message: messageBox.current.value,
-            name: currentUser.displayName
+            name: currentUser.displayName,
+            uid: currentUser.uid
         }).then((response) => {
             chatMessages.push({
                 message: response.data.message,

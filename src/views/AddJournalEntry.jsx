@@ -225,6 +225,18 @@ export default function AddJournalEntry() {
 			geminiResponseDiv.current.scrollIntoView();
 		}
 
+		if (geminiToggle.current.checked) {	
+			axios.post(import.meta.env.VITE_API_URL + "/diary_entry", {
+				uid: currentUser.uid,
+				text: plainText,
+			})
+			.then((res) => {
+				console.log(res.message);
+			})
+			.catch((err) => {console.error(err)})
+		}
+
+		
 		addJournalEntryToDatabase(titleInput.current.value, jsonText, plainText, timestamp, geminiToggle.current.checked, selectedMood)
 			.then( async (timestamp) => {
 				setTimestamp(timestamp);
