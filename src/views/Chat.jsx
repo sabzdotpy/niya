@@ -30,7 +30,7 @@ const Chat = () => {
         setNiyaResponseLoading(true);
         setStatus("typing...");
 
-        axios.post("/chat", {
+        axios.post("/core/chat/", {
             message: messageBox.current.value,
             name: currentUser.displayName,
             uid: currentUser.uid
