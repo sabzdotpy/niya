@@ -28,3 +28,5 @@ public
 flask/__pycache__/
 flask/admin_sdk.json
 flask/gemini_key.py
+
+.env.production

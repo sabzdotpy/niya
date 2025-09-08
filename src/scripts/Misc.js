@@ -108,7 +108,7 @@ export const daysBetween = (startDate, endDate) => {
 
 
 export const toTitleCase = (str) => {
-	if (!str.length) {
+	if (!str || !str.length) {
 		return;
 	}
 

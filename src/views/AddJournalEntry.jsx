@@ -19,6 +19,8 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useAuth } from "../contexts/AuthContext";
 import { green, pink, red } from "../scripts/Misc";
 
+import axios from "../scripts/axios.js";
+
 import useArray from "../hooks/useArray";
 
 export default function AddJournalEntry() {
@@ -226,7 +228,7 @@ export default function AddJournalEntry() {
 		}
 
 		if (geminiToggle.current.checked) {	
-			axios.post(import.meta.env.VITE_API_URL + "/diary_entry", {
+			axios.post("core/diary_entry", {
 				uid: currentUser.uid,
 				text: plainText,
 			})

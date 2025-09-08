@@ -21,8 +21,8 @@ export default function Meta() {
 					<li>Status: dev</li>
 					<li>
 						Public hosting preview url:{" "}
-						<a href="https://niya-wheat.vercel.app" target="_blank">
-							https://niya-wheat.vercel.app
+						<a href={import.meta.env.VITE_API_URL} target="_blank">
+							{import.meta.env.VITE_API_URL}
 						</a>
 					</li>
 					<li>Public stable release expected date: NaN</li>

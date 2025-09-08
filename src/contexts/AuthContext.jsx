@@ -356,7 +356,7 @@ export const AuthProvider = ({ children }) => {
 
 				if (geminiEnabled) {
 					try {
-						let response = await fetch("https://niyabackend.pythonanywhere.com" + "/generate_gemini_response", {
+						let response = await fetch(import.meta.env.VITE_API_URL + "/generate_gemini_response", {
 							method: "POST",
 							headers: {
 								"Content-Type": "application/json",

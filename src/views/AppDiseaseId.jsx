@@ -10,6 +10,9 @@ import { backend_url as BASE_URL } from "../components/BackUrl";
 import { pink, toTitleCase } from "../scripts/Misc";
 import LoadingScreen from "../components/LoadingScreen";
 
+import axios from "../scripts/axios";
+import { set } from "firebase/database";
+
 const URL = (relative_url) => {
 	return `${BASE_URL}${relative_url}`;
 };
@@ -36,156 +39,115 @@ export default function AppDiseaseId() {
 	const predictionPanel = useRef();
 
 	useEffect(() => {
+
 		mainSymptomPanel.current.classList.add("loading");
-		// console.log(process.env.REACT_APP_BACKEND)
-		fetch(URL("/get_all_syms"))
-			.then((res) => {
-				if (!res.ok) {
-					pushToNotifications(
-						"Server down",
-						`Server responded with ${res.status}. Please inform the creator.`,
-						"error"
-					);
-				} else {
-					res.json()
-						.then((data) => {
-							allSyms.setValue(data);
-							allSyms.remove("prognosis");
-						})
-						.catch((err) => {
-							console.log("Error in converting all symptoms to json");
-							console.warn(err);
-						});
-				}
-			})
-			.catch((err) => {
-				console.log("No response");
-				console.warn(err);
-				setShowLoading(false);
-				pushToNotifications(
-					"Server down",
-					"The server is not responding to your request. Please inform the creator.",
-					"error"
-				);
-			});
+		fetchAllSymptoms();
 		mainSymptomPanel.current.classList.remove("loading");
 		mainSymptomPanel.current.classList.add("doneLoading");
 	}, []);
 
-	const fetchRelatedSymptoms = (symptom) => {
+	const fetchAllSymptoms = async () => {
+		try {
+			setShowLoading(true);
+			let res = await axios.get("/diagnosis/get_all_syms");
+			allSyms.setValue(res.data);
+			allSyms.remove("prognosis");
+			setShowLoading(false);
+		}
+		catch (err) {
+			console.warn(err);
+			setShowLoading(false);
+			pushToNotifications(
+				"Server down",
+				"The server is not responding to your request. Please inform the creator.",
+				"error"
+			);
+		}
+	}
+
+	const fetchRelatedSymptoms = async (symptom) => {
 		relatedSymptomPanel.current.classList.add("loading");
-		fetch(URL(`/get_related_syms?s=${symptom}`))
-			.then((res) =>
-				res.json().then((data) => {
-					console.log(`Related Symptoms to ${symptom}`);
-					if (data.indexOf(symptom) >= 0) {
-						delete data[data.indexOf(symptom)];
-					}
-					console.log(data);
-					if (data.join("") !== "invalid sym") {
-						relatedSyms.setValue(data);
-					} else {
-						setCurrentPanel(1);
-					}
-				})
-			)
-			.catch((err) => {
-				console.log("Error in getting related symptoms");
-				console.warn(err);
-				pushToNotifications(
-					"Server down",
-					"The server is not responding to your request. Please inform the creator.",
-					"error"
-				);
-			});
+		setShowLoading(true);
+		let res = await axios.get(`/diagnosis/get_related_syms?s=${symptom}`)
+		if (res.data?.join("") === "invalid sym") {
+			setCurrentPanel(1);
+			pushToNotifications("Error", "Invalid Symptom, please try again.", "error");
+			setShowLoading(false);
+			return;
+		}
+		let data = res.data.filter((sym) => sym !== symptom);
+		relatedSyms.setValue(data	);
+		relatedSyms.remove(symptom);
+		setShowLoading(false);
 		relatedSymptomPanel.current.classList.remove("loading");
 		relatedSymptomPanel.current.classList.add("doneLoading");
 	};
 
 	const predictDisease = async (listOfSymptoms) => {
-		predictionPanel.current.classList.add("loading");
-		listOfSymptoms.push(mainSymptom);
-		console.log("Symptoms: ");
-		console.log(listOfSymptoms);
-		if (listOfSymptoms.length <= 0) {
-			pushToNotifications("Error", "Please provide atleast one symptom.", "error");
-			return;
-		}
+		try {
+			predictionPanel.current.classList.add("loading");
+			listOfSymptoms.push(mainSymptom);
+			console.log("Symptoms: ");
+			console.log(listOfSymptoms);
+			if (listOfSymptoms.length <= 0) {
+				pushToNotifications("Error", "Please provide atleast one symptom.", "error");
+				return;
+			}
 
-		fetch(URL(`/predict`), {
-			method: "post",
-			headers: { "Content-Type": "application/json, application/x-www-form-urlencoded" },
-			body: JSON.stringify(listOfSymptoms),
-		})
-			.then((res) => {
-				if (res.status === 200) {
-					res.json()
-						.then((data) => {
-							console.log(data);
-							if (data[0] === data[1]) {
-								setPredictedDisease(data[0]);
-								getPrecautions(data[0]);
-							} else {
-								setPredictedDisease(`${data[0]} or ${data[1]}`);
-								getPrecautions(data);
-							}
-						})
-						.catch((e) => {
-							console.log("Error while converting predicted disease to JSON");
-							console.warn(e);
-						});
-				} else {
-					console.warn("Server didn't sent 200");
-					pushToNotifications("Whoa", "Unknown error. I'm as clueless as you are :(", "error");
-					console.log(res);
+			let res = await axios.post(
+				`/diagnosis/predict/`,
+				{
+					symptoms: listOfSymptoms,
+				},
+				{
+					headers: { "Content-Type": "application/json" },
 				}
-			})
-			.catch((e) => {
-				console.warn(e);
-				pushToNotifications(
-					"Unknown Error",
-					"The server is not responding to your request. Please inform the creator.",
-					"error"
+			);
+			if (res.data[0] === res.data[1]) {
+				// both predictions are same
+				setPredictedDisease(toTitleCase(res.data[0].replaceAll("_", " ")));
+				getPrecautions(res.data[0]);
+			} else {
+				setPredictedDisease(
+					`${toTitleCase(res.data[0].replaceAll("_", " "))} or ${toTitleCase(
+						res.data[1].replaceAll("_", " ")
+					)}`
 				);
-			});
-		predictionPanel.current.classList.remove("loading");
-		predictionPanel.current.classList.add("doneLoading");
+				getPrecautions(res.data);
+			}
+			predictionPanel.current.classList.remove("loading");
+			predictionPanel.current.classList.add("doneLoading");
+		} catch (err) {
+			console.warn(err);
+			pushToNotifications(
+				"Server down",
+				"The server is not responding to your request. Please inform the creator.",
+				"error"
+			);
+			predictionPanel.current.classList.remove("loading");
+			setShowLoading(false);
+		}
 	};
 
-	const getPrecautions = (listOfDiseases) => {
-		fetch(URL(`/get_prec`), {
-			method: "post",
-			headers: { "Content-Type": "application/json, application/x-www-form-urlencoded" },
-			body: JSON.stringify(listOfDiseases),
-		})
-			.then((res) => {
-				if (res.status === 200) {
-					res.json()
-						.then((data) => {
-							console.log(data[0]);
+	const getPrecautions = async (listOfDiseases) => {
+		try {
+			if (typeof listOfDiseases === "string") {
+				listOfDiseases = [listOfDiseases];
+			}
 
-							precautionsList.push(data[0]);
-							pink("Printing precs");
-							// console.log(data)
-							// if (data[0] === data[1]) {
-							// 	setPrecautions(data[0]);
-							// } else {
-							// 	setPredictedDisease(`${data[0]} or ${data[1]}`);
-							// }
-						})
-						.catch((e) => {
-							console.log("Error while converting precautions to JSON");
-							console.warn(e);
-						});
-				} else {
-					console.warn("Server didn't sent 200");
-					console.log(res);
-				}
-			})
-			.catch((e) => {
-				console.warn(e);
-				pushToNotifications("The server is not responding to your request. Please inform the creator.");
-			});
+			let res = await axios.post(`diagnosis/get_prec/`,
+				{ diseases: listOfDiseases },
+				{ headers: { "Content-Type": "application/json" } }
+			);
+			precautionsList.setValue(res.data.precautions);
+		} catch (err) {
+			console.warn(err);
+			pushToNotifications(
+				"Server down",
+				"The server is not responding to your request. Please inform the creator.",
+				"error"
+			);
+		}
 	};
 
 	return (
@@ -350,8 +312,8 @@ export default function AppDiseaseId() {
 
 					<h4>These are some precautions you can take for a relief. It is advisable to consult a doctor.</h4>
 					<ul className="precautionsContainer">
-						{precautionsList.value[0] ? (
-							precautionsList.value[0].map((precaution, index) => {
+						{(precautionsList.value) ? (
+							precautionsList.value.map((precaution, index) => {
 								return <li key={index}>{toTitleCase(precaution)}</li>;
 							})
 						) : (
