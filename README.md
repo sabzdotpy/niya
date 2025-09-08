@@ -51,34 +51,27 @@ Go to the project directory
 ```
 
 ### Install dependencies
-Frontend
 ```bash
   npm install
 ```
 
-Backend
-```bash
-  cd flask && pip install -r requirements.txt
-```
-
-### Run Frontend and Backend
+### Run
 
 ```bash
   npm run dev
 ```
 
-
-```bash
-  npm run server
-````
-
 ## Tech Stack
 
-**Client:** React, SCSS
+**Client:** React, SCSS  
+**Server:** Python, Django  
 
-**Server:** Python, Flask
+---
 
-
+### IMPORTANT!
+This repository contains only the frontend files required for this project.  
+Backend Repository [here](https://github.com/sabzdotpy/niyaAPI)  
+Follow the instructions mentioned in the backend repository to set up and integrate.
 
 ## Screenshots
 
@@ -95,3 +88,8 @@ Backend
 ![Quotes page](https://github.com/sabzdotpy/niya/blob/main/src/assets/quotes_page.png)
 
 </center>
+
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE).
