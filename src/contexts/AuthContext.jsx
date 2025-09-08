@@ -356,19 +356,16 @@ export const AuthProvider = ({ children }) => {
 
 				if (geminiEnabled) {
 					try {
-						let response = await fetch(import.meta.env.VITE_API_URL + "/generate_gemini_response", {
-							method: "POST",
-							headers: {
-								"Content-Type": "application/json",
-							},
-							body: JSON.stringify({
-								message: plainText,
+						let response = await axios.post(
+							"/core/generate_gemini_response/",
+							{
+								uid: currentUser.uid,
 								name: currentUser.displayName,
-							}),
-						})
-						let res = await response.json();
-						console.log(res);
-						geminiResponse = res.message;
+								message: plainText,
+							}
+						)
+						console.log(response);
+						geminiResponse = response.data.message;
 					}
 					catch (e) {
 						console.warn(e)

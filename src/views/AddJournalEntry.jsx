@@ -228,9 +228,11 @@ export default function AddJournalEntry() {
 		}
 
 		if (geminiToggle.current.checked) {	
-			axios.post("core/diary_entry", {
+			axios.post("core/diary_entry/", {
 				uid: currentUser.uid,
 				text: plainText,
+				name: currentUser.displayName,
+				message: plainText,
 			})
 			.then((res) => {
 				console.log(res.message);
