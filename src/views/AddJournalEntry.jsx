@@ -228,16 +228,18 @@ export default function AddJournalEntry() {
 		}
 
 		if (geminiToggle.current.checked) {	
-			axios.post("core/diary_entry/", {
-				uid: currentUser.uid,
-				text: plainText,
-				name: currentUser.displayName,
-				message: plainText,
-			})
-			.then((res) => {
-				console.log(res.message);
-			})
-			.catch((err) => {console.error(err)})
+			// DEPRECATED - will be removed in a future version.
+			// generate_gemini_response will be responsible for generating the response and storing chat history.
+			// axios.post("core/diary_entry/", {
+			// 	uid: currentUser.uid,
+			// 	text: plainText,
+			// 	name: currentUser.displayName,
+			// 	message: plainText,
+			// })
+			// .then((res) => {
+			// 	console.log(res.message);
+			// })
+			// .catch((err) => {console.error(err)})
 		}
 
 		
